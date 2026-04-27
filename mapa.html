@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Mapa Interactivo — VEXO Real Estate</title>
+  <link href="https://unpkg.com/maplibre-gl@3.6.2/dist/maplibre-gl.css" rel="stylesheet"/>
+  <script src="https://unpkg.com/maplibre-gl@3.6.2/dist/maplibre-gl.js"></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --primary: #d4891a;
+      --primary-d: #e8a92a;
+      --bg: #07120f;
+      --bg2: #0a1a18;
+      --bg3: #0f2320;
+      --glass: rgba(15,35,32,0.92);
+      --text: #e2e8f0;
+      --text-m: #94a3b8;
+      --text-s: #64748b;
+      --teal: #13ecda;
+    }
+    html, body { height: 100%; background: var(--bg); color: var(--text); font-family: 'DM Sans', system-ui, sans-serif; }
+    #map { width: 100%; height: 100vh; }
+
+    /* ── Controles ── */
+    #map-controls {
+      position: absolute;
+      top: 16px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 10;
+      display: flex;
+      gap: 8px;
+      background: rgba(7,18,15,0.9);
+      border: 1px solid rgba(212,137,26,0.2);
+      border-radius: 40px;
+      padding: 6px 10px;
+      backdrop-filter: blur(12px);
+    }
+    .ctrl-btn {
+      padding: 7px 18px;
+      border-radius: 30px;
+      border: none;
+      background: transparent;
+      color: var(--text-m);
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+      white-space: nowrap;
+    }
+    .ctrl-btn.active, .ctrl-btn:hover {
+      background: var(--primary);
+      color: #07120f;
+    }
+
+    /* ── Popup ── */
+    .maplibregl-popup-content {
+      background: var(--glass);
+      border: 1px solid rgba(212,137,26,0.22);
+      border-radius: 16px;
+      padding: 0;
+      overflow: hidden;
+      min-width: 260px;
+      max-width: 300px;
+      box-shadow: 0 16px 48px rgba(0,0,0,0.6);
+      backdrop-filter: blur(20px);
+    }
+    .maplibregl-popup-tip { border-top-color: rgba(212,137,26,0.22) !important; }
+    .maplibregl-popup-close-button {
+      color: var(--text-m);
+      font-size: 18px;
+      top: 8px;
+      right: 10px;
+      background: rgba(7,18,15,0.5);
+      border-radius: 50%;
+      width: 24px;
+      height: 24px;
+      line-height: 22px;
+      text-align: center;
+    }
+
+    .popup-img {
+      width: 100%;
+      height: 140px;
+      object-fit: cover;
+      display: block;
+    }
+    .popup-body {
+      padding: 14px 16px 16px;
+    }
+    .popup-cat {
+      display: inline-block;
+      padding: 3px 10px;
+      border-radius: 20px;
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 8px;
+    }
+    .cat-desarrollo { background: rgba(212,137,26,0.2); color: var(--primary); }
+    .cat-poi { background: rgba(19,236,218,0.12); color: var(--teal); }
+    .popup-title {
+      font-family: 'Syne', system-ui, sans-serif;
+      font-weight: 800;
+      font-size: 15px;
+      line-height: 1.2;
+      margin-bottom: 6px;
+      color: #fff;
+    }
+    .popup-desc {
+      font-size: 12px;
+      color: var(--text-m);
+      line-height: 1.5;
+      margin-bottom: 10px;
+    }
+    .popup-data {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-bottom: 10px;
+    }
+    .popup-chip {
+      font-size: 11px;
+      padding: 3px 9px;
+      border-radius: 20px;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.1);
+      color: var(--text);
+    }
+    .popup-btn {
+      display: block;
+      width: 100%;
+      padding: 9px;
+      border-radius: 10px;
+      background: linear-gradient(135deg, var(--primary), var(--primary-d));
+      color: #07120f;
+      font-weight: 700;
+      font-size: 12px;
+      border: none;
+      cursor: pointer;
+      text-align: center;
+      text-decoration: none;
+    }
+
+    /* ── Leyenda ── */
+    #legend {
+      position: absolute;
+      bottom: 32px;
+      left: 16px;
+      z-index: 10;
+      background: rgba(7,18,15,0.88);
+      border: 1px solid rgba(212,137,26,0.18);
+      border-radius: 12px;
+      padding: 12px 16px;
+      backdrop-filter: blur(12px);
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .leg-item { display: flex; align-items: center; gap: 8px; font-size: 12px; color: var(--text-m); }
+    .leg-dot { width: 12px; height: 12px; border-radius: 50%; flex-shrink: 0; }
+  </style>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet"/>
+</head>
+<body>
+
+<div id="map"></div>
+
+<div id="map-controls">
+  <button class="ctrl-btn active" onclick="filterMap('all', this)">Todos</button>
+  <button class="ctrl-btn" onclick="filterMap('merida', this)">Mérida</button>
+  <button class="ctrl-btn" onclick="filterMap('cdmx', this)">CDMX</button>
+  <button class="ctrl-btn" onclick="filterMap('desarrollos', this)">Desarrollos VEXO</button>
+  <button class="ctrl-btn" onclick="filterMap('poi', this)">Lugares de interés</button>
+</div>
+
+<div id="legend">
+  <div class="leg-item"><div class="leg-dot" style="background:#d4891a;"></div>Desarrollos VEXO</div>
+  <div class="leg-item"><div class="leg-dot" style="background:#13ecda;"></div>Lugares de interés</div>
+</div>
+
+<script>
+// ════════════════════════════════════════════════════════════════
+//  DATOS: 20 Lugares de Interés — Mérida (10) + CDMX (10)
+// ════════════════════════════════════════════════════════════════
+const LUGARES_INTERES = [
+  // ── MÉRIDA ──────────────────────────────────────────────────
+  {
+    id: "poi-m1", ciudad: "merida", tipo: "poi",
+    nombre: "Gran Museo del Mundo Maya",
+    categoria: "Cultura · Turismo",
+    descripcion: "El museo más moderno de Yucatán. Alberga más de 1,100 piezas mayas originales en una arquitectura icónica con forma de ceiba.",
+    datos: ["Fundado 2012", "1,100+ piezas", "Admisión libre dom."],
+    img: "https://images.unsplash.com/photo-1518638150340-f706e86654de?w=400&q=75",
+    lat: 21.0258, lng: -89.6268,
+    link: "https://www.granmuseodelmundomaya.com.mx"
+  },
+  {
+    id: "poi-m2", ciudad: "merida", tipo: "poi",
+    nombre: "Paseo de Montejo",
+    categoria: "Zona Premium · Lifestyle",
+    descripcion: "El bulevar más elegante de Yucatán. Mansiones porfirianas, galerías, restaurantes top y los mejores hoteles boutique de la ciudad.",
+    datos: ["4 km de longitud", "Zona A1 plusvalía", "Alta demanda rental"],
+    img: "https://images.unsplash.com/photo-1534430480872-3498386e7856?w=400&q=75",
+    lat: 21.0089, lng: -89.6196,
+    link: null
+  },
+  {
+    id: "poi-m3", ciudad: "merida", tipo: "poi",
+    nombre: "Plaza Grande — Centro Histórico",
+    categoria: "Patrimonio · Comercio",
+    descripcion: "Corazón de Mérida. La catedral más antigua del continente americano, el Palacio de Gobierno con murales de Pacheco y el mejor ambiente nocturno.",
+    datos: ["Centro histórico", "Declarado Patrimonio", "Km 0 de Mérida"],
+    img: "https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=400&q=75",
+    lat: 20.9674, lng: -89.6237,
+    link: null
+  },
+  {
+    id: "poi-m4", ciudad: "merida", tipo: "poi",
+    nombre: "Zona Arqueológica Dzibilchaltún",
+    categoria: "Arqueología · Naturaleza",
+    descripcion: "Ciudad maya habitada por más de 3,000 años. El templo de Las Siete Muñecas es famoso por los equinoccios. Cenote Xlacah dentro del sitio.",
+    datos: ["15 km de Mérida", "Cenote incluido", "Abierto todo el año"],
+    img: "https://images.unsplash.com/photo-1547471080-7cc2caa01a7e?w=400&q=75",
+    lat: 21.0967, lng: -89.5958,
+    link: null
+  },
+  {
+    id: "poi-m5", ciudad: "merida", tipo: "poi",
+    nombre: "Temozón Norte",
+    categoria: "Zona Residencial · Inversión",
+    descripcion: "La zona de mayor plusvalía de Mérida. Fraccionamientos privados, acceso controlado, cerca de colegios top y hospitales de primer nivel.",
+    datos: ["+22% plusvalía anual", "Zona A de Mérida", "11 desarrollos VEXO"],
+    img: "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=400&q=75",
+    lat: 21.0765, lng: -89.5820,
+    link: null
+  },
+  {
+    id: "poi-m6", ciudad: "merida", tipo: "poi",
+    nombre: "Hospital Star Médica Mérida",
+    categoria: "Salud · Infraestructura",
+    descripcion: "Hospital de especialidades de referencia en el sureste. Referencia para compradores que priorizan infraestructura médica de calidad.",
+    datos: ["Alta complejidad", "Norte de Mérida", "Acceso 24/7"],
+    img: "https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?w=400&q=75",
+    lat: 21.0612, lng: -89.6051,
+    link: null
+  },
+  {
+    id: "poi-m7", ciudad: "merida", tipo: "poi",
+    nombre: "Altabrisa — Zona Comercial",
+    categoria: "Comercio · Lifestyle",
+    descripcion: "El polo comercial más importante del norte de Mérida. Liverpool, Cinépolis, restaurantes premium y oficinas corporativas en una misma zona.",
+    datos: ["Mall + lifestyle", "Norte de la ciudad", "Alta afluencia"],
+    img: "https://images.unsplash.com/photo-1555529669-e69e7aa0ba9a?w=400&q=75",
+    lat: 21.0523, lng: -89.5979,
+    link: null
+  },
+  {
+    id: "poi-m8", ciudad: "merida", tipo: "poi",
+    nombre: "Aeropuerto Internacional de Mérida",
+    categoria: "Conectividad · Infraestructura",
+    descripcion: "Conectividad directa con CDMX, Monterrey, Miami, Houston y Cancún. Clave para inversionistas y compradores foráneos.",
+    datos: ["IATA: MID", "+20 destinos directos", "15 min al norte"],
+    img: "https://images.unsplash.com/photo-1436491865332-7a61a109cc05?w=400&q=75",
+    lat: 20.9370, lng: -89.6577,
+    link: null
+  },
+  {
+    id: "poi-m9", ciudad: "merida", tipo: "poi",
+    nombre: "Mérida Norte — Corredor Premium",
+    categoria: "Inversión · Desarrollo",
+    descripcion: "El corredor de mayor crecimiento del estado. Nuevos parques industriales, universidades internacionales y todos los desarrollos VEXO en Mérida.",
+    datos: ["Mayor crecimiento 2025", "Zonas A y B", "Infraestructura nueva"],
+    img: "https://images.unsplash.com/photo-1486325212027-8081e485255e?w=400&q=75",
+    lat: 21.0850, lng: -89.6120,
+    link: null
+  },
+  {
+    id: "poi-m10", ciudad: "merida", tipo: "poi",
+    nombre: "Parque Ecológico Xcaret — Mérida",
+    categoria: "Turismo · Atractivo",
+    descripcion: "La capital cultural del sureste atrae más de 1.8 millones de turistas anuales, impulsando la demanda de renta vacacional y departamentos.",
+    datos: ["1.8M turistas/año", "Demanda renta alta", "Ciudad Más Segura MX"],
+    img: "https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=400&q=75",
+    lat: 21.0000, lng: -89.7000,
+    link: null
+  },
+
+  // ── CDMX ────────────────────────────────────────────────────
+  {
+    id: "poi-c1", ciudad: "cdmx", tipo: "poi",
+    nombre: "Paseo de la Reforma",
+    categoria: "Zona Prime · Finanzas",
+    descripcion: "El eje financiero y corporativo más importante de México. Torres de cristal, embajadas y los precios más altos de renta corporativa del país.",
+    datos: ["Corredor financiero", "+$80k/m² en zonas", "Alta demanda ejecutiva"],
+    img: "https://images.unsplash.com/photo-1518638150340-f706e86654de?w=400&q=75",
+    lat: 19.4326, lng: -99.1332,
+    link: null
+  },
+  {
+    id: "poi-c2", ciudad: "cdmx", tipo: "poi",
+    nombre: "Polanco — Zona Dorada",
+    categoria: "Lujo · Inversión A1",
+    descripcion: "El barrio más lujoso de CDMX. Boutiques internacionales, restaurantes Michelin, embajadas y la mayor concentración de departamentos premium.",
+    datos: ["Zona A CDMX", "Alta plusvalía", "Renta $35k+/mes"],
+    img: "https://images.unsplash.com/photo-1486325212027-8081e485255e?w=400&q=75",
+    lat: 19.4336, lng: -99.1950,
+    link: null
+  },
+  {
+    id: "poi-c3", ciudad: "cdmx", tipo: "poi",
+    nombre: "Roma Norte",
+    categoria: "Tendencia · Lifestyle",
+    descripcion: "El barrio más cool de América Latina según Time Out. Cafeterías de especialidad, galerías de arte y los departamentos más demandados en Airbnb CDMX.",
+    datos: ["#1 barrio LATAM 2024", "ROI Airbnb alto", "Demanda joven profesional"],
+    img: "https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=400&q=75",
+    lat: 19.4186, lng: -99.1616,
+    link: null
+  },
+  {
+    id: "poi-c4", ciudad: "cdmx", tipo: "poi",
+    nombre: "Parque México — Condesa",
+    categoria: "Lifestyle · Bienestar",
+    descripcion: "Epicentro de la Condesa. Rodeado de los departamentos art déco más codiciados de la ciudad. Alta demanda de renta por ejecutivos y expatriados.",
+    datos: ["Condesa premium", "Art déco histórico", "Alta demanda expat"],
+    img: "https://images.unsplash.com/photo-1501854140801-50d01698950b?w=400&q=75",
+    lat: 19.4103, lng: -99.1728,
+    link: null
+  },
+  {
+    id: "poi-c5", ciudad: "cdmx", tipo: "poi",
+    nombre: "Santa Fe — Hub Corporativo",
+    categoria: "Corporativo · Inversión",
+    descripcion: "El centro empresarial más moderno de México. Sedes de Google, Televisa, Banamex y más de 200 corporativos internacionales. Alta demanda de rental ejecutivo.",
+    datos: ["200+ corporativos", "Renta ejecutiva alta", "Zona en expansión"],
+    img: "https://images.unsplash.com/photo-1486325212027-8081e485255e?w=400&q=75",
+    lat: 19.3613, lng: -99.2587,
+    link: null
+  },
+  {
+    id: "poi-c6", ciudad: "cdmx", tipo: "poi",
+    nombre: "Aeropuerto AIFA — Felipe Ángeles",
+    categoria: "Conectividad · Infraestructura",
+    descripcion: "Nuevo aeropuerto internacional. Impulsa el desarrollo residencial del norte del Estado de México y la CDMX. Conectividad aérea en expansión.",
+    datos: ["IATA: NLU", "Norte CDMX", "En expansión 2026"],
+    img: "https://images.unsplash.com/photo-1436491865332-7a61a109cc05?w=400&q=75",
+    lat: 19.7442, lng: -99.0144,
+    link: null
+  },
+  {
+    id: "poi-c7", ciudad: "cdmx", tipo: "poi",
+    nombre: "Cuauhtémoc — Centro Histórico",
+    categoria: "Patrimonio · Turismo",
+    descripcion: "El centro histórico más grande de América. Patrimonio UNESCO, turismo masivo y una zona en proceso de gentrificación con alta oportunidad de inversión.",
+    datos: ["Patrimonio UNESCO", "9M visitantes/año", "Gentrificación activa"],
+    img: "https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=400&q=75",
+    lat: 19.4326, lng: -99.1332,
+    link: null
+  },
+  {
+    id: "poi-c8", ciudad: "cdmx", tipo: "poi",
+    nombre: "Hospital Nacional de Cancerología",
+    categoria: "Salud · Infraestructura",
+    descripcion: "Zona Doctores. Alta concentración de hospitales y centros médicos de especialidad. Demanda sostenida de vivienda para profesionales médicos.",
+    datos: ["Zona médica CDMX", "Demanda profesional", "Acceso metro"],
+    img: "https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?w=400&q=75",
+    lat: 19.4100, lng: -99.1470,
+    link: null
+  },
+  {
+    id: "poi-c9", ciudad: "cdmx", tipo: "poi",
+    nombre: "Universidad Nacional UNAM — CU",
+    categoria: "Educación · Demanda",
+    descripcion: "La universidad más grande de América Latina. Genera demanda constante de vivienda en Coyoacán, Pedregal y Del Valle. ROI de renta predecible.",
+    datos: ["340k estudiantes", "Demanda renta estable", "Zona sur CDMX"],
+    img: "https://images.unsplash.com/photo-1562774053-701939374585?w=400&q=75",
+    lat: 19.3336, lng: -99.1834,
+    link: null
+  },
+  {
+    id: "poi-c10", ciudad: "cdmx", tipo: "poi",
+    nombre: "Chapultepec — Bosque y Museo",
+    categoria: "Cultura · Bienestar",
+    descripcion: "El pulmón verde más grande de América Latina. El Castillo, el Museo de Antropología, zoológico y las zonas residenciales más exclusivas de la ciudad.",
+    datos: ["15M visitantes/año", "Museo Antropología", "Zona premium adyacente"],
+    img: "https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=400&q=75",
+    lat: 19.4266, lng: -99.1813,
+    link: null
+  }
+];
+
+// ════════════════════════════════════════════════════════════════
+//  DATOS: Desarrollos VEXO (coordenadas de los 26 desarrollos)
+//  Se leen desde window.DESARROLLOS si está disponible (iframe)
+// ════════════════════════════════════════════════════════════════
+const DESARROLLOS_VEXO = [
+  // Mérida (11)
+  { id:"d1",  ciudad:"merida", nombre:"Almaera",           lat:21.0765, lng:-89.5820, precio:"$2.8 MDP", tipo:"Departamentos", img:"https://images.unsplash.com/photo-1613977257363-707ba9348227?w=400&q=75" },
+  { id:"d2",  ciudad:"merida", nombre:"Natura",            lat:21.0812, lng:-89.5934, precio:"$3.1 MDP", tipo:"Departamentos", img:"https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=400&q=75" },
+  { id:"d3",  ciudad:"merida", nombre:"Amalia Apartments", lat:21.0698, lng:-89.5871, precio:"$2.5 MDP", tipo:"Departamentos", img:"https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=400&q=75" },
+  { id:"d4",  ciudad:"merida", nombre:"Lomas del Sol",     lat:21.0621, lng:-89.6012, precio:"$1.8 MDP", tipo:"Lotes",         img:"https://images.unsplash.com/photo-1502005229762-cf1b2da7c5d6?w=400&q=75" },
+  { id:"d5",  ciudad:"merida", nombre:"Temozón 94",        lat:21.0543, lng:-89.5756, precio:"$4.2 MDP", tipo:"Departamentos", img:"https://images.unsplash.com/photo-1486325212027-8081e485255e?w=400&q=75" },
+  { id:"d6",  ciudad:"merida", nombre:"Hacienda Privada",  lat:21.0901, lng:-89.6234, precio:"$5.8 MDP", tipo:"Casas",         img:"https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=400&q=75" },
+  { id:"d7",  ciudad:"merida", nombre:"Vista Norte",       lat:21.1023, lng:-89.6087, precio:"$2.2 MDP", tipo:"Departamentos", img:"https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=400&q=75" },
+  { id:"d8",  ciudad:"merida", nombre:"Residencial Sky",   lat:21.0432, lng:-89.5923, precio:"$3.6 MDP", tipo:"Departamentos", img:"https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=400&q=75" },
+  { id:"d9",  ciudad:"merida", nombre:"Coral Norte",       lat:21.0987, lng:-89.5801, precio:"$1.5 MDP", tipo:"Lotes",         img:"https://images.unsplash.com/photo-1502005229762-cf1b2da7c5d6?w=400&q=75" },
+  { id:"d10", ciudad:"merida", nombre:"Monterra",          lat:21.0756, lng:-89.6145, precio:"$3.9 MDP", tipo:"Departamentos", img:"https://images.unsplash.com/photo-1613977257363-707ba9348227?w=400&q=75" },
+  { id:"d11", ciudad:"merida", nombre:"Jade Residencial",  lat:21.0634, lng:-89.5687, precio:"$2.7 MDP", tipo:"Departamentos", img:"https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=400&q=75" },
+  // CDMX (14)
+  { id:"d12", ciudad:"cdmx",   nombre:"Monumento 31",      lat:19.4350, lng:-99.1550, precio:"$4.5 MDP", tipo:"Departamentos", img:"https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=400&q=75" },
+  { id:"d13", ciudad:"cdmx",   nombre:"Blum Residencial",  lat:19.3600, lng:-99.2600, precio:"$5.2 MDP", tipo:"Departamentos", img:"https://images.unsplash.com/photo-1486325212027-8081e485255e?w=400&q=75" },
+  { id:"d14", ciudad:"cdmx",   nombre:"Xaviera Roma",      lat:19.4190, lng:-99.1620, precio:"$3.8 MDP", tipo:"Departamentos", img:"https://images.unsplash.com/photo-1613977257363-707ba9348227?w=400&q=75" },
+  { id:"d15", ciudad:"cdmx",   nombre:"Cedro 2026",        lat:19.4423, lng:-99.1489, precio:"$4.1 MDP", tipo:"Departamentos", img:"https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=400&q=75" },
+  { id:"d16", ciudad:"cdmx",   nombre:"Torre Cuauhtémoc",  lat:19.4280, lng:-99.1470, precio:"$3.5 MDP", tipo:"Departamentos", img:"https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=400&q=75" },
+  { id:"d17", ciudad:"cdmx",   nombre:"Mérida 94 CDMX",   lat:19.4150, lng:-99.1750, precio:"$6.2 MDP", tipo:"Departamentos", img:"https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=400&q=75" },
+  { id:"d18", ciudad:"cdmx",   nombre:"Condesa 180",       lat:19.4100, lng:-99.1730, precio:"$5.8 MDP", tipo:"Departamentos", img:"https://images.unsplash.com/photo-1486325212027-8081e485255e?w=400&q=75" },
+  { id:"d19", ciudad:"cdmx",   nombre:"Reforma Park",      lat:19.4320, lng:-99.1450, precio:"$7.5 MDP", tipo:"Departamentos", img:"https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=400&q=75" },
+  { id:"d20", ciudad:"cdmx",   nombre:"Del Valle Elite",   lat:19.3980, lng:-99.1600, precio:"$4.3 MDP", tipo:"Departamentos", img:"https://images.unsplash.com/photo-1613977257363-707ba9348227?w=400&q=75" },
+  { id:"d21", ciudad:"cdmx",   nombre:"Insurgentes Sur",   lat:19.3890, lng:-99.1710, precio:"$3.9 MDP", tipo:"Departamentos", img:"https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=400&q=75" },
+  { id:"d22", ciudad:"cdmx",   nombre:"Juárez Prime",      lat:19.4280, lng:-99.1590, precio:"$4.7 MDP", tipo:"Departamentos", img:"https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=400&q=75" },
+  { id:"d23", ciudad:"cdmx",   nombre:"Narvarte 360",      lat:19.4021, lng:-99.1530, precio:"$3.6 MDP", tipo:"Departamentos", img:"https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=400&q=75" },
+  { id:"d24", ciudad:"cdmx",   nombre:"Polanco Towers",    lat:19.4340, lng:-99.1960, precio:"$9.2 MDP", tipo:"Departamentos", img:"https://images.unsplash.com/photo-1486325212027-8081e485255e?w=400&q=75" },
+  { id:"d25", ciudad:"cdmx",   nombre:"Santa Fe Luxury",   lat:19.3620, lng:-99.2580, precio:"$6.8 MDP", tipo:"Departamentos", img:"https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=400&q=75" },
+  // Playa del Carmen (1)
+  { id:"d26", ciudad:"playa",  nombre:"Downtown Mayakoba", lat:20.6296, lng:-87.0739, precio:"$8.5 MDP", tipo:"Departamentos", img:"https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=400&q=75" }
+];
+
+// ════════════════════════════════════════════════════════════════
+//  MAPA
+// ════════════════════════════════════════════════════════════════
+const map = new maplibregl.Map({
+  container: 'map',
+  style: 'https://basemaps.cartocdn.com/gl/dark-matter-gl-style/style.json',
+  center: [-89.6237, 21.0500],
+  zoom: 11,
+  pitch: 40,
+  bearing: 0
+});
+
+map.addControl(new maplibregl.NavigationControl(), 'top-right');
+map.addControl(new maplibregl.ScaleControl({ unit: 'metric' }), 'bottom-right');
+
+// Guardar markers para filtrar
+const allMarkers = [];
+
+function createMarker(item) {
+  const isDev = item.tipo === 'desarrollo';
+
+  // Elemento del marcador
+  const el = document.createElement('div');
+  el.style.cssText = `
+    width: ${isDev ? 36 : 28}px;
+    height: ${isDev ? 36 : 28}px;
+    border-radius: 50%;
+    background: ${isDev ? '#d4891a' : '#13ecda'};
+    border: 2px solid ${isDev ? '#e8a92a' : 'rgba(19,236,218,0.5)'};
+    box-shadow: 0 0 0 4px ${isDev ? 'rgba(212,137,26,0.25)' : 'rgba(19,236,218,0.15)'};
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    transition: transform 0.2s;
+    font-size: ${isDev ? '16px' : '13px'};
+  `;
+  el.title = item.nombre;
+  el.innerHTML = isDev ? '🏢' : '📍';
+  el.addEventListener('mouseenter', () => el.style.transform = 'scale(1.3)');
+  el.addEventListener('mouseleave', () => el.style.transform = 'scale(1)');
+
+  // Popup
+  const chipsCat = `<div class="popup-chip">${item.categoria || item.tipo || ''}</div>`;
+  const chipsData = (item.datos || (item.precio ? [`Desde ${item.precio}`, item.tipo] : [])).map(d => `<div class="popup-chip">${d}</div>`).join('');
+
+  const popupHTML = `
+    <img class="popup-img" src="${item.img}" alt="${item.nombre}" loading="lazy" onerror="this.src='https://images.unsplash.com/photo-1486325212027-8081e485255e?w=400&q=75'"/>
+    <div class="popup-body">
+      <div class="popup-cat ${isDev ? 'cat-desarrollo' : 'cat-poi'}">${isDev ? '⭐ Desarrollo VEXO' : '📍 Lugar de Interés'}</div>
+      <div class="popup-title">${item.nombre}</div>
+      <div class="popup-desc">${item.descripcion || ''}</div>
+      <div class="popup-data">${chipsCat}${chipsData}</div>
+      ${isDev
+        ? `<button class="popup-btn" onclick="window.parent.showPage&&window.parent.showPage('desarrollos')">Ver desarrollo →</button>`
+        : (item.link ? `<a href="${item.link}" target="_blank" class="popup-btn">Más información →</a>` : `<button class="popup-btn" onclick="window.parent.showPage&&window.parent.showPage('contacto')">Agendar visita →</button>`)
+      }
+    </div>
+  `;
+
+  const popup = new maplibregl.Popup({ offset: 18, maxWidth: '300px', closeButton: true })
+    .setHTML(popupHTML);
+
+  const marker = new maplibregl.Marker({ element: el })
+    .setLngLat([item.lng, item.lat])
+    .setPopup(popup)
+    .addTo(map);
+
+  return { marker, item, el };
+}
+
+map.on('load', () => {
+  // Edificios 3D
+  try {
+    const layers = map.getStyle().layers;
+    const labelLayer = layers.find(l => l.type === 'symbol' && l.layout && l.layout['text-field']);
+    const beforeId = labelLayer ? labelLayer.id : undefined;
+    map.addLayer({
+      id: 'buildings-3d',
+      source: 'carto',
+      'source-layer': 'building',
+      type: 'fill-extrusion',
+      minzoom: 13,
+      paint: {
+        'fill-extrusion-color': ['interpolate', ['linear'], ['get', 'height'],
+          0, '#0f2320', 50, '#162b3a', 100, '#1b3a4b'],
+        'fill-extrusion-height': ['get', 'height'],
+        'fill-extrusion-base': ['get', 'min_height'],
+        'fill-extrusion-opacity': 0.75
+      }
+    }, beforeId);
+  } catch(e) {}
+
+  // Agregar markers de desarrollos VEXO
+  DESARROLLOS_VEXO.forEach(d => {
+    const m = createMarker({ ...d, tipo: 'desarrollo', categoria: `Desarrollo VEXO · ${d.tipo}`,
+      descripcion: `Preventa ${d.tipo} en ${d.ciudad === 'merida' ? 'Mérida' : d.ciudad === 'cdmx' ? 'Ciudad de México' : 'Playa del Carmen'}. Desde ${d.precio}.` });
+    allMarkers.push({ ...m, ciudad: d.ciudad, kind: 'desarrollo' });
+  });
+
+  // Agregar markers de lugares de interés
+  LUGARES_INTERES.forEach(poi => {
+    const m = createMarker(poi);
+    allMarkers.push({ ...m, ciudad: poi.ciudad, kind: 'poi' });
+  });
+});
+
+// ── Filtros ────────────────────────────────────────────────────
+function filterMap(filter, btn) {
+  document.querySelectorAll('.ctrl-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+
+  allMarkers.forEach(({ marker, ciudad, kind }) => {
+    const el = marker.getElement();
+    let show = true;
+    if (filter === 'merida') show = ciudad === 'merida';
+    else if (filter === 'cdmx') show = ciudad === 'cdmx';
+    else if (filter === 'desarrollos') show = kind === 'desarrollo';
+    else if (filter === 'poi') show = kind === 'poi';
+    el.style.display = show ? '' : 'none';
+  });
+
+  // Volar a la zona
+  if (filter === 'merida') map.flyTo({ center: [-89.6237, 21.0500], zoom: 11, pitch: 40, duration: 1200 });
+  else if (filter === 'cdmx') map.flyTo({ center: [-99.1669, 19.4270], zoom: 11, pitch: 40, duration: 1200 });
+  else map.flyTo({ center: [-89.6237, 21.0500], zoom: 9, pitch: 30, duration: 1200 });
+}
+</script>
+</body>
+</html>

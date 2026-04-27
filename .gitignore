@@ -1,0 +1,99 @@
+# ================================================================
+#  VEXO REAL ESTATE — .gitignore
+#  Generado automaticamente por VEXO_MASTER_SYNC.ps1
+#  Fecha: 27/04/2026 16:40
+#  Repo: https://github.com/VEXO-RE/Vexo.git
+# ================================================================
+
+# ── Secretos — NUNCA subir ──────────────────────────────────────
+.env
+.env.local
+.env.*.local
+*.env
+vercel-token.txt
+
+# ── Node / Build ────────────────────────────────────────────────
+node_modules/
+dist/
+build/
+.next/
+out/
+.vite/
+package-lock.json
+
+# ── Logs y reportes ─────────────────────────────────────────────
+*.log
+scripts/*.log
+scripts/*.txt
+scripts/sync_*.log
+LOG_*.txt
+REPORTE_*.txt
+REPORTE_*.csv
+
+# ── Datos crudos (van en Drive, NO en git) ───────────────────────
+*.csv
+*.xlsx
+*.xls
+scripts/master.tsv
+vexo_desarrollos_master.csv
+master.tsv
+
+# ── PDFs grandes (van en Drive) ─────────────────────────────────
+public/downloads/
+VEXO_WEB/descargas/
+
+# ── Scripts con credenciales o internos ─────────────────────────
+publicar_en_vercel.ps1
+Sincronizar_Vexo.ps1
+revisar_fugas.ps1
+reparar_completo.ps1
+completar.ps1
+VEXO_MASTER_SYNC.ps1
+scripts/sync_*.ps1
+convertir_vexo.py
+convertidor_vexo.py
+sync_js_to_csv.py
+limpieza.py
+*.py
+
+# ── Proyectos separados / carpetas de desarrollo ─────────────────
+Mapa-vexo/
+Proyectos/
+Archivos informativos nuevos/
+docs/
+js/
+html
+
+# ── Documentacion interna ────────────────────────────────────────
+CLAUDE.md
+.cursor/
+.cursorignore
+
+# ── Sistema operativo ────────────────────────────────────────────
+.DS_Store
+Thumbs.db
+desktop.ini
+*.lnk
+ehthumbs.db
+[Dd]esktop.ini
+
+# ── Editores ─────────────────────────────────────────────────────
+.vscode/settings.json
+.vscode/*.log
+.idea/
+*.sublime-workspace
+*.sublime-project
+.history/
+
+# ── Archivos sueltos que no van al repo ──────────────────────────
+propiedades.js
+vexo_magic_old.js
+index_backup*.html
+index1.html
+*_bak.html
+*_bak.js
+*_old.*
+test_*.html
+
+# ── CSS minificado (se regenera en build) ────────────────────────
+src/styles/*.min.css
