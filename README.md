@@ -17,7 +17,7 @@
 
 ---
 
-## Desarrollos — 0 total
+## Desarrollos — 26 total
 
 | Rango IDs | Ciudad |
 |-----------|--------|
@@ -37,7 +37,7 @@
 
 ## Imagenes
 
-- **Origen master:** \G:\Mi unidad\VEXO_MASTER_OPTIMIZADO\public\images\Desarrollos\
+- **Origen master:** \G:\Mi unidad\VEXO_IMAGENES_WEBP\
 - **En repo:** \public/images/Desarrollos/{carpeta}/{nombre}.webp\
 - **Solo se sincronizan** las imagenes referenciadas en \scripts/master.tsv\
 - **Total en repo:** 1624 imagenes
@@ -75,7 +75,7 @@ Todas las constantes se exponen como \window.XXX = XXX\ al final del archivo.
 | Variable global | Contenido |
 |----------------|-----------|
 | \window.CONFIG\ | Google Sheets endpoint, WhatsApp, redes sociales |
-| \window.DESARROLLOS\ | 0 desarrollos con todos sus campos |
+| \window.DESARROLLOS\ | 26 desarrollos con todos sus campos |
 | \window.BLOG_POSTS\ | Posts del blog (IDs 1-9) |
 | \window.CIUDADES\ | Objeto { merida: {...}, cdmx: {...} } |
 | \window.EMPRESA\ | Equipo, valores, mision, vision de VEXO |
