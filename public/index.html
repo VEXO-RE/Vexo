@@ -50,8 +50,8 @@
   <link
     href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=swap"
     rel="stylesheet" />
-  <link rel="stylesheet" href="src/styles/design-system.css" />
-  <link rel="stylesheet" href="vexo-premium.css" />
+  <link rel="stylesheet" href="/design-system.css" />
+  <link rel="stylesheet" href="/vexo-premium.css" />
   <style>
     *,
     *::before,
@@ -822,6 +822,23 @@
 
     @media (max-width: 900px) {
       .hero-visual-col { display: none !important; }
+      .container { padding-inline: 20px !important; }
+      [style*="grid-template-columns: 1fr 1fr"] { grid-template-columns: 1fr !important; }
+      [style*="grid-template-columns: repeat(2, 1fr)"] { grid-template-columns: 1fr !important; }
+      [style*="grid-template-columns: repeat(3, 1fr)"] { grid-template-columns: 1fr !important; }
+      [style*="grid-template-columns: repeat(4, 1fr)"] { grid-template-columns: 1fr !important; }
+      [style*="grid-template-columns:1fr 1fr"] { grid-template-columns: 1fr !important; }
+      .btn { min-width: auto; }
+      img, iframe, .glass { max-width: 100% !important; }
+    }
+
+    @media (max-width: 640px) {
+      #navbar { padding: 10px 14px; }
+      #cookie-banner { padding: 16px 14px; flex-direction: column; align-items: stretch; }
+      #wa-btn, #chat-btn { right: 16px; left: auto; }
+      #map-controls { width: calc(100% - 32px); left: 16px; right: 16px; }
+      .ctrl-btn { flex: 1 1 48%; min-width: 120px; }
+      #legend { left: 16px; right: auto; width: calc(100% - 32px); }
     }
 
     .anim-glow {
@@ -1984,7 +2001,7 @@
                 inset: 0;
                 display: flex;
                 flex-direction: column;
-                align-items: center;
+                align-items: center;/
                 justify-content: center;
                 background: #0f2320;
                 gap: 16px;
@@ -2001,7 +2018,7 @@
               Cargando mapa interactivo…
             </p>
           </div>
-          <iframe id="vx-map-iframe" src="mapa.html" title="Mapa interactivo VEXO Real Estate" allowfullscreen
+          <iframe id="vx-map-iframe" src="/mapa.html" title="Mapa interactivo VEXO Real Estate" allowfullscreen
             onload="var l=document.getElementById('vx-map-loader');if(l){l.style.opacity='0';setTimeout(function(){l.style.display='none';},500);}"
             style="
                 width: 100%;
@@ -2022,7 +2039,7 @@
           <button class="btn btn-p" onclick="showPage('contacto')">
             <span class="material-symbols-outlined" style="font-size: 16px">phone</span>Hablar con asesor
           </button>
-          <a href="mapa.html" target="_blank" class="btn btn-o"><span class="material-symbols-outlined"
+          <a href="/mapa.html" target="_blank" class="btn btn-o"><span class="material-symbols-outlined"
               style="font-size: 16px">open_in_new</span>Pantalla completa</a>
         </div>
 
@@ -2849,12 +2866,12 @@
   </div>
 
   <!-- ══ SCRIPTS DE DATOS ════════════════════════════════════════
-     FUENTE UNICA: src/data/data.js generado por actualizar_contenido.ps1
+     FUENTE UNICA: /data.js generado por actualizar_contenido.ps1
      Este archivo expone: window.CONFIG, window.DESARROLLOS, window.BLOG_POSTS,
      window.CIUDADES, window.EMPRESA, window.DESCARGAS, window.LEGAL
      y los helpers: getImgPrincipal, getDesarrolloBySlug, getDesarrolloById
   ════════════════════════════════════════════════════════════════ -->
-  <script src="src/data/data.js"></script>
+  <script src="/data.js"></script>
 
   <!-- ══ APP JS ═════════════════════════════════════════════════ -->
   <script>
@@ -4205,7 +4222,7 @@
       // El loader del mapa se oculta únicamente cuando se navega al mapa (ver showPage)
     });
   </script>
-  <script src="vexo-magic.js" defer></script>
+  <script src="/vexo-magic.js" defer></script>
 </body>
 
 </html>

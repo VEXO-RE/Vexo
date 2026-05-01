@@ -1,0 +1,16 @@
+:root {
+    --bg: #0E1E28;
+    --primary: #D4891A;
+    --yam: #D4891A;
+    --grenadine: #C85250;
+    --cream: #F5EDD6;
+    --text-muted: #94a3b8;
+    --card-bg: rgba(255,255,255,0.03);
+}
+* { box-sizing: border-box; }
+body { background: var(--bg); color: var(--cream); margin: 0; line-height: 1.6; }
+.shimmer-text {
+    background: linear-gradient(135deg, #D4891A 0%, #E8A92A 50%, #C85250 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
