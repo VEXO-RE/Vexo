@@ -2740,7 +2740,8 @@
   <!-- ══ SCRIPTS DE DATOS ════════════════════════════════════════
      OPCION A (actual, 6 archivos): usar los scripts de abajo.
      OPCION B (Gemini Q1 - data.js unificado): reemplazar por:
-       <script src="src/data/data.js"></script>
+       <script src="src/data/propiedades.js"></script>
+  <script src="src/data/data.js"></script>
      El frontend soporta AMBAS sin ningun cambio adicional.
      data.js debe exponer: window.CONFIG, window.DESARROLLOS,
      window.BLOG_POSTS, window.CIUDADES, window.EMPRESA, window.LEGAL
@@ -2911,9 +2912,17 @@
       i = i || 0;
       // Usa helper de propiedades.js — soporta array y fallback automático
       var img = window.getImgPrincipal ? window.getImgPrincipal(d) :
-        (Array.isArray(d.imagenes) && d.imagenes.length > 0
-          ? d.imagenes[0]
-          : d.imagen_fallback || "https://images.unsplash.com/photo-1560185007-cde436f6a4d0?w=800&q=80");
+        (d.foto_principal_url
+          ? d.foto_principal_url
+          : Array.isArray(d.imagenes) && d.imagenes.length > 0
+            ? d.imagenes[0]
+            : d.imagen_fallback || "");
+      // Normalizar ruta: VEXO_WEB/ -> public/images/desarrollos/ para Vercel
+      if (img && img.startsWith("VEXO_WEB/Desarrollos/")) {
+        img = img.replace("VEXO_WEB/Desarrollos/", "public/images/Desarrollos/");
+      }
+      // Fallback si imagen vacia
+      if (!img) img = "public/images/Desarrollos/placeholder.webp";
       var tags = (d.amenidades || "")
         .split(",")
         .slice(0, 3)
@@ -3391,9 +3400,21 @@
       if (name === "descargas") {
         var el2 = document.getElementById("descargas-content");
         if (el2) {
-          var conBrochure = devs.filter(function (d) {
-            return d.brochure;
-          });
+          var conBrochure = devs.filter(function (d) { return d.brochure; });
+          // Agregar brochures de DESCARGAS (data.js) que no esten ya en DESARROLLOS
+          if (window.getDescargas) {
+            (window.getDescargas('brochures') || []).forEach(function(b) {
+              if (!conBrochure.find(function(x) { return String(x.id) === String(b.desarrollo_id); })) {
+                conBrochure.push({ nombre: b.titulo, zona: b.descripcion || '', ciudad: '', brochure: b.archivo, id: b.desarrollo_id });
+              }
+            });
+          }
+          // Si DESARROLLOS aun vacio, usar todo DESCARGAS
+          if (!conBrochure.length && window.getDescargas) {
+            conBrochure = (window.getDescargas('brochures') || []).map(function(b) {
+              return { nombre: b.titulo, zona: b.descripcion || '', ciudad: '', brochure: b.archivo };
+            });
+          }
           el2.innerHTML =
             '<div style="display:grid;grid-template-columns:1fr 1fr;gap:48px;"><div><h2 style="font-family:\'Syne\',sans-serif;font-weight:700;font-size:20px;margin-bottom:20px;display:flex;align-items:center;gap:10px;"><span class="material-symbols-outlined" style="color:var(--primary);">picture_as_pdf</span>Brochures de Desarrollos</h2><div style="display:flex;flex-direction:column;gap:10px;">' +
             (conBrochure.length
@@ -3663,7 +3684,18 @@
       renderDevsGrid(filtro);
     }
     function renderDevsGrid(filtro) {
-      var devs = window.DESARROLLOS || [];
+      var devs = window.DESARROLLOS || window.PROPIEDADES || [];
+      if (!devs.length && !window._devsRetried) {
+        window._devsRetried = true;
+        setTimeout(function() { window._devsRetried=false; renderDevsGrid(filtro); }, 400);
+        return;
+      }
+      // Si no hay datos aun, reintentar en 300ms (carga asincrona)
+      if (!devs.length && !window._devsRetried) {
+        window._devsRetried = true;
+        setTimeout(function() { renderDevsGrid(filtro); }, 300);
+        return;
+      }
       var lista = devs;
       if (filtro === "Mérida")
         lista = devs.filter(function (d) {
