@@ -1292,8 +1292,8 @@ function getImgPrincipal(d){
   if(d.imagenes&&d.imagenes.length>0&&d.imagenes[0].length>5)return d.imagenes[0];
   return d.imagen_fallback||"https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=800&q=80";
 }
-window.DESARROLLOS=DESARROLLOS;
-window.getDesarrollos=getDesarrollos;
-window.getDesarrolloBySlug=getDesarrolloBySlug;
-window.getDesarrolloById=getDesarrolloById;
-window.getImgPrincipal=getImgPrincipal;
+const DESARROLLOS = [];
+const PROPIEDADES = [];
+
+window.DESARROLLOS = DESARROLLOS;
+window.PROPIEDADES = PROPIEDADES;
