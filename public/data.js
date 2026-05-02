@@ -885,7 +885,7 @@ window.LEGAL = LEGAL;
 // Encoding: UTF-8 limpio | Lng: NEGATIVAS corregidas
 // Última actualización: Abril 2026
 
-const DESARROLLOS : {
+const DESARROLLOS = [
   {
     id:1, slug:"alma-condos-merida",
     nombre:"ALMA CONDOS", nombre_corto:"Alma Condos",
@@ -1292,7 +1292,6 @@ function getImgPrincipal(d){
   if(d.imagenes&&d.imagenes.length>0&&d.imagenes[0].length>5)return d.imagenes[0];
   return d.imagen_fallback||"https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=800&q=80";
 }
-const DESARROLLOS = [];
 const PROPIEDADES = [];
 
 window.DESARROLLOS = DESARROLLOS;
