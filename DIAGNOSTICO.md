@@ -1,6 +1,6 @@
 # ============================================================================
 # VEXO MASTER OPTIMIZADO - DIAGNÓSTICO Y RESUMEN FINAL
-# Generado: 2026-04-29 14:30
+# Generado: 2026-05-02 12:00
 # ============================================================================
 
 ## 📊 ESTADO ACTUAL DEL PROYECTO
@@ -10,7 +10,7 @@
 ║                  VEXO MASTER OPTIMIZADO                         ║
 ║                     Estado: ✅ FUNCIONAL                        ║
 ║                                                                  ║
-║  Última actualización: 29 de abril de 2026                      ║
+║  Última actualización: 02 de mayo de 2026                      ║
 ║  Versión: Master Optimizado v2                                  ║
 ║  Base de datos: Consolidada en 7 archivos JS                    ║
 ║  Imágenes: Dinámicas (inyectadas desde data)                    ║
@@ -298,6 +298,47 @@ inset 0 1px 0 rgba(19,236,218,0.1);        /* Glass effect */
 - ✓ Hover effects suavizados
 - ✓ Gradiente en precios
 - ✓ Float escalonado en cards
+
+---
+
+## 🚨 ERRORES ACTUALES DETECTADOS (Mayo 2026)
+
+### Error #1: Página del mapa se congela
+**Síntoma:** `mapa.html` no carga completamente y se queda congelada.
+
+**Posibles causas:**
+- Problemas con MapLibre GL JS 3.6.2
+- Coordenadas inválidas (lat positivas, lng negativas requeridas)
+- Loader del mapa (`vx-map-loader`) no se oculta correctamente
+- Muchos marcadores causando rendimiento lento
+
+**Soluciones a implementar:**
+1. Verificar todas las coordenadas en `data.js`
+2. Revisar la implementación del loader del mapa
+3. Considerar clustering para muchos marcadores
+4. Debug de la carga de MapLibre GL
+
+### Error #2: Imágenes del TSV no se muestran, solo Unsplash
+**Síntoma:** Las tarjetas muestran imágenes de fallback (Unsplash) en lugar de las imágenes reales del proyecto.
+
+**Causa probable:** Rutas de imagen incorrectas en `data.js` no apuntan a archivos existentes en `public/images/`.
+
+**Soluciones a implementar:**
+1. Verificar que las rutas en `data.js` sean `/images/Desarrollos/{carpeta}/{archivo}.jpg`
+2. Confirmar que los archivos existen en `public/images/Desarrollos/`
+3. Ejecutar `actualizar_contenido.ps1` para regenerar rutas desde el TSV
+4. Revisar el fallback: `foto_principal_url` → `imagenes[0]` → `imagen_fallback`
+
+---
+
+## ✅ CHECKLIST PARA DEPLOY FINAL
+
+- [ ] Ejecutar `revisar_antes_de_git.ps1` (debe salir 100% verde)
+- [ ] Verificar que `vexo-magic.js` existe en `public/`
+- [ ] Probar carga de `mapa.html` (no se congela)
+- [ ] Verificar que se muestran imágenes reales, no Unsplash
+- [ ] Ejecutar `publicar_git.ps1` para deploy a Vercel
+- [ ] Confirmar que Vercel despliega correctamente
 
 ### Fixes de validación: 6
 - ✓ Exports validados correctamente

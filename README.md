@@ -1,7 +1,7 @@
 # VEXO Real Estate — Web
 
 > SPA vanilla JS · Hosting Vercel · Repo: https://github.com/VEXO-RE/Vexo.git
-> Ultima actualizacion: 27/04/2026 16:40
+> Ultima actualizacion: 02/05/2026
 
 ---
 
@@ -52,54 +52,52 @@ foto_principal_url  ->  imagenes[0]  ->  imagen_fallback
 
 ## Flujo de actualizacion de datos
 
-\\\
+```
 1. Google Sheets (gsheet master)
        |
-2. Descargar como TSV (NO CSV) -> guardar como scripts\master.tsv
+2. Descargar como TSV (NO CSV) -> guardar como scripts/master.tsv
        |
-3. .\actualizar_contenido.ps1   -> genera/actualiza src/data/data.js
+3. ./actualizar_contenido.ps1   -> genera/actualiza public/data.js
        |
-4. .\VEXO_MASTER_SYNC.ps1       -> sincroniza Drive -> repo limpio, actualiza docs
+4. ./VEXO_MASTER_SYNC.ps1       -> sincroniza Drive -> repo limpio, actualiza docs
        |
-5. .\revisar_antes_de_git.ps1   -> auditoria estricta (debe salir 100% verde)
+5. ./revisar_antes_de_git.ps1   -> auditoria estricta (debe salir 100% verde)
        |
-6. .\publicar_git.ps1           -> deploy a Vercel via GitHub
-\\\
+6. ./publicar_git.ps1           -> deploy a Vercel via GitHub
+```
 
 ---
 
-## Estructura de data.js
+## Estructura de public/data.js (consolidado)
 
-Todas las constantes se exponen como \window.XXX = XXX\ al final del archivo.
+Todas las constantes se exponen como `window.XXX = XXX` al final del archivo.
 
 | Variable global | Contenido |
-|----------------|-----------|
-| \window.CONFIG\ | Google Sheets endpoint, WhatsApp, redes sociales |
-| \window.DESARROLLOS\ | 26 desarrollos con todos sus campos |
-| \window.BLOG_POSTS\ | Posts del blog (IDs 1-9) |
-| \window.CIUDADES\ | Objeto { merida: {...}, cdmx: {...} } |
-| \window.EMPRESA\ | Equipo, valores, mision, vision de VEXO |
-| \window.DESCARGAS\ | Links a PDFs / brochures |
-| \window.LEGAL\ | Aviso de Privacidad + Terminos y Condiciones |
+|----------------|----------|
+| `window.CONFIG` | Google Sheets endpoint, WhatsApp, redes sociales |
+| `window.DESARROLLOS` | 26 desarrollos con todos sus campos |
+| `window.BLOG_POSTS` | Posts del blog (IDs 1-9) |
+| `window.CIUDADES` | Objeto { merida: {...}, cdmx: {...} } |
+| `window.EMPRESA` | Equipo, valores, mision, vision de VEXO |
+| `window.DESCARGAS` | Links a PDFs / brochures |
+| `window.LEGAL` | Aviso de Privacidad + Terminos y Condiciones |
 
 ### Campos obligatorios por desarrollo (no dejar vacios)
-- \id\ — unico, numerico
-- \slug\ — unico, sin espacios ni mayusculas
-- \
-ombre\ / \
-ombre_corto\
-- \ciudad\ — exactamente "Merida", "Ciudad de Mexico" o "Playa del Carmen"
-- \zona\ — NO dejar "" (rompe los filtros del catalogo)
-- \lat\ / \lng\ — lng SIEMPRE negativa
-- \imagenes[]\ — minimo 1 elemento
-- \oto_principal_url\ — ruta webp preferida
+- `id` — unico, numerico
+- `slug` — unico, sin espacios ni mayusculas
+- `nombre` / `nombre_corto`
+- `ciudad` — exactamente "Merida", "Ciudad de Mexico" o "Playa del Carmen"
+- `zona` — NO dejar "" (rompe los filtros del catalogo)
+- `lat` / `lng` — lng SIEMPRE negativa
+- `imagenes[]` — minimo 1 elemento
+- `foto_principal_url` — ruta webp preferida
 
 ---
 
 ## Mapa (mapa.html)
 
 - **Libreria:** MapLibre GL 3.6.2 via CDN unpkg
-- **Estilo:** \https://basemaps.cartocdn.com/gl/dark-matter-gl-style/style.json\
+- **Estilo:** https://basemaps.cartocdn.com/gl/dark-matter-gl-style/style.json
 - **Edificios 3D:** fill-extrusion activado desde zoom 13
 - **Ciudades en mapa:** Merida, CDMX y Playa del Carmen
 - **20 Lugares de interes:** 10 en Merida + 10 en CDMX con imagen y datos
@@ -131,19 +129,19 @@ ombre_corto\
 
 | Script | Funcion | Va a git |
 |--------|---------|----------|
-| \ctualizar_contenido.ps1\ | Genera data.js desde master.tsv | Si |
-| \VEXO_MASTER_SYNC.ps1\ | Sincroniza Drive -> repo limpio + actualiza docs | No |
-| \evisar_antes_de_git.ps1\ | Auditoria pre-deploy (debe pasar 100% verde) | Si |
-| \publicar_git.ps1\ | Deploy a GitHub + Vercel | Si |
-| \publicar_en_vercel.ps1\ | Deploy rapido alternativo | No |
+| `actualizar_contenido.ps1` | Genera `public/data.js` desde `master.tsv` | Si |
+| `VEXO_MASTER_SYNC.ps1` | Sincroniza Drive -> repo limpio + actualiza docs | No |
+| `revisar_antes_de_git.ps1` | Auditoria pre-deploy (debe pasar 100% verde) | Si |
+| `publicar_git.ps1` | Deploy a GitHub + Vercel | Si |
+| `publicar_en_vercel.ps1` | Deploy rapido alternativo | No |
 
-**Regla de oro:** Nunca hacer \git add .\ sin antes correr \evisar_antes_de_git.ps1\ al 100% verde.
+**Regla de oro:** Nunca hacer `git add .` sin antes correr `revisar_antes_de_git.ps1` al 100% verde.
 
 ---
 
 ## Lo que NO va a Git
 
-\\\
+```
 .env
 scripts/master.tsv
 *.csv / *.xlsx
@@ -155,20 +153,50 @@ CLAUDE.md             (documentacion interna)
 *.py                  (scripts Python internos)
 publicar_en_vercel.ps1
 VEXO_MASTER_SYNC.ps1
-\\\
+```
 
 ---
 
 ## Checklist pre-deploy
 
-- [ ] \evisar_antes_de_git.ps1\ -> 100% verde
-- [ ] mapa.html carga: marcadores visibles + edificios 3D + popups con imagen
-- [ ] Filtros del catalogo funcionan (Merida, CDMX, tipo)
-- [ ] Calculadora hipotecaria: selector de desarrollo + calculo correcto
+- [ ] `revisar_antes_de_git.ps1` → 100% verde
+- [ ] `mapa.html` carga: marcadores visibles + edificios 3D + popups con imagen
+- [ ] Filtros del catálogo funcionan (Mérida, CDMX, tipo)
+- [ ] Calculadora hipotecaria: selector de desarrollo + cálculo correcto
 - [ ] Modal de descarga captura lead antes de abrir PDF
-- [ ] Formulario contacto envia a Google Sheets
+- [ ] Formulario contacto envía a Google Sheets
 - [ ] Chatbot redirige a WhatsApp
-- [ ] Imagenes de los 26 desarrollos sin errores 404
-- [ ] Ningun desarrollo con zona: ""
-- [ ] index.html sin HTML invalido (nav anidado, tags rotos)
-- [ ] Encoding UTF-8 limpio en data.js e index.html
+- [ ] Imágenes de los 26 desarrollos sin errores 404
+- [ ] Ningún desarrollo con `zona: ""`
+- [ ] `index.html` sin HTML inválido (nav anidado, tags rotos)
+- [ ] Encoding UTF-8 limpio en `data.js` e `index.html`
+
+---
+
+## 🚨 Errores actuales detectados (Mayo 2026)
+
+### 1. Página del mapa se congela
+**Síntoma:** `mapa.html` no carga completamente y queda congelada.
+
+**Posibles causas:**
+- MapLibre GL JS 3.6.2 con problemas
+- Coordenadas inválidas (todas lat positivas, lng negativas)
+- Loader del mapa no se oculta correctamente
+- Muchos marcadores causando rendimiento lento
+
+**Soluciones:**
+1. Verificar coordenadas en `data.js`
+2. Revisar implementación del loader
+3. Implementar clustering si hay muchos marcadores
+4. Debug de carga MapLibre GL
+
+### 2. Imágenes del TSV no se muestran, solo Unsplash
+**Síntoma:** Tarjetas muestran imágenes fallback (Unsplash) en lugar de imágenes reales.
+
+**Causa:** Rutas de imagen en `data.js` no apuntan correctamente a archivos en `public/images/`.
+
+**Soluciones:**
+1. Verificar rutas: `/images/Desarrollos/{carpeta}/{archivo}.jpg`
+2. Confirmar existencia de archivos en `public/images/Desarrollos/`
+3. Ejecutar `actualizar_contenido.ps1` para regenerar rutas
+4. Revisar fallback: `foto_principal_url` → `imagenes[0]` → `imagen_fallback`

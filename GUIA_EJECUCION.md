@@ -131,22 +131,21 @@ F12 → Console
 
 #### ❌ "Undefined is not a function"
 ```javascript
-// Significa que falta algún archivo .js
-// Solución: Verificar que estén cargados en <script>
-<script src="src/data/data.js"></script>
-<script src="src/data/config.js"></script>
+// Significa que falta la carga de public/data.js
+// Solución: Verificar que index.html tenga:
+<script src="/data.js"></script>
 ```
 
 #### ❌ "Cannot read property 'length' of undefined"
 ```javascript
 // Algún array de datos no está definido
-// Solución: Ejecutar actualizar_contenido.ps1 de nuevo
+// Solución: Ejecutar actualizar_contenido.ps1 de nuevo para regenerar public/data.js
 ```
 
 #### ❌ "Failed to load image"
 ```javascript
 // Las imágenes no están en la ruta correcta
-// Solución: Verificar que public/images/ existe con las imágenes
+// Solución: Verificar que public/images/Desarrollos/ existe con las imágenes
 ```
 
 #### ❌ Datos no aparecen en selectores
