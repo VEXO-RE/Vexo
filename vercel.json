@@ -3,19 +3,27 @@
   "headers": [
     {
       "source": "/(.*)\\.css",
-      "headers": [{ "key": "Content-Type", "value": "text/css; charset=utf-8" }]
+      "headers": [
+        { "key": "Content-Type", "value": "text/css; charset=utf-8" }
+      ]
     },
     {
       "source": "/(.*)\\.js",
-      "headers": [{ "key": "Content-Type", "value": "application/javascript; charset=utf-8" }]
+      "headers": [
+        { "key": "Content-Type", "value": "application/javascript; charset=utf-8" }
+      ]
     },
     {
       "source": "/(.*)\\.html",
-      "headers": [{ "key": "Content-Type", "value": "text/html; charset=utf-8" }]
+      "headers": [
+        { "key": "Content-Type", "value": "text/html; charset=utf-8" }
+      ]
     },
     {
       "source": "/public/images/(.*)",
-      "headers": [{ "key": "Cache-Control", "value": "public, max-age=31536000, immutable" }]
+      "headers": [
+        { "key": "Cache-Control", "value": "public, max-age=31536000, immutable" }
+      ]
     },
     {
       "source": "/public/downloads/(.*)",
@@ -27,5 +35,5 @@
   ],
   "rewrites": [
     { "source": "/mapa", "destination": "/mapa.html" }
-  ],
+  ]
 }
