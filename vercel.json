@@ -27,5 +27,6 @@
   ],
   "rewrites": [
     { "source": "/mapa", "destination": "/mapa.html" }
-  ]
+  ],
+  "deploy": "2026-05-12"
 }
