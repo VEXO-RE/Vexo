@@ -37,7 +37,7 @@
 
 ## Imagenes
 
-- **Origen master:** \G:\Mi unidad\VEXO_IMAGENES_WEBP\
+- **Origen master:** \C:\Users\HP-Home\Documents\Projectos_Rosalia\VEXO_MASTER_OPTIMIZADO\scripts\master.tsv\
 - **En repo:** \public/images/Desarrollos/{carpeta}/{nombre}.webp\
 - **Solo se sincronizan** las imagenes referenciadas en \scripts/master.tsv\
 - **Total en repo:** 1624 imagenes
@@ -74,13 +74,11 @@ Todas las constantes se exponen como `window.XXX = XXX` al final del archivo.
 
 | Variable global | Contenido |
 |----------------|----------|
-| `window.CONFIG` | Google Sheets endpoint, WhatsApp, redes sociales |
-| `window.DESARROLLOS` | 26 desarrollos con todos sus campos |
-| `window.BLOG_POSTS` | Posts del blog (IDs 1-9) |
-| `window.CIUDADES` | Objeto { merida: {...}, cdmx: {...} } |
-| `window.EMPRESA` | Equipo, valores, mision, vision de VEXO |
-| `window.DESCARGAS` | Links a PDFs / brochures |
-| `window.LEGAL` | Aviso de Privacidad + Terminos y Condiciones |
+data.js — VEXO Real Estate
+// Fuente única de datos. Cargado via <script src="/data.js"></script>
+// Rutas de imagen: images/Desarrollos/{carpeta}/{archivo}.webp
+// Brochures: downloads/brochures/{archivo}.pdf
+// Actualizado: Mayo 2026
 
 ### Campos obligatorios por desarrollo (no dejar vacios)
 - `id` — unico, numerico
@@ -173,30 +171,3 @@ VEXO_MASTER_SYNC.ps1
 
 ---
 
-## 🚨 Errores actuales detectados (Mayo 2026)
-
-### 1. Página del mapa se congela
-**Síntoma:** `mapa.html` no carga completamente y queda congelada.
-
-**Posibles causas:**
-- MapLibre GL JS 3.6.2 con problemas
-- Coordenadas inválidas (todas lat positivas, lng negativas)
-- Loader del mapa no se oculta correctamente
-- Muchos marcadores causando rendimiento lento
-
-**Soluciones:**
-1. Verificar coordenadas en `data.js`
-2. Revisar implementación del loader
-3. Implementar clustering si hay muchos marcadores
-4. Debug de carga MapLibre GL
-
-### 2. Imágenes del TSV no se muestran, solo Unsplash
-**Síntoma:** Tarjetas muestran imágenes fallback (Unsplash) en lugar de imágenes reales.
-
-**Causa:** Rutas de imagen en `data.js` no apuntan correctamente a archivos en `public/images/`.
-
-**Soluciones:**
-1. Verificar rutas: `/images/Desarrollos/{carpeta}/{archivo}.jpg`
-2. Confirmar existencia de archivos en `public/images/Desarrollos/`
-3. Ejecutar `actualizar_contenido.ps1` para regenerar rutas
-4. Revisar fallback: `foto_principal_url` → `imagenes[0]` → `imagen_fallback`

@@ -313,7 +313,7 @@
             </select>
             <select id="sh-tipo" aria-label="Filtrar por tipo">
               <option value="">Tipo de propiedad</option>
-              <option value="Departamentos">Departamentos</option>
+              <option value="Lotes">Lote</option>
             </select>
             <button class="btn btn-p btn-sm" onclick="buscarDesarrollos()"><span class="material-symbols-outlined" style="font-size:16px">search</span>Buscar</button>
           </div>
@@ -428,7 +428,7 @@
       <button class="pill" onclick="filterDevs(this,'Mérida')">Mérida</button>
       <button class="pill" onclick="filterDevs(this,'Ciudad de México')">CDMX</button>
       <button class="pill" onclick="filterDevs(this,'Playa del Carmen')">Riviera Maya</button>
-      <button class="pill" onclick="filterDevs(this,'Departamentos')">Departamentos</button>
+      <button class="pill" onclick="filterDevs(this,'Lotes')">Lotes</button>
       <button class="pill" onclick="filterDevs(this,'destacado')">Destacados</button>
     </div>
     <div id="devs-grid" class="grid-3" style="margin-bottom:80px"></div>
@@ -1293,7 +1293,7 @@ function renderDevsGrid(filtro){
   if(filtro==="Mérida")lista=devs.filter(function(d){return d.ciudad==="Mérida"});
   else if(filtro==="Ciudad de México")lista=devs.filter(function(d){return d.ciudad==="Ciudad de México"});
   else if(filtro==="Playa del Carmen")lista=devs.filter(function(d){return d.ciudad==="Playa del Carmen"});
-  else if(filtro==="Departamentos")lista=devs.filter(function(d){return d.tipo&&d.tipo.toLowerCase().includes("depart")});
+  else if(filtro==="Lotes")lista=devs.filter(function(d){return d.tipo&&d.tipo.toLowerCase().includes("Lotes")});
   else if(filtro==="destacado")lista=devs.filter(function(d){return d.destacado});
   var g=document.getElementById("devs-grid");
   if(g)g.innerHTML=lista.length?lista.map(devCard).join(""):'<div style="grid-column:1/-1;text-align:center;padding:60px 0;color:var(--text-m)">No hay desarrollos con este filtro.</div>';

@@ -1,5 +1,14 @@
 # VEXO MASTER - DÓNDE ENCONTRAR LOS CAMBIOS
 
+> Actualización 02/05/2026: este documento se ha actualizado para reflejar los cambios más recientes en la arquitectura de datos y la documentación de lectura.
+>
+> - `public/index.html` ahora carga `public/data.js` consolidado.
+> - `public/data.js` contiene `CONFIG`, `DESARROLLOS`, `BLOG_POSTS`, `CIUDADES`, `EMPRESA` y `LEGAL`.
+> - `src/data/` queda como legacy y no se usa en producción.
+> - `CLAUDE.md`, `README.md`, `GUIA_EJECUCION.md` y `DIAGNOSTICO.md` fueron actualizados para reflejar este flujo.
+>
+> Revisa esta sección primero y luego consulta las entradas específicas abajo.
+
 ## 📍 CAMBIOS EN index.html
 
 ### Ubicación: Sección HERO (página principal)
@@ -108,6 +117,8 @@
 ### Ubicación: Línea 20-100 (validación de archivos + exports)
 
 ### ✅ Lo que cambió:
+
+> Nota: aunque la producción ahora usa `public/data.js`, el script de auditoría sigue validando los archivos legacy en `src/data/`.
 
 #### 1. Archivos core ahora include todos los data files
 ```powershell

@@ -68,6 +68,9 @@ convertir_vexo.py
 convertidor_vexo.py
 sync_js_to_csv.py
 limpieza.py
+.ps1
 
 # ── CSS minificado (se regenera) o decidir cuál subir ────────
 # src/styles/design-system.min.css
+.vercel
+.env*.local
