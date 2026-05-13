@@ -84,7 +84,7 @@ const CONFIG = {
       "Desarrollos residenciales de lujo en Mérida y Ciudad de México. Departamentos en preventa con amenidades exclusivas. Invierte con VEXO Real Estate.",
     keywords:
       "desarrollos residenciales, departamentos mérida, departamentos cdmx, preventa 2026, inversión inmobiliaria, vexo real estate",
-    og_image: "https://vexorealestate.com/public/images/og-image.jpg",
+    og_image: "https://vexorealestate.com/images/vexo-image.webp",
   },
 
   chatbot: {
