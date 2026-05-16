@@ -55,6 +55,8 @@ Thumbs.db
 desktop.ini
 *.lnk
 ehthumbs.db
+# en .gitignore
+.refact/
 
 # ── Editor ───────────────────────────────────────────────────
 .vscode/settings.json

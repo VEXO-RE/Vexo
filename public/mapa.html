@@ -6,8 +6,8 @@
   <title>Mapa Interactivo — VEXO Real Estate</title>
   <link href="https://unpkg.com/maplibre-gl@3.6.2/dist/maplibre-gl.css" rel="stylesheet"/>
   <script src="https://unpkg.com/maplibre-gl@3.6.2/dist/maplibre-gl.js"></script>
-  <!-- DATA: se carga desde ruta relativa — sin MIME type errors -->
-  <script src="/data.js"></script>
+  <!-- DATA: relative path works in iframe and file previews; parent fallback if needed -->
+  <script src="data.js"></script>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     :root {
@@ -350,8 +350,8 @@ map.on('load', () => {
     }, beforeId);
   } catch(e) {}
 
-  // Markers de DESARROLLOS VEXO — desde window.DESARROLLOS (data.js)
-  const desarrollos = (window.DESARROLLOS || []).filter(function(d) {
+  // Markers de DESARROLLOS VEXO — desde data.js o desde el padre si se carga en iframe
+  const desarrollos = ((window.DESARROLLOS || (window.parent && window.parent.DESARROLLOS)) || []).filter(function(d) {
     // Excluir CDMX del mapa por zoom extremo; incluir Mérida y Playa del Carmen
     return d.lat && d.lng && d.lat !== 0 && d.lng !== 0;
   });
