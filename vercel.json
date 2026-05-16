@@ -48,7 +48,8 @@
     }
   ],
   "rewrites": [
-    { "source": "/mapa", "destination": "/mapa.html" },
-    { "source": "/public/(.*)", "destination": "/$1" }
+    { "source": "/", "destination": "/public/index.html" },
+    { "source": "/mapa", "destination": "/public/mapa.html" },
+    { "source": "/(.*)", "destination": "/public/$1" }
   ]
 }
