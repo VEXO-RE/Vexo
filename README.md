@@ -1,7 +1,7 @@
 # VEXO Real Estate — Web
 
 > SPA vanilla JS · Hosting Vercel · Repo: https://github.com/VEXO-RE/Vexo.git
-> Ultima actualizacion: 02/05/2026
+> Última actualización: 19/05/2026
 
 ---
 
@@ -49,6 +49,15 @@ foto_principal_url  ->  imagenes[0]  ->  imagen_fallback
 \\\
 
 ---
+
+## Últimas actualizaciones (Mayo 2026)
+
+- `19/05/2026` — Corregida la configuración de despliegue en `vercel.json` para servir el sitio desde el directorio `public/` (commit `5dba6a4`).
+- `15/05/2026` — Ajustes en `index.html` y `mapa.html` para mejorar el loader del mapa y la resolución de `DESARROLLOS` desde iframe.
+- `15/05/2026` — Actualizaciones de tipografía responsive y correcciones menores en `design-system.css`.
+
+> Nota: Tras estos cambios se empujó y forzó `main` a `origin/main`. Si utiliza Vercel, confirme en el Dashboard que el build toma la rama `main` y que el `Root Directory` está configurado para la raíz del repo (las reglas de rewrite apuntan a `public/`).
+
 
 ## Flujo de actualizacion de datos
 

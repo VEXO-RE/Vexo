@@ -65,7 +65,7 @@ ehthumbs.db
 
 # ── Archivos sueltos de la raíz (no necesarios en repo) ──────
 html
-CLAUDE.md
+# CLAUDE.md is now tracked intentionally; keep sensitive/internal docs out of commits when needed
 convertir_vexo.py
 convertidor_vexo.py
 sync_js_to_csv.py
@@ -76,3 +76,11 @@ limpieza.py
 # src/styles/design-system.min.css
 .vercel
 .env*.local
+
+# Recommended additional ignores
+.vscode/
+.history/
+*.bak
+*.tmp
+*.cache
+public/downloads/
