@@ -1,0 +1,20 @@
+{
+  "permissions": {
+    "bypassPermissions": true,
+    "allow": [
+      "Bash(*)",
+      "Read(**)",
+      "Write(**)",
+      "Edit(**)"
+    ]
+  },
+  "env": {
+    "SESSION_DIR": "C:\\Users\\HP-Home\\Documents\\Projectos_Rosalia\\VEXO_MASTER_OPTIMIZADO\\.claude\\session",
+    "TEMP_DIR": "C:\\Users\\HP-Home\\Documents\\Projectos_Rosalia\\VEXO_MASTER_OPTIMIZADO\\.claude\\temp"
+  },
+  "enabledPlugins": {
+    "experimental-features@personal": true,
+    "debug-tools@personal": true
+  },
+  "disabledMcpjsonServers": []
+}

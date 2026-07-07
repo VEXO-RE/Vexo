@@ -1,0 +1,65 @@
+{
+  "mcpServers": {
+    "filesystem": {
+      "type": "stdio",
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-filesystem",
+        "C:\\Users\\HP-Home\\Documents\\Projectos_Rosalia\\VEXO_MASTER_OPTIMIZADO",
+        "C:\\Users\\HP-Home\\Documents\\Projectos_Rosalia\\VEXO_MASTER_OPTIMIZADO\\public",
+        "C:\\Users\\HP-Home\\Documents\\Projectos_Rosalia\\VEXO_MASTER_OPTIMIZADO\\scripts",
+        "C:\\Users\\HP-Home\\Documents\\Projectos_Rosalia\\VEXO_MASTER_OPTIMIZADO\\src",
+        "C:\\Users\\HP-Home\\Documents\\Projectos_Rosalia\\VEXO_MASTER_OPTIMIZADO\\logs",
+        "C:\\Users\\HP-Home\\Documents\\Projectos_Rosalia\\VEXO_MASTER_OPTIMIZADO\\build"
+      ],
+      "env": {
+        "PROJECT_ROOT": "C:\\Users\\HP-Home\\Documents\\Projectos_Rosalia\\VEXO_MASTER_OPTIMIZADO",
+        "PUBLIC_DIR": "C:\\Users\\HP-Home\\Documents\\Projectos_Rosalia\\VEXO_MASTER_OPTIMIZADO\\public",
+        "SCRIPTS_DIR": "C:\\Users\\HP-Home\\Documents\\Projectos_Rosalia\\VEXO_MASTER_OPTIMIZADO\\scripts",
+        "SRC_DIR": "C:\\Users\\HP-Home\\Documents\\Projectos_Rosalia\\VEXO_MASTER_OPTIMIZADO\\src",
+        "LOGS_DIR": "C:\\Users\\HP-Home\\Documents\\Projectos_Rosalia\\VEXO_MASTER_OPTIMIZADO\\logs",
+        "BUILD_DIR": "C:\\Users\\HP-Home\\Documents\\Projectos_Rosalia\\VEXO_MASTER_OPTIMIZADO\\build"
+      }
+    },
+    "python-local": {
+      "type": "stdio",
+      "command": "python",
+      "args": [
+        "C:\\Users\\HP-Home\\Documents\\Projectos_Rosalia\\VEXO_MASTER_OPTIMIZADO\\server.py"
+      ],
+      "env": {
+        "PROJECT_ROOT": "C:\\Users\\HP-Home\\Documents\\Projectos_Rosalia\\VEXO_MASTER_OPTIMIZADO",
+        "PUBLIC_DIR": "C:\\Users\\HP-Home\\Documents\\Projectos_Rosalia\\VEXO_MASTER_OPTIMIZADO\\public",
+        "SCRIPTS_DIR": "C:\\Users\\HP-Home\\Documents\\Projectos_Rosalia\\VEXO_MASTER_OPTIMIZADO\\scripts",
+        "SRC_DIR": "C:\\Users\\HP-Home\\Documents\\Projectos_Rosalia\\VEXO_MASTER_OPTIMIZADO\\src"
+      }
+    },
+    "node-local": {
+      "type": "stdio",
+      "command": "node",
+      "args": [
+        "C:\\Users\\HP-Home\\Documents\\Projectos_Rosalia\\VEXO_MASTER_OPTIMIZADO\\server.js"
+      ],
+      "env": {
+        "PROJECT_ROOT": "C:\\Users\\HP-Home\\Documents\\Projectos_Rosalia\\VEXO_MASTER_OPTIMIZADO",
+        "PUBLIC_DIR": "C:\\Users\\HP-Home\\Documents\\Projectos_Rosalia\\VEXO_MASTER_OPTIMIZADO\\public",
+        "SCRIPTS_DIR": "C:\\Users\\HP-Home\\Documents\\Projectos_Rosalia\\VEXO_MASTER_OPTIMIZADO\\scripts",
+        "SRC_DIR": "C:\\Users\\HP-Home\\Documents\\Projectos_Rosalia\\VEXO_MASTER_OPTIMIZADO\\src",
+        "PORT": "3000"
+      }
+    },
+    "powershell-local": {
+      "type": "stdio",
+      "command": "powershell",
+      "args": [
+        "-File",
+        "C:\\Users\\HP-Home\\Documents\\Projectos_Rosalia\\VEXO_MASTER_OPTIMIZADO\\server.ps1"
+      ],
+      "env": {
+        "PROJECT_ROOT": "C:\\Users\\HP-Home\\Documents\\Projectos_Rosalia\\VEXO_MASTER_OPTIMIZADO",
+        "SCRIPTS_DIR": "C:\\Users\\HP-Home\\Documents\\Projectos_Rosalia\\VEXO_MASTER_OPTIMIZADO\\scripts"
+      }
+    }
+  }
+}

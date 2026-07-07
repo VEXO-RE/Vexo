@@ -1,0 +1,36 @@
+{
+  "fecha": "2026-06-16",
+  "proyecto": "vexo",
+  "tarea_activa": "Mejora de diseno — colores, elementos, chatbot, lotes, Playa del Carmen",
+  "estado": "en_progreso",
+  "pendientes": [
+    "Auditoría del index.html: Validar que detecte correctamente design-system.css y vexo-magic.js el index.html.",
+    "Reparación de la Sección Hero: Corregir el contenedor colapsado para que el texto y las imágenes tengan su espacio adecuado (seguramente falta un flex-wrap o ajustar las columnas de la grilla).",
+    "Actualización del Buscador Hero: Modificar el <select> o la lógica de JS para que incluya la opción de 'Departamentos' (y no solo 'Lotes').",
+    "Validación Core - Mapa: Revisar que el Mapa cargue y ubique correctamente las propiedades.y quitar el que el punto se desplace hacia arriba cuando pasa el cursor por que no deja hacer click corrctamente",
+    "Validación Core - Formularios: Probar los Formularios para asegurar la correcta generación y envío de Leads (por ejemplo, vía EmailJS).",
+    "Validación Core - Descargas: Cambiar los enlaces de los brochures de Google Drive a Descargas Directas (ej. <a href=\"ruta/archivo.pdf\" download>).",
+    "Validación Core - Calendario: Verificar el widget del Calendario.",
+    "Integración del Chatbot (Gemini API): Conectar la UI que ya tienes con las llamadas reales a la API de Google Gemini."
+  ],
+  "archivos_que_edita_rosalia": [
+    "public/index.html",
+    "public/vexo-magic.js"
+  ],
+  "archivos_generados_por_scripts": [
+    "public/data.js",
+    "public/design-system.css"
+  ],
+  "estado_confirmado": {
+    "pagina_publicada": true,
+    "imagenes_visibles": true,
+    "3_ciudades_en_UI": true,
+    "lotes_en_UI": true,
+    "modo_oscuro": true,
+    "emailjs_activo": true,
+    "gemini_pendiente": true,
+    "design_system_v3": true
+  }
+}
+
+

@@ -1,0 +1,14 @@
+name: skill-maestro-vexo
+description: >
+  Skill maestro para el proyecto VEXO. Ejecuta en tres etapas internas:
+  1) Auditoría global de todos los archivos y procesos.
+  2) Reparación y resolución de todos los errores detectados.
+  3) Validación final y actualización de archivos.
+  Cada etapa se ejecuta en un solo script y debes incluir solicitar una sola respuesta consolidada de confirmaciones internas junto con toda la infonrmacion que se solicita en el prompt o esperar todos los resultados antes de pasar a las siguientes etapas
+  El skill no debe hacer preguntas ni solicitudes mientras espera las respuestas.
+  Solo cuando se recibe la respuesta completa de una etapa, se genera el script de la siguiente.
+  Cada script debe ser muy específico e incluir toda la información y contexto necesarios para ejecutar correctamente las tareas.
+category: genui
+goal: "Auditar, reparar y validar el proyecto VEXO en un solo flujo con tres etapas internas"
+---
+

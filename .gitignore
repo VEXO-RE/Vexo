@@ -12,42 +12,48 @@ build/
 out/
 .vite/
 
-# ── Logs y reportes ──────────────────────────────────────────
+# ── Logs, temporales y debug ──────────────────────────────────
 *.log
+*.swp
+*.tmp
+*.bak
+*.cache
+validation.log
+stderr.txt
+stdout.txt
+filesystem_stderr.txt
+filesystem_stdout.txt
+fs_stderr.txt
+fs_stdout.txt
+node-local_stderr.txt
+node-local_stdout.txt
+python-local_stderr.txt
+python-local_stdout.txt
+powershell-local_stderr.txt
+powershell-local_stdout.txt
 scripts/*.log
 scripts/*.txt
-scripts/_tmp*
-LOG_REVISION_VEXO.txt
+temp_*.ps1
+temp_*.py
 
 # ── Datos crudos (van en Drive, no en git) ───────────────────
 *.csv
 *.xlsx
 *.xls
-vexo_desarrollos_master.csv
-*.ps1
 *.tsv
 
-# ── Archivos grandes y PDFs (van en Drive) ───────────────────
-VEXO_WEB/descargas/
-VEXO_WEB/scripts/
-VEXO_WEB/equipo/
-VEXO_WEB/*.xlsx
-VEXO_WEB/*.csv
-VEXO_WEB/log_*.txt
-VEXO_WEB/REPORTE_*.csv
-
-# ── Proyectos de desarrollo separados ────────────────────────
-Mapa-vexo/
-Mapa-vexo/node_modules/
-Proyectos/
-Archivos informativos nuevos/
-docs/
-js/
-
-# ── Scripts con credenciales ─────────────────────────────────
+# ── Scripts sensibles con credenciales ───────────────────────
 publicar_en_vercel.ps1
 Sincronizar_Vexo.ps1
 revisar_fugas.ps1
+
+# ── Herramientas de terceros / AI ────────────────────────────
+.refact/
+.sixth/
+.history/
+
+# ── Vercel ───────────────────────────────────────────────────
+.vercel
 
 # ── Sistema operativo ─────────────────────────────────────────
 .DS_Store
@@ -55,32 +61,15 @@ Thumbs.db
 desktop.ini
 *.lnk
 ehthumbs.db
-# en .gitignore
-.refact/
 
-# ── Editor ───────────────────────────────────────────────────
-.vscode/settings.json
-.idea/
-*.sublime-workspace
+# ── VSCode: solo excluir lo que NO debe compartirse ──────────
+# NOTA: settings.json, tasks.json y mcp.json SI se incluyen
+.vscode/*.log
 
-# ── Archivos sueltos de la raíz (no necesarios en repo) ──────
-html
-# CLAUDE.md is now tracked intentionally; keep sensitive/internal docs out of commits when needed
-convertir_vexo.py
-convertidor_vexo.py
-sync_js_to_csv.py
-limpieza.py
-.ps1
+# ── Claude local (SESSION.json si no quieres compartirlo) ─────
+# Descomenta si no quieres subir el estado de sesion:
+# .claude/SESSION.json
 
-# ── CSS minificado (se regenera) o decidir cuál subir ────────
-# src/styles/design-system.min.css
-.vercel
-.env*.local
-
-# Recommended additional ignores
-.vscode/
-.history/
-*.bak
-*.tmp
-*.cache
+# ── Archivos grandes (van en Drive) ──────────────────────────
 public/downloads/
+public/videos/

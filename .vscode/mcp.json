@@ -1,13 +1,23 @@
 {
-	"servers": {
-		"wallaby": {
-			"command": "powershell.exe",
-			"args": [
-				"node",
-				"$Env:USERPROFILE/.wallaby/mcp/"
-			],
-			"type": "stdio"
-		}
-	},
-	"inputs": []
+  "servers": {
+    "filesystem-vexo": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-filesystem",
+        "C:\\Users\\HP-Home\\Documents\\Projectos_Rosalia\\VEXO_MASTER_OPTIMIZADO"
+      ],
+      "type": "stdio"
+    },
+    "ollama": {
+      "command": "npx",
+      "args": ["-y", "ollama-mcp-server"],
+      "type": "stdio",
+      "env": {
+        "OLLAMA_HOST": "http://localhost:11434",
+        "OLLAMA_MODEL": "qwen2.5-coder:0.5b"
+      }
+    }
+  },
+  "inputs": []
 }

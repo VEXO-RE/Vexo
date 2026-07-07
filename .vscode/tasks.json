@@ -1,0 +1,84 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "🚀 Deploy VEXO a Vercel",
+      "type": "shell",
+      "command": "powershell",
+      "args": ["-File", "publicar_git.ps1"],
+      "options": {
+        "cwd": "C:\\Users\\HP-Home\\Documents\\Projectos_Rosalia\\VEXO_MASTER_OPTIMIZADO"
+      },
+      "group": { "kind": "build", "isDefault": true },
+      "presentation": { "reveal": "always", "panel": "dedicated" },
+      "problemMatcher": []
+    },
+    {
+      "label": "🌐 Servidor local (Node)",
+      "type": "shell",
+      "command": "node server.js",
+      "options": {
+        "cwd": "C:\\Users\\HP-Home\\Documents\\Projectos_Rosalia\\VEXO_MASTER_OPTIMIZADO"
+      },
+      "group": "test",
+      "isBackground": true,
+      "presentation": { "reveal": "always", "panel": "dedicated" },
+      "problemMatcher": []
+    },
+    {
+      "label": "📋 Cargar contexto de sesion",
+      "type": "shell",
+      "command": "python",
+      "args": [
+        "C:\\Users\\HP-Home\\Documents\\Projectos_Rosalia\\context_manager.py",
+        "load",
+        "vexo"
+      ],
+      "options": {
+        "cwd": "C:\\Users\\HP-Home\\Documents\\Projectos_Rosalia\\VEXO_MASTER_OPTIMIZADO"
+      },
+      "group": "test",
+      "presentation": { "reveal": "always", "panel": "shared" },
+      "problemMatcher": []
+    },
+    {
+      "label": "💾 Guardar sesion actual",
+      "type": "shell",
+      "command": "python",
+      "args": [
+        "C:\\Users\\HP-Home\\Documents\\Projectos_Rosalia\\context_manager.py",
+        "save",
+        "vexo"
+      ],
+      "options": {
+        "cwd": "C:\\Users\\HP-Home\\Documents\\Projectos_Rosalia\\VEXO_MASTER_OPTIMIZADO"
+      },
+      "group": "test",
+      "presentation": { "reveal": "always", "panel": "shared" },
+      "problemMatcher": []
+    },
+    {
+      "label": "🔍 Revisar antes de Git",
+      "type": "shell",
+      "command": "powershell",
+      "args": ["-File", "revisar_antes_de_git.ps1"],
+      "options": {
+        "cwd": "C:\\Users\\HP-Home\\Documents\\Projectos_Rosalia\\VEXO_MASTER_OPTIMIZADO"
+      },
+      "group": "test",
+      "presentation": { "reveal": "always", "panel": "shared" },
+      "problemMatcher": []
+    },
+    {
+      "label": "📊 Git status y log",
+      "type": "shell",
+      "command": "git status && git log --oneline -10",
+      "options": {
+        "cwd": "C:\\Users\\HP-Home\\Documents\\Projectos_Rosalia\\VEXO_MASTER_OPTIMIZADO"
+      },
+      "group": "test",
+      "presentation": { "reveal": "always", "panel": "shared" },
+      "problemMatcher": []
+    }
+  ]
+}

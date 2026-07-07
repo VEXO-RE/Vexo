@@ -1,0 +1,247 @@
+Listado de rutas de carpetas
+El n£mero de serie del volumen es 1264-7DD1
+C:.
+³   .env
+³   .env.local
+³   .gitattributes
+³   .gitignore
+³   .mcp.json
+³   actualizar_contenido.ps1
+³   CHECKLIST_EJECUCION.txt
+³   cirugia_master.ps1
+³   CLAUDE.md
+³   completar.ps1
+³   DONDE_ENCONTRAR_CAMBIOS.md
+³   estructura_filtrada.txt
+³   filesystem_stderr.txt
+³   filesystem_stdout.txt
+³   fs_stderr.txt
+³   fs_stdout.txt
+³   GUIA_EJECUCION.md
+³   mapa.html
+³   MAPA_SECCIONES.md
+³   node-local_stderr.txt
+³   node-local_stdout.txt
+³   package-lock.json
+³   package.json
+³   powershell-local_stderr.txt
+³   powershell-local_stdout.txt
+³   publicar_git.ps1
+³   python-local_stderr.txt
+³   python-local_stdout.txt
+³   README.md
+³   revisar_antes_de_git.ps1
+³   robots.txt
+³   server.js
+³   server.py
+³   settings.local.json
+³   sitemap.xml
+³   stderr.txt
+³   stdout.txt
+³   temp_git_commit.ps1
+³   temp_list.py
+³   temp_test.ps1
+³   temp_test2.ps1
+³   test_vexo.bat
+³   tour-redes.html
+³   validation.log
+³   vercel.json
+³   
+ÃÄÄÄ.claude
+³       SESSION.json
+³       settings.json
+³       settings.local.json
+³       
+ÃÄÄÄ.refact
+³   ÃÄÄÄbuddy
+³   ³   ³   main_prompt.md
+³   ³   ³   runtime_queue.jsonl
+³   ³   ³   settings.json
+³   ³   ³   state.json
+³   ³   ³   
+³   ³   ÃÄÄÄchats
+³   ³   ³   ÃÄÄÄconversations
+³   ³   ³   ÀÄÄÄworkflows
+³   ³   ÀÄÄÄskills
+³   ÃÄÄÄcode_lens
+³   ÃÄÄÄimports
+³   ³       competitors.json
+³   ³       
+³   ÃÄÄÄknowledge
+³   ÃÄÄÄmodes
+³   ÃÄÄÄsubagents
+³   ÃÄÄÄtasks
+³   ÃÄÄÄtoolbox_commands
+³   ÀÄÄÄtrajectories
+ÃÄÄÄ.sixth
+³   ÀÄÄÄskills
+ÃÄÄÄ.vercel
+³       repo.json
+³       
+ÃÄÄÄ.vscode
+³       mcp.json
+³       settings.json
+³       tasks.json
+³       
+ÃÄÄÄpublic
+³   ³   data.generated.js
+³   ³   data.js
+³   ³   design-system.css
+³   ³   index.html
+³   ³   mapa.html
+³   ³   robots.txt
+³   ³   sanity-check.js
+³   ³   sitemap.xml
+³   ³   theme.js
+³   ³   vexo-magic.js
+³   ³   
+³   ÃÄÄÄdownloads
+³   ³   ÃÄÄÄbrochures
+³   ³   ³       .gitkeep
+³   ³   ³       
+³   ³   ÃÄÄÄcontratos
+³   ³   ³       .gitkeep
+³   ³   ³       promesa-compraventa.docx
+³   ³   ³       
+³   ³   ÃÄÄÄguias
+³   ³   ³       .gitkeep
+³   ³   ³       
+³   ³   ÀÄÄÄreportes
+³   ³           .gitkeep
+³   ³           
+³   ÃÄÄÄfonts
+³   ÃÄÄÄimages
+³   ³   ³   
+³   ³   ÃÄÄÄblog
+³   ³   ³       CDMX-VEXO.jfif
+³   ³   ³       Polanco.vexo.jfif
+³   ³   ³       Vexo.coyo.jfif
+³   ³   ³       Vexo.Santa.Fe.jfif
+³   ³   ³       
+³   ³   ÃÄÄÄciudades
+³   ³   ³       CDMX-VEXO.jfif
+³   ³   ³       Polanco.vexo.jfif
+³   ³   ³       Vexo.coyo.jfif
+³   ³   ³       Vexo.Santa.Fe.jfif
+³   ³   ³       
+³   ³   ÃÄÄÄDesarrollos
+³   ³   ³   ³   .gitkeep
+³   ³   ³   ³   
+³   ³   ³   ÃÄÄÄ001_alma-condos-2026
+³   ³   ³   ³       
+³   ³   ³   ÃÄÄÄ002_almaera-2026
+³   ³   ³   ³       
+³   ³   ³   ÃÄÄÄ003_amalia-2026
+³   ³   ³   ³       
+³   ³   ³   ÃÄÄÄ004_canea-2026
+³   ³   ³   ³       
+³   ³   ³   ÃÄÄÄ005_distrito-country-2026
+³   ³   ³   ³       
+³   ³   ³   ÃÄÄÄ006_galatha-2026
+³   ³   ³   ³       
+³   ³   ³   ÃÄÄÄ007_huna-2026
+³   ³   ³   ³       
+³   ³   ³   ÃÄÄÄ008_livia-2026
+³   ³   ³   ³       
+³   ³   ³   ÃÄÄÄ009_maktub-2026
+³   ³   ³   ³       
+³   ³   ³   ÃÄÄÄ010_-nuan-2026
+³   ³   ³   ³       
+³   ³   ³   ÃÄÄÄ011-covalia-2026
+³   ³   ³   ³       
+³   ³   ³   ÃÄÄÄ012-basalto-2026
+³   ³   ³   ³       
+³   ³   ³   ÃÄÄÄ013-chapultepec-430-2026
+³   ³   ³   ³       
+³   ³   ³   ÃÄÄÄ014-magnolia-2026
+³   ³   ³   ³       
+³   ³   ³   ÃÄÄÄ015-marsala-2026
+³   ³   ³   ³       
+³   ³   ³   ÃÄÄÄ016-monumento-31-2026
+³   ³   ³   ³       
+³   ³   ³   ÃÄÄÄ017-merida-94-2026
+³   ³   ³   ³       
+³   ³   ³   ÃÄÄÄ018-vertice-2026
+³   ³   ³   ³       
+³   ³   ³   ÃÄÄÄ019-orquidea-2026
+³   ³   ³   ³       
+³   ³   ³   ÃÄÄÄ020-girasol-2026
+³   ³   ³   ³       
+³   ³   ³   ÃÄÄÄ021-blum-2026
+³   ³   ³   ³       
+³   ³   ³   ÃÄÄÄ023-Raph-2026
+³   ³   ³   ³       
+³   ³   ³   ÃÄÄÄ024-lirio-2026
+³   ³   ³   ³       
+³   ³   ³   ÃÄÄÄ025-salamanca-11-2026
+³   ³   ³   ³       
+³   ³   ³   ÀÄÄÄ026-Downtown Mayakoba1-2026
+³   ³   ³           
+³   ³   ÃÄÄÄequipo
+³   ³   ³       .gitkeep
+³   ³   ³       
+³   ³   ÃÄÄÄhero
+³   ³   ³       .gitkeep
+³   ³   ³       
+³   ³   ÀÄÄÄpropiedades
+³   ³       ÀÄÄÄ001_alma-condos-2026
+³   ³               
+³   ÀÄÄÄvideos
+³           .gitkeep
+³           tour-redes.html
+³           
+ÃÄÄÄscripts
+³       actualizar_contenido.ps1
+³       audit_data.py
+³       audit_files.py
+³       generar-data.mjs
+³       git_publish_20260429_2005.txt
+³       git_publish_20260512_1551.log
+³       git_publish_20260512_1552.log
+³       master.tsv
+³       publicar_git.ps1
+³       revisar_antes_de_git.ps1
+³       Sincronizar_Vexo_Final.ps1
+³       sync_20260427_0916.txt
+³       sync_20260427_1455.txt
+³       sync_20260427_1630.log
+³       sync_20260427_1639.log
+³       sync_20260427_1646.txt
+³       sync_20260427_1658.txt
+³       sync_20260427_2026.txt
+³       sync_20260428_2044.txt
+³       
+ÀÄÄÄsrc
+    ³   .env
+    ³   Propiedades.js
+    ³   
+    ÃÄÄÄcomponents
+    ³   ÀÄÄÄui
+    ³           calculadora.js
+    ³           chatbot.js
+    ³           WhatsappBtn.js
+    ³           
+    ÃÄÄÄdata
+    ³       blog.js
+    ³       ciudades.js
+    ³       config.js
+    ³       data.js
+    ³       data.js.bak
+    ³       descargas.js
+    ³       empresa.js
+    ³       image-manifest.js
+    ³       integraciones.js
+    ³       legal.js
+    ³       Propiedades.js
+    ³       
+    ÃÄÄÄpages
+    ³       politicas.js
+    ³       
+    ÃÄÄÄstyles
+    ³       design-system.css
+    ³       design-system.min.css
+    ³       
+    ÀÄÄÄutils
+            helpers.js
+            sheets.js
+            

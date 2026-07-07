@@ -1,0 +1,67 @@
+{
+  "workbench.editor.autoLockGroups": {
+    "workbench.editor.chatSession": true,
+    "imagePreview.previewEditor": true,
+    "default": true
+  },
+  "workbench.editor.wrapTabs": false,
+  "files.autoGuessEncoding": true,
+  "files.autoSaveWhenNoErrors": true,
+  "files.exclude": {
+    "**/.git": true,
+    "**/node_modules": true,
+    "**/*.swp": true,
+    "**/stderr.txt": true,
+    "**/stdout.txt": true,
+    "**/filesystem_stderr.txt": true,
+    "**/filesystem_stdout.txt": true,
+    "**/node-local_stderr.txt": true,
+    "**/node-local_stdout.txt": true,
+    "**/python-local_stderr.txt": true,
+    "**/python-local_stdout.txt": true,
+    "**/powershell-local_stderr.txt": true,
+    "**/powershell-local_stdout.txt": true,
+    "**/fs_stderr.txt": true,
+    "**/fs_stdout.txt": true
+  },
+  "terminal.integrated.defaultProfile.windows": "Command Prompt",
+  "terminal.integrated.profiles.windows": {
+    "Command Prompt": {
+      "path": "cmd.exe",
+      "args": ["/K", "cd /d C:\\Users\\HP-Home\\Documents\\Projectos_Rosalia\\VEXO_MASTER_OPTIMIZADO"],
+      "icon": "terminal-cmd"
+    },
+    "PowerShell": {
+      "path": "powershell.exe",
+      "args": ["-NoExit", "-Command", "Set-Location 'C:\\Users\\HP-Home\\Documents\\Projectos_Rosalia\\VEXO_MASTER_OPTIMIZADO'"],
+      "icon": "terminal-powershell"
+    }
+  },
+  "terminal.integrated.env.windows": {
+    "CLAUDE_CODE_USE_TERMINAL": "true",
+    "CLAUDE_CODE_DISABLE_LOGIN_PROMPT": "true",
+    "PROJECT_ROOT": "C:\\Users\\HP-Home\\Documents\\Projectos_Rosalia\\VEXO_MASTER_OPTIMIZADO",
+    "PUBLIC_DIR": "C:\\Users\\HP-Home\\Documents\\Projectos_Rosalia\\VEXO_MASTER_OPTIMIZADO\\public",
+    "NODE_PATH": "C:\\Program Files\\nodejs",
+    "LOCAL_DEV": "true"
+  },
+  "chat.agent.networkFilter": true,
+  "chat.restoreLastPanelSession": true,
+  "chat.mcp.discovery.enabled": {
+    "claude-desktop": true,
+    "cursor-workspace": true
+  },
+  "chat.mcp.gallery.enabled": true,
+  "chat.useClaudeMdFile": true,
+  "chat.useAgentsMdFile": true,
+  "inlineChat.defaultModel": "Auto (copilot)",
+  "editor.formatOnSave": false,
+  "editor.tabSize": 2,
+  "editor.detectIndentation": true,
+  "[javascript]": {
+    "editor.defaultFormatter": null
+  },
+  "[html]": {
+    "editor.defaultFormatter": null
+  }
+}

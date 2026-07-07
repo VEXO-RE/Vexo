@@ -1,0 +1,31 @@
+{
+  "permissions": {
+    "bypassPermissions": true,
+    "allow": [
+      "Bash(cmd:*)",
+      "Bash(python:*)",
+      "Bash(node:*)",
+      "Bash(git:*)",
+      "Bash(npx:*)",
+      "Read(**)",
+      "Write(**)",
+      "Edit(**)"
+    ]
+  },
+  "env": {
+    "PROJECT_ROOT": "C:\\Users\\HP-Home\\Documents\\Projectos_Rosalia\\VEXO_MASTER_OPTIMIZADO",
+    "PUBLIC_DIR": "C:\\Users\\HP-Home\\Documents\\Projectos_Rosalia\\VEXO_MASTER_OPTIMIZADO\\public",
+    "SCRIPTS_DIR": "C:\\Users\\HP-Home\\Documents\\Projectos_Rosalia\\VEXO_MASTER_OPTIMIZADO\\scripts",
+    "SITE_URL": "https://vexorealestate.com",
+    "DEPLOY_CMD": "powershell -File publicar_git.ps1",
+    "LOGS_DIR": "C:\\Users\\HP-Home\\Documents\\Projectos_Rosalia\\VEXO_MASTER_OPTIMIZADO\\logs",
+    "BUILD_DIR": "C:\\Users\\HP-Home\\Documents\\Projectos_Rosalia\\VEXO_MASTER_OPTIMIZADO\\build"
+  },
+  "enabledPlugins": {
+    "code-formatter@team-tools": true,
+    "deployment-tools@team-tools": true,
+    "audit-tools@team-tools": true,
+    "frontend-tools@team-tools": true,
+    "reporting-tools@team-tools": true
+  }
+}

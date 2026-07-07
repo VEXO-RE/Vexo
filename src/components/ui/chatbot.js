@@ -1,15 +1,11 @@
 /**
- * ARCHIVO: chatbot.js
- * DESCRIPCIÓN: Integración de Chatbot con Google Gemini API (Capa Gratuita).
- * REQUIERE: data.js cargado previamente con la constante DESARROLLOS.
+ * ARCHIVO: public/chatbot.js
+ * DESCRIPCIÓN: Integración de UI del Chatbot sincronizada con el endpoint seguro de Vercel.
  */
 
-// 1. OBTÉN TU CLAVE GRATUITA EN: https://aistudio.google.com/app/apikey
-const GEMINI_API_KEY = "TU_API_KEY_AQUI"; 
-const GEMINI_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${GEMINI_API_KEY}`;
-
-// Historial de la conversación para que Gemini tenga contexto
+const BACKEND_CHAT_URL = "/api/chat"; 
 let chatHistory = [];
+const MAX_HISTORY_LENGTH = 12;
 
 function toggleChat() {
   const chat = document.getElementById('vexo-chatbot');
@@ -19,11 +15,45 @@ function toggleChat() {
   
   const messages = document.getElementById('chat-messages');
   if (messages.children.length === 0 && !chat.classList.contains('collapsed')) {
-    appendMessage("bot", "¡Hola! Soy la Inteligencia Artificial de VEXO Real Estate. Conozco todos nuestros desarrollos en Mérida, CDMX y Riviera Maya. ¿Qué tipo de inversión buscas?");
+    appendMessage("bot", "¡Hola! Bienvenido a <b>VEXO Real Estate</b>. 🌴 Soy tu asesor de inversiones automatizado.<br><br>Tengo el catálogo completo de departamentos de lujo en <b>CDMX y Mérida</b>, así como los nuevos macroproyectos de lotes residenciales y náuticos en la <b>costa de Yucatán (Telchac y Santa Clara)</b>.<br><br>¿Qué tipo de inversión o zona tienes en mente hoy?");
+    renderQuickFAQs();
   }
 }
 
-function handleEnter(e) { if (e.key === 'Enter') sendMessage(); }
+function handleEnter(e) { 
+  if (e.key === 'Enter') sendMessage(); 
+}
+
+function renderQuickFAQs() {
+  const containerId = 'chat-faqs-container';
+  let container = document.getElementById(containerId);
+  
+  if (!container) {
+    container = document.createElement('div');
+    container.id = containerId;
+    container.className = 'vexo-faqs-layout';
+    document.getElementById('vexo-chatbot').appendChild(container);
+  }
+
+  const faqs = [
+    { label: "🌴 Lotes en Telchac", query: "Muéstrame opciones de lotes residenciales en Telchac y cuáles son los plazos de pago." },
+    { label: "🏢 Depas en Mérida", query: "¿Qué departamentos en preventa tienen disponibles en Mérida y en qué zonas?" },
+    { label: "📍 Proyectos en CDMX", query: "Quiero ver departamentos disponibles en Ciudad de México como Roma o Narvarte." },
+    { label: "💳 Financiamiento Directo", query: "¿Cómo funciona el financiamiento sin intereses de Grupo López Rosa?" }
+  ];
+
+  container.innerHTML = '';
+  faqs.forEach(faq => {
+    const chip = document.createElement('button');
+    chip.className = 'vexo-faq-chip';
+    chip.innerText = faq.label;
+    chip.onclick = () => {
+      document.getElementById('chat-input').value = faq.query;
+      sendMessage();
+    };
+    container.appendChild(chip);
+  });
+}
 
 function appendMessage(sender, text, id = null) {
   const chatMessages = document.getElementById('chat-messages');
@@ -31,10 +61,17 @@ function appendMessage(sender, text, id = null) {
   msgDiv.className = `vexo-msg ${sender}`;
   if (id) msgDiv.id = id;
   
-  // Convertir negritas markdown de Gemini (**) a HTML (<b>) básico para mejor visualización
-  let formattedText = text.replace(/\*\*(.*?)\*\*/g, '<b>$1</b>');
-  msgDiv.innerHTML = formattedText;
+  let cleanText = text
+    .replace(/\*\*(.*?)\*\*/g, '<b>$1</b>')
+    .replace(/\*(.*?)\*/g, '<i>$1</i>')
+    .replace(/`([^`]+)`/g, '<code class="vexo-code">$1</code>')
+    .replace(/\n/g, '<br>');
+
+  if (cleanText.includes("+52 55 2708 1749") || cleanText.includes("525527081749")) {
+    cleanText += `<br><a href="https://wa.me/525527081749?text=Hola%20VEXO,%20vengo%20del%20Chatbot%20de%20la%20web" target="_blank" class="vexo-chat-wa-btn">💚 Hablar con Asesor Humano en WhatsApp</a>`;
+  }
   
+  msgDiv.innerHTML = cleanText;
   chatMessages.appendChild(msgDiv);
   chatMessages.scrollTop = chatMessages.scrollHeight;
 }
@@ -47,72 +84,53 @@ async function sendMessage() {
   appendMessage("user", text);
   input.value = '';
   
-  // Agregar al historial de Gemini
   chatHistory.push({ role: "user", parts: [{ text: text }] });
+  if (chatHistory.length > MAX_HISTORY_LENGTH) chatHistory.shift();
   
-  // Mostrar indicador de "escribiendo..."
-  appendMessage("bot typing", "Analizando opciones...", "typing-indicator");
+  appendMessage("bot typing", "Analizando inventario maestro...", "typing-indicator");
   
   try {
-    const respuestaIA = await fetchGeminiResponse();
+    // PREPARACIÓN DE CONTEXTO OPTIMIZADO
+    const contextoVexoMaster = window.DESARROLLOS.map(d => ({
+      id: d.id,
+      nombre: d.nombre_corto || d.nombre,
+      ciudad: d.ciudad,
+      zona: d.zona,
+      tipo: d.tipo,
+      estatus: d.estatus,
+      precio: d.precio_desde > 0 ? `$${d.precio_desde.toLocaleString('es-MX')} ${d.moneda}` : "Consultar precio actual",
+      financiamiento: d.esquema_pago || d.financiamiento,
+      amenidades: d.amenidades,
+      datos_clave: d.chatbot_knowledge || d.descripcion_corta,
+      faqs: d.chatbot_preguntas_frecuentes || "Consultar especificaciones"
+    }));
+
+    // Consumimos tu Endpoint de Vercel
+    const response = await fetch(BACKEND_CHAT_URL, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        history: chatHistory,
+        context: contextoVexoMaster
+      })
+    });
+
+    const data = await response.json();
     
-    // Remover "escribiendo..."
-    document.getElementById('typing-indicator').remove();
+    const indicator = document.getElementById('typing-indicator');
+    if (indicator) indicator.remove();
     
-    // Mostrar respuesta y guardar en historial
-    appendMessage("bot", respuestaIA);
-    chatHistory.push({ role: "model", parts: [{ text: respuestaIA }] });
+    if (data.error) throw new Error(data.error);
+    
+    appendMessage("bot", data.text);
+    
+    chatHistory.push({ role: "model", parts: [{ text: data.text }] });
+    if (chatHistory.length > MAX_HISTORY_LENGTH) chatHistory.shift();
     
   } catch (error) {
-    console.error("Error en IA:", error);
-    document.getElementById('typing-indicator').remove();
-    appendMessage("bot", "Tuve un pequeño problema de conexión. ¿Podrías contactarnos directamente por WhatsApp al +52 55 2708 1749?");
+    console.error("Fallo de comunicación en Vercel Serverless Function:", error);
+    const indicator = document.getElementById('typing-indicator');
+    if (indicator) indicator.remove();
+    appendMessage("bot", "Disculpa, experimenté una interrupción momentánea en mi servidor de datos. Para ayudarte de inmediato, puedes dar clic en el botón verde de abajo para hablar con un asesor humano.");
   }
-}
-
-// --- LLAMADA A LA API DE GEMINI ---
-async function fetchGeminiResponse() {
-  // Optimizamos el array DESARROLLOS para no saturar tokens innecesarios
-  // Extraemos solo lo clave comercialmente
-  const contextoVentas = window.DESARROLLOS.map(d => ({
-    nombre: d.nombre_corto || d.nombre,
-    ciudad: d.ciudad,
-    zona: d.zona,
-    precio_desde: d.precio_desde,
-    entrega: d.fecha_entrega,
-    amenidades: d.amenidades,
-    descripcion: d.descripcion_corta || d.descripcion_larga
-  }));
-
-  // Instrucciones del Sistema (Prompt de Ingeniería)
-  const systemInstruction = `
-    Eres el mejor asesor inmobiliario de VEXO Real Estate. 
-    Tu objetivo es perfilar al cliente, responder sus dudas y llevarlo a agendar una cita o mandar mensaje por WhatsApp (+52 55 2708 1749).
-    Habla en español de México, tono profesional pero muy cálido y persuasivo.
-    NUNCA inventes precios ni desarrollos. Basa tus respuestas ÚNICAMENTE en este catálogo JSON:
-    ${JSON.stringify(contextoVentas)}
-    Si te preguntan algo fuera del catálogo inmobiliario, disculpate y vuelve al tema de inversiones.
-    Responde en párrafos cortos y usa viñetas si listas propiedades.
-  `;
-
-  const payload = {
-    system_instruction: { parts: [{ text: systemInstruction }] },
-    contents: chatHistory,
-    generationConfig: {
-      temperature: 0.3, // Baja temperatura para que sea exacto con los precios
-      maxOutputTokens: 300 // Respuestas concisas
-    }
-  };
-
-  const response = await fetch(GEMINI_URL, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(payload)
-  });
-
-  const data = await response.json();
-  
-  if (data.error) throw new Error(data.error.message);
-  
-  return data.candidates[0].content.parts[0].text;
 }

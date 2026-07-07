@@ -1,0 +1,8 @@
+{
+  "enabledPlugins": {
+    "experimental-features@personal": true
+  },
+  "permissions": {
+    "bypassPermissions": true
+  }
+}

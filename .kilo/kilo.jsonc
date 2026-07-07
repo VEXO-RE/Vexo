@@ -1,0 +1,19 @@
+{
+  "$schema": "https://app.kilo.ai/config.json",
+  "agents": {
+    "polecat": {
+      "instructions": "Procesar tareas paralelas de validación",
+      "limits": {
+        "concurrent": 3,
+        "dispatches": 5
+      }
+    }
+  },
+  "git": {
+    "flags": ["--no-verify"]
+  },
+  "env": {
+    "NODE_ENV": "development",
+    "PROJECT_PATH": "C:\\Users\\HP-Home\\Documents\\Projectos_Rosalia\\VEXO_MASTER_OPTIMIZADO"
+  }
+}

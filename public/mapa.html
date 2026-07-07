@@ -445,21 +445,21 @@ input[type=range]{
         <div class="calc-body">
 
           <div class="field">
-            <label>Selecciona un desarrollo</label>
+            <label for="dev-sel">Selecciona un desarrollo</label>
             <select class="c-sel" id="dev-sel" onchange="onDevChange(this.value)">
               <option value="">— Elige un desarrollo —</option>
             </select>
           </div>
 
           <div class="field">
-            <label>Precio del inmueble <strong id="lbl-p">$2,500,000</strong></label>
+            <label for="sl-precio">Precio del inmueble <strong id="lbl-p">$2,500,000</strong></label>
             <input type="range" id="sl-precio" min="1000000" max="18000000" step="50000" value="2500000"
               oninput="updP(this.value);calcular()"/>
             <div class="range-labels"><span>$1M</span><span>$18M MXN</span></div>
           </div>
 
           <div class="field">
-            <label>Tipo de financiamiento</label>
+            <label for="tipo-cred">Tipo de financiamiento</label>
             <select class="c-sel" id="tipo-cred" onchange="calcular()">
               <option value="banco">Crédito bancario promedio (~11.2% anual)</option>
               <option value="infonavit">INFONAVIT (~10.45% anual)</option>
@@ -469,14 +469,14 @@ input[type=range]{
           </div>
 
           <div class="field">
-            <label>Enganche <strong id="lbl-eng">20%</strong></label>
+            <label for="sl-eng">Enganche <strong id="lbl-eng">20%</strong></label>
             <input type="range" id="sl-eng" min="5" max="90" step="5" value="20"
               oninput="document.getElementById('lbl-eng').textContent=this.value+'%';calcular()"/>
             <div class="range-labels"><span>5%</span><span>90%</span></div>
           </div>
 
           <div class="field" id="f-plazo">
-            <label>Plazo <strong id="lbl-plazo">20 años</strong></label>
+            <label for="sl-plazo">Plazo <strong id="lbl-plazo">20 años</strong></label>
             <input type="range" id="sl-plazo" min="5" max="30" step="5" value="20"
               oninput="document.getElementById('lbl-plazo').textContent=this.value+' años';calcular()"/>
             <div class="range-labels"><span>5 años</span><span>30 años</span></div>
