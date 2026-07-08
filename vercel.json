@@ -4,6 +4,8 @@
     { "src": "public/**", "use": "@vercel/static" }
   ],
   "routes": [
+    { "src": "/images/(.*)", "dest": "public/images/$1" },
+    { "src": "/data.js", "dest": "public/data.js" },
     { "src": "/(.*)", "dest": "public/index.html" }
   ],
   "headers": [
