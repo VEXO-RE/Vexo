@@ -30,8 +30,9 @@
       --text:#e2e8f0;--text-m:#94a3b8;--text-s:#64748b;
       --r:12px;--r2:20px;--border:rgba(19,236,218,0.12);
     }
-    html{scroll-behavior:smooth}
-    body{font-family:"DM Sans",sans-serif;background:var(--bg);color:var(--text);overflow-x:hidden;-webkit-font-smoothing:antialiased}
+    html{scroll-behavior:smooth;overflow-x:hidden;max-width:100vw}
+    *,*::before,*::after{box-sizing:border-box;min-width:0}
+    body{font-family:"DM Sans",sans-serif;background:var(--bg);color:var(--text);overflow-x:hidden;max-width:100%;-webkit-font-smoothing:antialiased}
     h1,h2,h3,h4,h5{font-family:"Syne",sans-serif}
     a{text-decoration:none;color:inherit}
     button{cursor:pointer;font-family:inherit}
@@ -159,7 +160,7 @@
     /* ── Layout ── */
     .section{padding:80px 0}
     .section-sm{padding:48px 0}
-    .container{max-width:1280px;margin:0 auto;padding:0 24px}
+    .container{max-width:1280px;margin:0 auto;padding:0 24px;width:100%}
     .grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
     .grid-2{display:grid;grid-template-columns:repeat(2,1fr);gap:24px}
     .grid-4{display:grid;grid-template-columns:repeat(4,1fr);gap:20px}
@@ -180,7 +181,7 @@
     .hero-title{font-family:"Syne",sans-serif;font-weight:800;font-size:clamp(40px,6vw,80px);line-height:1;letter-spacing:-0.02em;margin-bottom:20px}
     .hero-sub{font-size:18px;color:var(--text-m);line-height:1.7;max-width:520px;margin-bottom:36px}
     .hero-ctas{display:flex;flex-wrap:wrap;gap:14px;margin-bottom:40px}
-    .search-box{background:rgba(15,35,32,0.8);border:1px solid rgba(19,236,218,0.15);border-radius:var(--r2);padding:16px;display:flex;flex-wrap:wrap;gap:12px;align-items:center;max-width:540px;backdrop-filter:blur(12px)}
+    .search-box{background:rgba(15,35,32,0.8);border:1px solid rgba(19,236,218,0.15);border-radius:var(--r2);padding:16px;display:flex;flex-wrap:wrap;gap:12px;align-items:center;max-width:540px;width:100%;backdrop-filter:blur(12px)}
     .search-box select{background:rgba(7,18,15,0.8);border:1px solid rgba(19,236,218,0.12);color:var(--text);border-radius:8px;padding:10px 14px;font-size:13px;flex:1;min-width:140px;cursor:pointer}
     .search-box select:focus{outline:none;border-color:var(--primary)}
     .search-box select option{background:#0f2320}
@@ -224,6 +225,31 @@
     @media(max-width:1024px){.grid-3{grid-template-columns:repeat(2,1fr)}.grid-4{grid-template-columns:repeat(2,1fr)}}
     @media(max-width:768px){.nav-links,.nav-ctas{display:none}#hamburger{display:flex}.grid-3,.grid-2{grid-template-columns:1fr}.grid-4{grid-template-columns:repeat(2,1fr)}.section{padding:56px 0}#chat-window{width:calc(100vw - 40px);right:20px}}
     @media(max-width:480px){.grid-4{grid-template-columns:1fr}.hero-ctas{flex-direction:column}.btn-lg{padding:14px 24px}}
+  
+    /* ── MOBILE FIX ──────────────────────────────────── */
+    @media(max-width:768px){
+      .hero-h{font-size:clamp(32px,8vw,52px)!important}
+      .search-box select,.search-box input{min-width:0;width:100%!important}
+      .vx-trust-bar{flex-direction:column;gap:12px;padding:16px}
+      .dev-card-grid,.grid-3,.grid-2{grid-template-columns:1fr!important}
+      .grid-4{grid-template-columns:repeat(2,1fr)!important}
+      .pills-bar{flex-wrap:wrap;gap:6px!important;padding:0 12px!important}
+      .pill{font-size:11px!important;padding:6px 12px!important}
+      #chat-window{width:calc(100vw - 32px)!important;right:16px!important;left:16px!important;bottom:80px!important}
+      .modal-inner,.glass[style*="max-width:900px"]{width:95vw!important;max-width:95vw!important;margin:0 auto}
+      #lightbox img{max-width:95vw!important;max-height:70vh!important}
+      .section{padding:48px 0!important}
+      .nav-w{padding:0 16px!important}
+      table{display:block;overflow-x:auto;white-space:nowrap}
+      .hero-ctas{flex-direction:column;width:100%}
+      .hero-ctas .btn{width:100%;justify-content:center}
+      input[type="number"],input[type="text"],input[type="email"],input[type="tel"],select,textarea{font-size:16px!important}
+    }
+    @media(max-width:480px){
+      .grid-4{grid-template-columns:1fr!important}
+      .vx-map-stats{display:none}
+      .section-eyebrow{font-size:10px!important}
+    }
   </style>
 </head>
 <body>
@@ -428,11 +454,11 @@
     </div>
     <div style="display:flex;flex-wrap:wrap;gap:10px;margin-bottom:36px" id="dev-filters" role="group" aria-label="Filtros">
       <button class="pill active" onclick="filterDevs(this,'all')">Todos</button>
-      <button class="pill" onclick="filterDevs(this,'Mérida')">Mérida</button>
-      <button class="pill" onclick="filterDevs(this,'Ciudad de México')">CDMX</button>
-      <button class="pill" onclick="filterDevs(this,'Playa del Carmen')">Riviera Maya</button>
-      <button class="pill" onclick="filterDevs(this,'Lotes')">Lotes</button>
-      <button class="pill" onclick="filterDevs(this,'destacado')">Destacados</button>
+      <button class="pill" data-filtro="Mérida" onclick="filterDevs(this,'Mérida')">Mérida</button>
+      <button class="pill" data-filtro="Ciudad de México" onclick="filterDevs(this,'Ciudad de México')">CDMX</button>
+      <button class="pill" data-filtro="Playa del Carmen" onclick="filterDevs(this,'Playa del Carmen')">Riviera Maya</button>
+      <button class="pill" data-filtro="Lotes" onclick="filterDevs(this,'Lotes')">Lotes</button>
+      <button class="pill" data-filtro="destacado" onclick="filterDevs(this,'destacado')">Destacados</button>
     </div>
     <div id="devs-grid" class="grid-3" style="margin-bottom:80px"></div>
   </div>
@@ -473,7 +499,7 @@
         <div style="display:flex;gap:10px;flex-wrap:wrap">
           <button class="btn btn-p btn-lg" onclick="showPage('contacto')"><span class="material-symbols-outlined">calendar_month</span>Agendar visita</button>
           <button class="btn btn-o btn-lg" onclick="showPage('desarrollos')"><span class="material-symbols-outlined">apartment</span>Ver portafolio</button>
-          <button class="btn btn-o btn-lg" onclick="showPage('desarrollos')"><span class="material-symbols-outlined">Ver</span>Lotes</button>
+          <button class="btn btn-o btn-lg" onclick="showPage('desarrollos');setTimeout(function(){var b=document.querySelector('.pill[data-filtro=\"Lotes\"]');if(b)b.click();},300)"><span class="material-symbols-outlined">terrain</span>Ver Lotes</button>
         </div>
       </div>
       <div class="vx-map-stats" style="margin-bottom:24px">
@@ -547,9 +573,9 @@
             <fieldset style="border:none;padding:0;margin:0">
               <legend style="font-family:'Syne',sans-serif;font-weight:700;font-size:12px;text-transform:uppercase;letter-spacing:.08em;color:var(--primary);display:block;margin-bottom:8px;padding:0">Tipo de crédito</legend>
               <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;font-size:13px;color:var(--text-m)">
-                <label style="cursor:pointer;display:flex;align-items:center;gap:6px"><input type="radio" name="tipo-credito" value="tradicional" checked onchange="calcHipoteca()" style="accent-color:var(--primary)"/>Bancario</label>
-                <label style="cursor:pointer;display:flex;align-items:center;gap:6px"><input type="radio" name="tipo-credito" value="infonavit" onchange="calcHipoteca()" style="accent-color:var(--primary)"/>INFONAVIT</label>
-                <label style="cursor:pointer;display:flex;align-items:center;gap:6px"><input type="radio" name="tipo-credito" value="fovissste" onchange="calcHipoteca()" style="accent-color:var(--primary)"/>FOVISSSTE</label>
+                <label style="cursor:pointer;display:flex;align-items:center;gap:6px"><input type="radio" name="tipo-credito" value="tradicional" checked onchange="aplicarTipoCredito('tradicional')" style="accent-color:var(--primary)"/>Bancario</label>
+                <label style="cursor:pointer;display:flex;align-items:center;gap:6px"><input type="radio" name="tipo-credito" value="infonavit" onchange="aplicarTipoCredito('infonavit')" style="accent-color:var(--primary)"/>INFONAVIT</label>
+                <label style="cursor:pointer;display:flex;align-items:center;gap:6px"><input type="radio" name="tipo-credito" value="fovissste" onchange="aplicarTipoCredito('fovissste')" style="accent-color:var(--primary)"/>FOVISSSTE</label>
               </div>
             </fieldset>
             <button class="btn btn-p btn-full" onclick="calcHipoteca()"><span class="material-symbols-outlined">calculate</span>Calcular mensualidad</button>
@@ -830,11 +856,16 @@
 </div>
 
 <!-- ══ DATA + APP ══════════════════════════════════════════════════ -->
-<script src="env.js"></script>
+<script>
+/* env — variables de entorno inyectadas inline para evitar ERR_FILE_NOT_FOUND con file:// */
+window.GEMINI_API_KEY  = "AIzaSyAKPJ5y342Y4a2Mh-6iVfQENk8TNq8UJow";
+window.WA_NUMBER       = "525527081749";
+window.SHEETS_ENDPOINT = "https://script.google.com/a/macros/vexorealestate.com/s/AKfycbyYM5vWAZngH4_3651Jp4jmAfnZ80LSapGgzCq4mYmpY-bOHlnrpYcgfeLgYFSxNXJYWQ/exec";
+</script>
 <script src="data.js"></script>
-<script src="sanity-check.js"></script>
 <script src="theme.js"></script>
 <script src="vexo-magic.js"></script>
+<script src="sanity-check.js"></script>
 <script>
 "use strict";
 
@@ -931,6 +962,20 @@ function showPage(name){
   renderPage(name);
   setTimeout(initReveal,150);
   if(name==="mapa"){
+    // Si estamos en file:// el iframe no puede cargar por restriccion de seguridad
+    if(window.location.protocol === 'file:'){
+      var mapaFrame = document.getElementById('vx-map-frame');
+      var mapaPage  = document.getElementById('page-mapa');
+      if(mapaPage){
+        mapaPage.innerHTML = '<div style="display:flex;flex-direction:column;align-items:center;justify-content:center;height:60vh;gap:20px;text-align:center;padding:40px">' +
+          '<span class="material-symbols-outlined" style="font-size:48px;color:var(--primary)">map</span>' +
+          '<h2 style="font-family:var(--ff-head)">Mapa interactivo</h2>' +
+          '<p style="color:var(--text-s);max-width:400px">El mapa funciona en el sitio web publicado. Para verlo abre el proyecto desde un servidor local o visita <a href="https://vexorealestate.com" style="color:var(--primary)">vexorealestate.com</a></p>' +
+          '<a href="mapa.html" target="_blank" class="btn btn-p"><span class="material-symbols-outlined">open_in_new</span>Abrir mapa en nueva pestaña</a>' +
+          '</div>';
+      }
+      return;
+    }
     var loader=document.getElementById("vx-map-loader");
     if(loader)loader.style.display="none";
   }
@@ -1473,9 +1518,17 @@ async function _callGemini(msg) {
   var devs = (window.DESARROLLOS||[]).slice(0,10);
   var ctx = devs.map(function(d){ return d.nombre_corto + " en " + d.ciudad + (d.precio_desde > 0 ? " desde $" + Math.round(d.precio_desde/1000) + "k" : ""); }).join(", ");
   var lotes = (window.LOTES||[]).slice(0,5).map(function(l){ return l.nombre_corto + " en " + l.ciudad; }).join(", ");
-  var sys = "Eres el asistente de VEXO Real Estate. Responde en español, amigable y conciso (máx 3 oraciones). " +
-            "Desarrollos: " + ctx + ". Lotes: " + lotes + ". " +
-            "WhatsApp: +52 55 2708 1749. Email: ventas@vexorealestate.com.";
+  var todosDevs = (window.DESARROLLOS||[]).concat(window.LOTES||[]);
+  var ctx = todosDevs.slice(0,15).map(function(d){
+    return d.nombre_corto + " (" + d.ciudad + (d.precio_desde>0?", desde $"+Math.round(d.precio_desde/1000)+"k MXN":"") + ")";
+  }).join("; ");
+  var sys = "Eres el asesor de ventas de VEXO Real Estate, experto inmobiliario. " +
+            "Hablas español de México de forma natural, cálida y profesional. " +
+            "Haz preguntas para entender las necesidades del cliente. " +
+            "Recomienda el desarrollo más adecuado según presupuesto, ciudad y tipo de propiedad. " +
+            "Portfolio actual: " + ctx + ". " +
+            "Contacto: WhatsApp +52 55 2708 1749 | ventas@vexorealestate.com. " +
+            "Responde en máximo 3-4 oraciones. Termina con una pregunta si es útil.";
   _chatHist.push({ role: "user", parts: [{ text: msg }] });
   try {
     var res = await fetch(
@@ -1516,6 +1569,13 @@ function getChatReply(msg){
   if(/contact|whatsapp|correo|teléfono|telefono|horario/.test(m))return "Puedes contactarnos por WhatsApp al +52 55 2708 1749 o a ventas@vexorealestate.com. Horario: Lun-Vie 9:00-18:00, Sáb 9:00-14:00.";
   return "Gracias por tu mensaje. Para información precisa te conectamos con un asesor VEXO. Escríbenos por WhatsApp o usa el formulario de contacto.";
 }
+// Función para navegar a un desarrollo desde mapa.html (cross-frame)
+function irADesarrollo(slug){
+  if(slug){showPage('desarrollos');setTimeout(function(){verDetalle(slug);},400);}
+}
+// Exponer para que mapa.html (iframe) pueda llamar al parent
+window.irADesarrollo=irADesarrollo;
+
 function sendFAQ(q){var i=document.getElementById("chat-inp");if(i){i.value=q;sendChat();}}
 function toggleChat(){
   chatOpen=!chatOpen;
@@ -1568,20 +1628,26 @@ function calcHipotecaInline(){
   var engPct=parseFloat(document.getElementById("calc-enganche")?.value||20)/100;
   var plazo=parseInt(document.getElementById("calc-plazo")?.value||20);
   var tasa=parseFloat(document.getElementById("calc-tasa")?.value||10.5)/100;
+  var tipoEl=document.querySelector('.modal-calc [name="calc-tipo-inline"]:checked');
+  var tipo=tipoEl?tipoEl.value:"tradicional";
+  // Auto-ajustar tasa según tipo
+  if(tipo==="infonavit" && tasa>(CREDIT_CONFIG.infonavit.tasa/100)) tasa=CREDIT_CONFIG.infonavit.tasa/100;
+  if(tipo==="fovissste") tasa=CREDIT_CONFIG.fovissste.tasa/100;
   if(!precio||precio<100000)return;
   var credito=precio*(1-engPct);
   var tasaMens=tasa/12;
   var n=plazo*12;
-  var mensualidad=credito*(tasaMens*Math.pow(1+tasaMens,n))/(Math.pow(1+tasaMens,n)-1);
+  var mensualidad=tasaMens>0 ? credito*(tasaMens*Math.pow(1+tasaMens,n))/(Math.pow(1+tasaMens,n)-1) : credito/n;
+  var total=mensualidad*n;
   var elM=document.getElementById("calc-mensualidad");
   var elR=document.getElementById("calc-resumen");
   if(elM)elM.textContent="$"+Math.round(mensualidad).toLocaleString("es-MX")+" /mes";
-  if(elR)elR.textContent="Enganche: $"+Math.round(precio*engPct).toLocaleString("es-MX")+" · Crédito: $"+Math.round(credito).toLocaleString("es-MX");
+  if(elR)elR.textContent="Enganche: $"+Math.round(precio*engPct).toLocaleString("es-MX")+" · Crédito: $"+Math.round(credito).toLocaleString("es-MX")+" · Total: $"+Math.round(total).toLocaleString("es-MX");
 }
 
 // ── Calculadora mapa ──────────────────────────────────────────────
 function calcAutoFill(){
-  var devs=window.DESARROLLOS||[];
+  var devs=(window.DESARROLLOS||[]).concat(window.LOTES||[]);
   var sel=document.getElementById("calc-dev");if(!sel)return;
   var dev=devs.find(function(d){return d.nombre===sel.value});
   if(dev&&dev.precio_desde&&parseFloat(dev.precio_desde)>0){
@@ -1591,15 +1657,34 @@ function calcAutoFill(){
   }
 }
 
+// Tasas y enganches por tipo de crédito
+var CREDIT_CONFIG = {
+  tradicional: { tasa: 10.5, enganche: 20, plazo: 20, label: "Crédito Hipotecario Bancario" },
+  infonavit:   { tasa: 9.0,  enganche: 5,  plazo: 20, label: "Crédito INFONAVIT (tasa preferencial)" },
+  fovissste:   { tasa: 6.0,  enganche: 5,  plazo: 25, label: "Crédito FOVISSSTE (tasa subsidiada)" }
+};
+
+function aplicarTipoCredito(tipo){
+  var cfg = CREDIT_CONFIG[tipo] || CREDIT_CONFIG.tradicional;
+  var tasaEl   = document.getElementById("calc-tasa-m");
+  var engEl    = document.getElementById("calc-eng-m");
+  var plazoEl  = document.getElementById("calc-plazo-m");
+  var lblEng   = document.getElementById("lbl-eng");
+  if(tasaEl)  tasaEl.value  = cfg.tasa;
+  if(engEl){  engEl.value   = cfg.enganche; if(lblEng) lblEng.textContent = cfg.enganche + "%"; }
+  if(plazoEl) plazoEl.value = cfg.plazo;
+  // Mostrar info del crédito
+  var info = document.getElementById("credit-info-label");
+  if(info) info.textContent = cfg.label;
+  calcHipoteca();
+}
+
 function calcHipoteca(){
   var precio=parseFloat(document.getElementById("calc-precio-m")?.value||0);
   var engPct=parseFloat(document.getElementById("calc-eng-m")?.value||20)/100;
   var plazo=parseInt(document.getElementById("calc-plazo-m")?.value||20);
   var tasa=parseFloat(document.getElementById("calc-tasa-m")?.value||10.5)/100;
   var tipo=document.querySelector('input[name="tipo-credito"]:checked')?.value||"tradicional";
-  // Ajuste de tasa máxima por tipo
-  if(tipo==="infonavit")tasa=Math.min(tasa,0.12);
-  if(tipo==="fovissste")tasa=Math.min(tasa,0.06);
   if(!precio||precio<100000)return;
   var credito=precio*(1-engPct);
   var engancheA=precio*engPct;
@@ -1626,7 +1711,7 @@ function calcHipoteca(){
 function poblarCalcSelect(){
   var sel=document.getElementById("calc-dev");
   if(!sel||sel.options.length>1)return;
-  var devs=window.DESARROLLOS||[];
+  var devs=(window.DESARROLLOS||[]).concat(window.LOTES||[]);
   devs.filter(function(d){return d.nombre&&d.precio_desde>0}).forEach(function(d){
     var opt=document.createElement("option");
     opt.value=d.nombre;
@@ -1670,6 +1755,7 @@ function renderDescargas(){
 // ── Modal descarga + lead ─────────────────────────────────────────
 var _descargaUrl=null;
 function abrirModalDescarga(titulo,url){
+  window._pendingDownloadUrl = url || "";
   _descargaUrl=url;
   var m=document.getElementById("modal-descarga");
   var t=document.getElementById("modal-titulo-desc");
@@ -1721,12 +1807,16 @@ async function submitDescarga(){
 }
 
 function registrarDescargaBrochure(nombre,url){
-  if(url&&url.trim()){
-    // Brochure real disponible — abrir modal para captura de lead primero
-    abrirModalDescarga("Brochure: "+nombre,(d?d.brochure_url:url)||url);
-  } else {
-    abrirModalDescarga("Brochure: "+nombre,null);
+  // Siempre mostrar formulario de lead (captura datos)
+  // Si hay URL disponible, se descarga después de enviar el formulario
+  var brochureUrl = url || "";
+  // Buscar URL en DESARROLLOS y LOTES si no se pasó
+  if(!brochureUrl){
+    var todos=(window.DESARROLLOS||[]).concat(window.LOTES||[]);
+    var dev=todos.find(function(d){return d.nombre===nombre||(d.nombre&&nombre&&nombre.indexOf(d.nombre)>-1);});
+    if(dev) brochureUrl=dev.brochure_url||"";
   }
+  abrirModalDescarga("Brochure: "+nombre, brochureUrl);
 }
 
 // ── Cookies ───────────────────────────────────────────────────────

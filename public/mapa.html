@@ -325,10 +325,14 @@ input[type=range]{
 .popup-btn-o:hover{background:var(--dorado-pale)}
 
 /* POI popup */
-.poi-popup-body{padding:12px 14px}
-.poi-popup-type{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--text-s);margin-bottom:4px}
-.poi-popup-name{font-weight:700;font-size:14px;color:var(--text);margin-bottom:8px}
-.poi-popup-desc{font-size:12px;color:var(--text-m);line-height:1.5}
+.poi-popup-body{padding:14px 16px}
+.poi-popup-icon{width:38px;height:38px;border-radius:11px;display:flex;align-items:center;justify-content:center;font-size:18px;margin-bottom:10px}
+.poi-popup-type{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--text-s);margin-bottom:3px}
+.poi-popup-name{font-family:"Playfair Display",serif;font-weight:800;font-size:15px;color:var(--text);margin-bottom:8px;line-height:1.25}
+.poi-popup-desc{font-size:12px;color:var(--text-m);line-height:1.55}
+
+.popup-btn-360{width:100%;margin-top:6px;background:var(--navy-soft);color:var(--navy);border:1.5px solid var(--border);display:flex;align-items:center;justify-content:center;gap:5px;padding:9px;border-radius:10px;font-size:12px;font-weight:700;cursor:pointer;transition:all .2s}
+.popup-btn-360:hover{background:var(--navy);color:#fff}
 
 /* Mobile bottom sheet */
 @media(max-width:860px){
@@ -613,6 +617,8 @@ const POIS = [
   {id:'pm11',n:"Plaza Grande",       t:"Centro Histórico", ciudad:"merida",lat:20.9676,lng:-89.6237,c:"#5a8a6a",ic:"⛩️",desc:"Corazón histórico de Mérida"},
   {id:'pm12',n:"Paseo Montejo",      t:"Punto de interés", ciudad:"merida",lat:21.0000,lng:-89.6220,c:"#5a8a6a",ic:"🌳",desc:"Boulevard histórico y cultural"},
   {id:'pm13',n:"Altabrisa",          t:"Centro Comercial", ciudad:"merida",lat:21.0392,lng:-89.5997,c:"#7c6fe0",ic:"🛍️",desc:"Zona comercial premium"},
+  {id:'pm14',n:"Gran Museo del Mundo Maya",t:"Cultura",     ciudad:"merida",lat:21.0175,lng:-89.6194,c:"#5a8a6a",ic:"🏛️",desc:"El museo más importante de la cultura maya en México"},
+  {id:'pm15',n:"Parque de las Américas", t:"Parque",       ciudad:"merida",lat:20.9805,lng:-89.6328,c:"#5a8a6a",ic:"🌳",desc:"Parque emblemático con arquitectura maya y espacios verdes"},
   // ── CDMX ──
   {id:'pc1',n:"Aeropuerto NAICM",    t:"Aeropuerto",       ciudad:"cdmx",  lat:19.4363,lng:-99.0719,c:"#6366f1",ic:"✈️",desc:"Aeropuerto Internacional Felipe Ángeles"},
   {id:'pc2',n:"Paseo de la Reforma", t:"Punto de interés", ciudad:"cdmx",  lat:19.4326,lng:-99.1332,c:"#5a8a6a",ic:"🏛️",desc:"El corredor financiero más importante de México"},
@@ -625,6 +631,8 @@ const POIS = [
   {id:'pc9',n:"Hospital Ángeles",   t:"Hospital",          ciudad:"cdmx",  lat:19.3637,lng:-99.1962,c:"#e05050",ic:"🏥",desc:"Red hospitalaria privada de primer nivel"},
   {id:'pc10',n:"Palacio de Bellas Artes",t:"Cultura",      ciudad:"cdmx",  lat:19.4352,lng:-99.1414,c:"#5a8a6a",ic:"🎭",desc:"Patrimonio artístico y cultural de México"},
   {id:'pc11',n:"Parque Hundido",    t:"Parque",            ciudad:"cdmx",  lat:19.3826,lng:-99.1793,c:"#5a8a6a",ic:"🌳",desc:"Parque arqueológico y deportivo"},
+  {id:'pc12',n:"Ángel de la Independencia",t:"Punto de interés",ciudad:"cdmx",lat:19.4270,lng:-99.1677,c:"#5a8a6a",ic:"🏛️",desc:"Símbolo emblemático de la Ciudad de México"},
+  {id:'pc13',n:"Mercado Roma",      t:"Centro Comercial",  ciudad:"cdmx",  lat:19.4185,lng:-99.1615,c:"#7c6fe0",ic:"🍽️",desc:"Mercado gourmet en el corazón de la Roma"},
   // ── PLAYA DEL CARMEN ──
   {id:'pp1',n:"Aeropuerto CUN",      t:"Aeropuerto",       ciudad:"playa", lat:21.0397,lng:-86.8739,c:"#6366f1",ic:"✈️",desc:"Aeropuerto Internacional de Cancún — 35 min"},
   {id:'pp2',n:"5ta Avenida",         t:"Punto de interés", ciudad:"playa", lat:20.6271,lng:-87.0796,c:"#5a8a6a",ic:"🌴",desc:"La calle más famosa del Caribe Mexicano"},
@@ -634,6 +642,7 @@ const POIS = [
   {id:'pp6',n:"Hospital Hospiten",   t:"Hospital",         ciudad:"playa", lat:20.6262,lng:-87.0823,c:"#e05050",ic:"🏥",desc:"Atención médica de emergencia 24/7"},
   {id:'pp7',n:"Playa Mamitas",       t:"Playa",            ciudad:"playa", lat:20.6296,lng:-87.0750,c:"#0ea5a5",ic:"🌊",desc:"Beach club exclusivo"},
   {id:'pp8',n:"The Reef Resort",     t:"Resort",           ciudad:"playa", lat:20.6350,lng:-87.0780,c:"#5a8a6a",ic:"🏨",desc:"Hotel boutique frente al mar"},
+  {id:'pp9',n:"Parque Los Fundadores",t:"Punto de interés",ciudad:"playa",lat:20.6280,lng:-87.0765,c:"#5a8a6a",ic:"🌴",desc:"Plaza principal frente al mar, corazón social de Playa del Carmen"},
 ];
 
 // DEVS completos desde window.DESARROLLOS (data.js)
@@ -680,6 +689,9 @@ function getDevs() {
       estatus: d.estatus||'Preventa',
       mascotas: d.mascotas,
       tipo: d.tipo||'Departamentos',
+      brochure: (d.brochure && String(d.brochure).indexOf('http')===0) ? d.brochure : '',
+      tour360: (d.tour360_url && String(d.tour360_url).indexOf('http')===0) ? d.tour360_url : '',
+      urlMaps: (d.url_maps && String(d.url_maps).indexOf('http')===0) ? d.url_maps : '',
     }));
   }
   return DEVS_FALLBACK;
@@ -858,24 +870,31 @@ function renderPOIs(){
   poiMarkers.forEach(m=>m.remove());
   poiMarkers=[];
   POIS.filter(p=>p.ciudad===currentCity).forEach(poi=>{
+    // Mismo patrón anti-desfase que los markers de desarrollos: el ancla ('el')
+    // reserva más espacio del que ocupa el círculo visual ('inner'), así el
+    // hover no mueve el punto real del marker y siempre se puede seleccionar.
     const el=document.createElement('div');
-    el.style.cssText=`
+    el.style.cssText=`width:38px;height:38px;cursor:pointer;display:flex;align-items:center;justify-content:center;`;
+    el.title=poi.n;
+    const inner=document.createElement('div');
+    inner.style.cssText=`
       width:28px;height:28px;border-radius:50%;
       background:${poi.c};border:2px solid #fff;
       box-shadow:0 2px 8px rgba(0,0,0,0.25);
       display:flex;align-items:center;justify-content:center;
-      cursor:pointer;transition:transform .2s;
+      transition:transform .18s,box-shadow .18s;
       font-size:13px;
     `;
-    el.textContent=poi.ic||'📍';
-    el.title=poi.n;
-    el.addEventListener('mouseenter',()=>el.style.transform='scale(1.15)');
-    el.addEventListener('mouseleave',()=>el.style.transform='');
+    inner.textContent=poi.ic||'📍';
+    el.appendChild(inner);
+    el.addEventListener('mouseenter',()=>{inner.style.transform='scale(1.22)';inner.style.boxShadow='0 4px 14px rgba(0,0,0,0.35)'});
+    el.addEventListener('mouseleave',()=>{inner.style.transform='';inner.style.boxShadow='0 2px 8px rgba(0,0,0,0.25)'});
 
-    const popup = new maplibregl.Popup({offset:20,closeButton:true,maxWidth:'240px'})
+    const popup = new maplibregl.Popup({offset:24,closeButton:true,maxWidth:'250px'})
       .setHTML(`
         <div class="poi-popup-body">
-          <div class="poi-popup-type">${poi.ic} ${poi.t}</div>
+          <div class="poi-popup-icon" style="background:${poi.c}22;color:${poi.c}">${poi.ic||'📍'}</div>
+          <div class="poi-popup-type">${poi.t}</div>
           <div class="poi-popup-name">${poi.n}</div>
           <div class="poi-popup-desc">${poi.desc||''}</div>
         </div>
@@ -892,7 +911,10 @@ function renderPOIs(){
 
 function buildDevPopup(d){
   const foto = normImg(d.foto||'');
-  const precioStr = d.p>0 ? 'Desde '+fmtM(d.p)+' MXN' : 'Consultar precio';
+  const esLote = (d.tipo||'').toLowerCase().indexOf('lote')!==-1;
+  const precioStr = d.p>0
+    ? (esLote?'Terreno desde ':'Desde ')+fmtM(d.p)+' MXN'
+    : (esLote?'Terreno — consultar precio':'Consultar precio');
   // Tiempos por ciudad
   let tiempos = '';
   if(d.ciudad==='merida'){
@@ -918,15 +940,17 @@ function buildDevPopup(d){
     `;
   }
   const imgHTML = foto
-    ? `<img src="${foto}" alt="${d.n}" loading="lazy" onerror="this.parentElement.innerHTML='<div class=\\'popup-img-placeholder\\'>🏢</div>'">`
-    : '<div class="popup-img-placeholder">🏢</div>';
+    ? `<img src="${foto}" alt="${d.n}" loading="lazy" onerror="this.parentElement.innerHTML='<div class=\\'popup-img-placeholder\\'>${esLote?'📐':'🏢'}</div>'">`
+    : `<div class="popup-img-placeholder">${esLote?'📐':'🏢'}</div>`;
 
   const tags = (d.amenidades||'').split(',').slice(0,4).map(a=>`<span class="popup-tag">${a.trim()}</span>`).join('');
+
+  const badgeTxt = esLote ? '📐 '+(d.estatus||'Disponible') : (d.estatus||'Preventa');
 
   return `
     <div class="popup-img">
       ${imgHTML}
-      <div class="popup-city-badge">${d.estatus||'Preventa'}</div>
+      <div class="popup-city-badge">${badgeTxt}</div>
     </div>
     <div class="popup-body">
       <div class="popup-nombre">${d.n}</div>
@@ -935,37 +959,49 @@ function buildDevPopup(d){
       <div class="popup-times">${tiempos}</div>
       ${tags ? `<div class="popup-amenidades">${tags}</div>` : ''}
       <div class="popup-btns">
-        <button class="popup-btn popup-btn-p" onclick="window.parent.location.href='#'; if(window.parent.showPage) window.parent.showPage('contacto');">
+        <button class="popup-btn popup-btn-p" onclick="irContacto()">
           <span class="material-symbols-outlined" style="font-size:14px">calendar_month</span>Agendar visita
         </button>
-        <button class="popup-btn popup-btn-o" onclick="irContacto()">
+        <button class="popup-btn popup-btn-o" onclick="vxBrochure(${d.id})">
           <span class="material-symbols-outlined" style="font-size:14px">download</span>Brochure
         </button>
       </div>
+      ${d.tour360 ? `<button class="popup-btn popup-btn-360" onclick="vxTour360('${d.tour360}')"><span class="material-symbols-outlined" style="font-size:14px">vrpano</span>Ver recorrido 360°</button>` : ''}
     </div>
   `;
 }
 
 /* ── Sidebar dev list ────────────────────────────────────────── */
 function renderDevList(){
-  const devs=getDevs().filter(d=>d.ciudad===currentCity);
+  let devs=getDevs().filter(d=>d.ciudad===currentCity);
+  if(activeFilter==='Departamentos') devs=devs.filter(d=>d.tipo&&d.tipo.toLowerCase().includes('departamento'));
+  else if(activeFilter==='Lotes') devs=devs.filter(d=>d.tipo&&d.tipo.toLowerCase().includes('lotes'));
+  else if(activeFilter==='destacados') devs=devs.filter(d=>d.destacado);
+  else if(activeFilter==='preventa') devs=devs.filter(d=>(d.estatus||'').toLowerCase().includes('preventa'));
   const list=document.getElementById('dev-list');
   if(!list) return;
+  if(!devs.length){
+    list.innerHTML='<div style="padding:24px 8px;text-align:center;color:var(--text-s);font-size:12px;line-height:1.6">No hay desarrollos con este filtro en esta ciudad.</div>';
+    return;
+  }
   list.innerHTML=devs.map(d=>{
+    const esLote=(d.tipo||'').toLowerCase().indexOf('lote')!==-1;
+    const placeholderIcon=esLote?'📐':'🏢';
     const foto=normImg(d.foto||'');
     const imgHTML=foto
-      ?`<img src="${foto}" alt="${d.n}" loading="lazy" onerror="this.parentElement.innerHTML='<div class=\\'dev-item-img-placeholder\\'>🏢</div>'">`
-      :`<div class="dev-item-img-placeholder">🏢</div>`;
+      ?`<img src="${foto}" alt="${d.n}" loading="lazy" onerror="this.parentElement.innerHTML='<div class=\\'dev-item-img-placeholder\\'>${placeholderIcon}</div>'">`
+      :`<div class="dev-item-img-placeholder">${placeholderIcon}</div>`;
+    const precioTxt = d.p>0 ? (esLote?'Terreno desde ':'Desde ')+fmtM(d.p)+' MXN' : (esLote?'Terreno — consultar':'Consultar');
     return `
       <div class="dev-item" id="dev-item-${d.id}" onclick="flyToDev(${d.id})">
         <div class="dev-item-img">
           ${imgHTML}
-          <div class="dev-item-badge">${d.estatus||'Preventa'}</div>
+          <div class="dev-item-badge">${esLote?'📐 Lote':(d.estatus||'Preventa')}</div>
         </div>
         <div class="dev-item-body">
           <div class="dev-item-nombre">${d.n}</div>
           <div class="dev-item-zona"><span class="material-symbols-outlined" style="font-size:12px;color:var(--yam)">location_on</span>${d.z}</div>
-          <div class="dev-item-price">${d.p>0?'Desde '+fmtM(d.p)+' MXN':'Consultar'}</div>
+          <div class="dev-item-price">${precioTxt}</div>
         </div>
       </div>
     `;
@@ -1026,6 +1062,7 @@ function filtrarDevs(tipo, btn){
   document.querySelectorAll('.f-pill').forEach(p=>p.classList.remove('active'));
   if(btn) btn.classList.add('active');
   renderMarkers();
+  renderDevList();
 }
 
 /* ── Map controls ───────────────────────────────────────────── */
@@ -1049,6 +1086,22 @@ function irContacto(){
   if(window.parent && typeof window.parent.showPage==='function'){
     window.parent.showPage('contacto');
   }
+}
+
+// Abre el modal de descarga con captura de lead en el sitio padre (index.html).
+// Si el desarrollo tiene brochure real, se descarga tras enviar el formulario;
+// si no, igual se captura el lead y el equipo VEXO lo envía manualmente.
+function vxBrochure(id){
+  const d=getDevs().find(x=>String(x.id)===String(id));
+  if(window.parent && typeof window.parent.abrirModalDescarga==='function'){
+    window.parent.abrirModalDescarga('Brochure: '+(d?d.n:'desarrollo VEXO'), d&&d.brochure?d.brochure:null);
+  } else {
+    irContacto();
+  }
+}
+
+function vxTour360(url){
+  if(url) window.open(url,'_blank','noopener');
 }
 
 /* ── Init ────────────────────────────────────────────────────── */
