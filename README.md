@@ -1,227 +1,111 @@
-# VEXO Real Estate | SPA & Lujo Tropical
+# VEXO Real Estate | SPA Inmobiliaria de Lujo
 
-VEXO Real Estate es una Single Page Application (SPA) de alto rendimiento enfocada en el sector inmobiliario premium. El proyecto cubre el mercado en Mérida, Ciudad de México y Playa del Carmen.
+VEXO Real Estate es una Single Page Application (SPA) inmobiliaria enfocada en desarrollos premium en Mérida, Ciudad de México y Playa del Carmen. Todo el sitio corre desde `public/index.html` (una sola página, sin build step) más una página secundaria `public/mapa.html` que se carga dentro de un `<iframe>`.
 
-## 🚀 Arquitectura y Nuevas Características
+> **Para reglas técnicas detalladas dirigidas a asistentes de IA (Claude, GPT, etc.) que vayan a modificar este proyecto, ver [`CLAUDE.md`](./CLAUDE.md).** Este README es la vista general para humanos; CLAUDE.md tiene el detalle verificado línea por línea.
 
-*   **Ruta de Proyecto Única:** Todo el entorno de desarrollo y producción está autocontenido en `C:\Users\HP-Home\Documents\Projectos_Rosalia\VEXO_MASTER_OPTIMIZADO`. No existen dependencias externas fuera de esta carpeta.
-*   **Fuente de Datos Consolidada (Propiedades + Lotes):** La información se extrae de dos archivos TSV separados. El script los unifica primero en un archivo de validación `data.generated.js` y, una vez aprobado, se traslada a `public/data.js` para alimentar la SPA.
-*   **Chatbot Inteligente:** Interfaz de usuario (UI) del chatbot finalizada. Preparada para la integración del motor de inteligencia artificial mediante la API de Gemini.
-*   **UI Avanzada:** Sistema de diseño v3 ("Parrot") con soporte completo para Modo Oscuro, correos automatizados vía EmailJS y un catálogo que incluye filtrado mixto para departamentos y lotes de inversión.
+## Arquitectura en una vista
 
-1. MANDAMIENTOS PARA LA IA (Reglas inviolables)
-Directorio: Solo interactuar con C:\Users\HP-Home\Documents\Projectos_Rosalia\VEXO_MASTER_OPTIMIZADO.
+- **Sin framework, sin build:** HTML5 + CSS3 + JavaScript vanilla. `package.json` no define ningún paso de compilación real.
+- **Una sola fuente de datos:** `public/data.js` expone `window.DESARROLLOS`, `window.CONFIG` y helpers. Todo el catálogo (39 desarrollos: departamentos y lotes) sale de ahí.
+- **Chatbot con IA real, sin exponer la key:** `public/chatbot.js` (front) llama a `/api/chat` (función serverless en `api/chat.js`), que es quien habla con Gemini usando una variable de entorno del lado del servidor.
+- **Mapa 3D interactivo:** `public/mapa.html`, MapLibre GL vía CDN, con calculadora hipotecaria, filtros por tipo y puntos de interés por ciudad.
+- **Deploy:** Vercel, auto-deploy desde GitHub push. El ruteo de `vercel.json` es crítico — ver advertencia abajo.
 
-DOM Prohibido: NO cambies los IDs, clases o jerarquía estructural de index.html. Son el ancla del sistema de renderizado.
+## ⚠️ Antes de tocar `vercel.json`
 
-Scripts: Cualquier lógica de interfaz debe ser inyectada globalmente mediante window.func = ... al final del index.html.
+`vercel.json` decide qué archivos de `public/` se sirven tal cual (JS, CSS, imágenes, `mapa.html`) y qué rutas caen al catch-all de `index.html` (para el comportamiento de SPA). **Si agregas un archivo estático nuevo con una extensión que la regla de `routes` no cubre, Vercel lo va a servir como si fuera `index.html` en producción** — el navegador tronará con `Unexpected token '<'` al intentar ejecutarlo como JS. Esto ya pasó una vez con `theme.js`, `vexo-magic.js` y `sanity-check.js`. Antes de hacer push, correr `scripts\revisar_antes_de_git.ps1` — ahora valida esto automáticamente (ver más abajo).
 
-2. Flujo de Renderizado (Orden Obligatorio)
-Para evitar ReferenceError y fallos en animaciones:
+## Estructura real del proyecto
 
-Carga de Datos: data.js debe cargarse primero para exponer window.DESARROLLOS.
-
-Motor Visual: vexo-magic.js inicializa el DOM.
-
-Inyección: App.js (o script de inyección) renderiza contenido.
-
-Post-Render: Obligatorio llamar a window.vxMagic.initCards() y window.vxMagic.refreshReveal() tras cada inyección dinámica de HTML.
-
-3. Estructura de Datos (Integridad)
-Rutas: images/Desarrollos/{carpeta}/{archivo}.webp.
-
-Ciudad: Valores permitidos: "Merida", "Ciudad de Mexico", "Playa del Carmen".
-
-4. Checklist de Seguridad pre-push (Automatizado)
-Antes de confirmar cualquier cambio, la IA debe validar:
-
-[ ] ¿El cambio afecta la carga de window.DESARROLLOS?
-
-[ ] ¿Se mantiene el orden de carga data.js -> vexo-magic.js?
-
-[ ] ¿El nuevo código sigue usando las variables CSS del Design System (--primary, --bg, etc.)?
-
-## 📁 Estructura del Proyecto
-
+```
 VEXO_MASTER_OPTIMIZADO/
-├── .env                       <-- Clave privada GEMINI_API_KEY (Ignorado en Git)
-├── .env.local                 <-- Configuraciones locales de desarrollo
-├── package.json               <-- Configuración de dependencias Node/Express
-├── vercel.json                <-- Configuración de enrutamiento Serverless para Vercel
+├── .env                     <- Secrets locales (API_KEY_GEMINI, SHEETS_ENDPOINT, etc.) — NUNCA a git
+├── .env.local
+├── package.json             <- Sin build real, solo @vercel/speed-insights
+├── vercel.json               <- Ruteo de producción — ver advertencia arriba
 ├── api/
-│   └── chat.js                <-- Backend seguro (Santiago Asesor Nivel Dios)
-├── brochures_origen/          <-- Carpeta local donde pegas tus PDFs de la nube
-├── scripts/
-│   └── optimizar_y_convertir.py <-- TU ÚNICO SCRIPT OPERATIVO DE ASSETS
-├── src/
-│   └── components/
-│       └── ui/
-│           └── calculadora.js <-- Componente autónomo con inyector CSS
-└── public/
-    ├── index.html             <-- Interfaz de la web (Estructura)
-    ├── data.js                <-- Tu Master unificado limpio (Proyectos 1 al 33)
-    ├── chatbot.js             <-- Controlador front-end del chat seguro
-    ├── downloads/
-    │   └── brochures/         <-- PDFs finales limpios (ej: mareta-lotes-telchac-puerto.pdf)
-    └── images/
-        └── Desarrollos/       <-- Carpetas exactas (ej: 022-xaviera-departamentos, 027-...)
-
-## 🛠 Instalación y Despliegue
-
-1.  Asegúrate de trabajar exclusivamente dentro del directorio raíz del proyecto.
-2.  Ejecuta `generar-data.mjs` para procesar los archivos TSV y generar el consolidado de datos.
-3.  Valida la información en la interfaz.
-4.  Ejecuta el script `publicar_git.ps1` para sincronizar con el repositorio y realizar el despliegue automático en Vercel (con soporte de preview y confirmación).
-
-## Stack
-
-- **Frontend:** HTML5 + CSS3 + JavaScript vanilla (sin frameworks)
-- **Mapa:** MapLibre GL 3.6.2 via CDN unpkg (gratuito, sin API key)
-- **Estilo mapa:** Carto Dark Matter + edificios 3D fill-extrusion
-- **Fuentes:** Playfair Display (display) + DM Sans (body) — Google Fonts
-- **Iconos:** Material Symbols Outlined
-- **Deploy:** Vercel (auto-deploy desde GitHub push)
-- **Repo:** https://github.com/VEXO-RE/Vexo.git
-
----
-
-## Desarrollos y Lotes
-
-| Rango IDs | Ciudad |
-|-----------|--------|
-| 1 – 11 | Merida, Yucatan |
-| 12 – 25 | Ciudad de Mexico |
-| 26 | Playa del Carmen (Downtown Ciudad Mayakoba) |
-
-### Coordenadas — critico para el mapa
-
-| Ciudad | Latitud | Longitud |
-|--------|---------|----------|
-| Merida | ~21.xxx (positiva) | ~-89.xxx (NEGATIVA) |
-| CDMX | ~19.xxx (positiva) | ~-99.xxx (NEGATIVA) |
-| Playa del Carmen | ~20.xxx (positiva) | ~-87.xxx (NEGATIVA) |
-
----
-
-## Imagenes
-
-- **Origen master:** \C:\Users\HP-Home\Documents\Projectos_Rosalia\VEXO_MASTER_OPTIMIZADO\scripts\master.tsv\
-- **En repo:** \public/images/Desarrollos/{carpeta}/{nombre}.webp\
-- **Solo se sincronizan** las imagenes referenciadas en \scripts/master.tsv\
-- **Total en repo:** 1624 imagenes
-- Si supera 95MB -> activar Git LFS para la carpeta \public/images/Desarrollos/\
-
-### Regla de fallback de imagen en tarjetas
-\\\
-foto_principal_url  ->  imagenes[0]  ->  imagen_fallback
-\\\
-
-
----
-
-## Flujo de actualizacion de datos propiedades y lotes
-
-```
-1. Google Sheets (gsheet master)
-       |
-2. Descargar como TSV (NO CSV) -> guardar como scripts/master.tsv para propiedades y csv.csv para Lotes
-       |
-3. ./actualizar_contenido.ps1   -> genera/actualiza public/data.js
-       |
-4. ./VEXO_MASTER_SYNC.ps1       -> sincroniza Drive -> repo limpio, actualiza docs
-       |
-5. ./revisar_antes_de_git.ps1   -> auditoria estricta (debe salir 100% verde)
-       |
-6. ./publicar_git.ps1           -> deploy a Vercel via GitHub
+│   └── chat.js               <- Proxy seguro a Gemini (la key vive solo aquí, del lado servidor)
+├── scripts/                  <- Automatización de datos y auditoría (no se sube a git)
+│   ├── revisar_antes_de_git.ps1   <- Gate obligatorio antes de cualquier push
+│   ├── publicar_git.ps1           <- Deploy a GitHub -> Vercel
+│   ├── actualizar_contenido.ps1   <- Sync Google Sheets -> public/data.js
+│   ├── generar-data.mjs
+│   └── audit_data.py, audit_files.py, validar_index.py  <- utilidades de diagnóstico manual (no bloquean el push)
+└── public/                   <- Todo lo que Vercel sirve
+    ├── index.html            <- SPA completa (todas las páginas viven aquí como <div class="page">)
+    ├── mapa.html              <- Mapa 3D, se carga en <iframe> desde index.html
+    ├── data.js                <- window.DESARROLLOS (39 registros) + window.CONFIG
+    ├── design-system.css      <- Design System v4 "Parrot Premium" — capa BASE (ver nota de paletas abajo)
+    ├── theme.js                <- Preferencia de tema (localStorage)
+    ├── vexo-magic.js           <- Animaciones (scroll reveal, ripple, partículas del hero)
+    ├── sanity-check.js         <- Corrige en runtime inconsistencias de mayúsculas en `tipo`
+    ├── chatbot.js               <- Front del chat con IA, llama a /api/chat
+    ├── downloads/, fonts/, images/, videos/
+    └── robots.txt, sitemap.xml
 ```
 
----
+## Dos paletas de color activas (intencional)
 
-## Estructura de public/data.js (consolidado)
+`index.html` carga `design-system.css` primero y **después** define su propio `<style>` inline con una paleta oscura (`--primary:#d4891a`, `--bg:#07120f`, tipografía Syne + DM Sans). Como el `<style>` inline va después en la cascada, sus reglas ganan donde compiten. **El look oscuro con dorado que ves en el sitio en vivo viene del `<style>` inline de `index.html`, no de `design-system.css`.** Para cambiar colores del sitio principal, edita ahí. `mapa.html` tiene una tercera paleta totalmente independiente (marfil/dorado/azul marino) — es a propósito, no se unifica sin pedirlo explícitamente.
 
-Todas las constantes se exponen como `window.XXX = XXX` al final del archivo.
+## Datos — `public/data.js`
 
-| Variable global | Contenido |
-|----------------|----------|
-data.js — VEXO Real Estate
-// Fuente única de datos. Cargado via <script src="/data.js"></script>
-// Rutas de imagen: images/Desarrollos/{carpeta}/{archivo}.webp
-// Brochures: downloads/brochures/{archivo}.pdf
-// Actualizado: Mayo 2026
+- Ciudades válidas (con acento, tal como están en el archivo): **"Mérida"**, **"Ciudad de México"**, **"Playa del Carmen"**.
+- Tipos válidos: **"Departamentos"**, **"Departamentos y Locales"**, **"Lotes"**.
+- Campos que rompen el sitio si están vacíos: `id`, `slug`, `nombre`, `ciudad`, `zona`, `lat`/`lng` (si faltan, el desarrollo no aparece en el mapa aunque sí en el catálogo).
+- **Gap conocido:** los 11 desarrollos tipo "Lotes" no traían `lat`/`lng` originalmente — se les asignaron coordenadas aproximadas a nivel de pueblo (Telchac Puerto / Santa Clara, Yucatán) pendientes de reemplazar por el pin exacto cuando esté disponible.
+- `tour360_url` existe en el esquema y la UI del mapa ya está lista para mostrarlo, pero **ningún desarrollo tiene todavía una URL real** (todos dicen `"Consultar"`).
 
-### Campos obligatorios por desarrollo (no dejar vacios)
-- `id` — unico, numerico
-- `slug` — unico, sin espacios ni mayusculas
-- `nombre` / `nombre_corto`
-- `ciudad` — exactamente "Merida", "Ciudad de Mexico" o "Playa del Carmen"
-- `zona` — NO dejar "" (rompe los filtros del catalogo)
-- `lat` / `lng` — lng SIEMPRE negativa
-- `imagenes[]` — minimo 1 elemento
-- `foto_principal_url` — ruta webp preferida
+## Flujo de actualización de datos
 
----
+```
+1. Google Sheets (maestro)
+       |
+2. Descargar como TSV -> scripts/master.tsv (propiedades) / csv correspondiente (lotes)
+       |
+3. scripts\actualizar_contenido.ps1   -> genera/actualiza public/data.js
+       |
+4. scripts\revisar_antes_de_git.ps1   -> auditoría obligatoria (debe salir sin errores)
+       |
+5. scripts\publicar_git.ps1           -> deploy a Vercel vía GitHub
+```
 
-## Mapa (mapa.html)
+## Chatbot — cómo está armado
 
-- **Libreria:** MapLibre GL 3.6.2 via CDN unpkg
-- **Estilo:** https://basemaps.cartocdn.com/gl/dark-matter-gl-style/style.json
-- **Edificios 3D:** fill-extrusion activado desde zoom 13
-- **Ciudades en mapa:** Merida, CDMX y Playa del Carmen
-- **Lugares de interes:**  en Merida  en CDMX y Playa del Carmen con imagen y datos
-- **Filtros:** Todos | Merida | CDMX | Desarrollos VEXO | Lugares de interes
-- **Popup:** imagen + categoria + descripcion + chips de datos + boton accion
-- **Calculadora hipotecaria:** debajo del mapa en la SPA (index.html page-mapa)
+1. `public/chatbot.js` corre en el navegador. No contiene ninguna API key. Solo hace `fetch('/api/chat', ...)`.
+2. `api/chat.js` (función serverless de Vercel) lee `process.env.GEMINI_API_KEY` o `process.env.API_KEY_GEMINI` (acepta ambos nombres) y es quien de verdad llama a Gemini.
+3. **La variable debe existir en Vercel → Project Settings → Environment Variables.** El `.env` local no se usa en producción.
+4. `chatbot.js` se carga en `index.html` **después** del script principal inline, porque sobreescribe `window.sendChat`.
 
----
+Si alguna vez ves una API key escrita directamente en un archivo dentro de `public/`, es una fuga de seguridad — cualquiera puede verla en el código fuente del navegador. Rótala de inmediato en Google AI Studio / Cloud Console.
 
-## Design System — Paleta "Parrot / Lujo Tropical"
+## Checklist pre-deploy
 
-| Variable | Valor | Uso |
-|----------|-------|-----|
-| \--primary\ / \--yam\ | \#D4891A\ | Ambar dorado — acento principal |
-| \--primary-d\ / \--dorado\ | \#E8A92A\ | Dorado claro — hover, highlights |
-| \--grenadine\ | \#C85250\ | Coral rojo — alertas, enfasis |
-| \--bg\ | \#0E1E28\ | Azul noche marina — fondo principal |
-| \--bg-card\ | \#162B3A\ | Fondo de tarjetas |
-| \--cream\ | \#F5EDD6\ | Texto principal |
-| \--esmeralda\ | \#2E8B6E\ | Verde selva — acentos secundarios |
-| \--teal\ | \#13ECDA\ | Cian — lugares de interes en mapa |
+`scripts\revisar_antes_de_git.ps1` automatiza casi todo esto. Correrlo y que salga sin `[XX]` (errores) antes de cualquier `git push`.
 
-**Fuente display:** Playfair Display (serif)
-**Fuente body:** DM Sans
----
+- [ ] `index.html` y `mapa.html` tienen balance correcto de `<div>` (una etiqueta de cierre faltante anida páginas enteras y las oculta — ya pasó una vez con `page-mapa`)
+- [ ] Cada extensión de archivo estático nuevo en `public/` está cubierta por `vercel.json`
+- [ ] Ninguna API key en texto plano dentro de `public/`
+- [ ] Cada `<label>` tiene `for=` apuntando a un `id` real, o envuelve directamente su `<input>`
+- [ ] Ningún desarrollo con `zona: ""` o ciudad/tipo fuera de los valores válidos
+- [ ] Todas las páginas de la SPA muestran contenido + su propio footer (no solo el footer)
+- [ ] El mapa: marcadores de desarrollos y de puntos de interés visibles, ninguno se desfasa en hover
+- [ ] Chatbot responde de verdad (prueba un mensaje, no solo que la ventana abre)
+- [ ] Variable `GEMINI_API_KEY` / `API_KEY_GEMINI` configurada en Vercel, no solo en `.env` local
 
 ## Lo que NO va a Git
 
 ```
 .env
-scripts/master.tsv
-*.csv / *.xlsx
-public/downloads/     (PDFs pesados -> Drive)
-VEXO_WEB/descargas/
-Mapa-vexo/            (app React dev separada)
-Proyectos/            (sandbox)
-CLAUDE.md             (documentacion interna)
-*.py                  (scripts Python internos)
-publicar_en_vercel.ps1
-VEXO_MASTER_SYNC.ps1
+.env.local
+scripts/*.tsv, *.csv, *.xlsx
+public/downloads/        (PDFs pesados -> Drive)
+CLAUDE.md                (documentación interna para IA)
+node_modules/
+scripts/*.log
 ```
 
 ---
 
-## Checklist pre-deploy
-
-- [ ] `revisar_antes_de_git.ps1` → 100% verde
-- [ ] `mapa.html` carga: marcadores visibles + edificios 3D + popups con imagen
-- [ ] Filtros del catálogo funcionan (Mérida, CDMX, tipo)
-- [ ] Calculadora hipotecaria: selector de desarrollo + cálculo correcto
-- [ ] Modal de descarga captura lead antes de abrir PDF
-- [ ] Formulario contacto envía a Google Sheets
-- [ ] Chatbot redirige a WhatsApp
-- [ ] Imágenes de los 26 desarrollos sin errores 404
-- [ ] Ningún desarrollo con `zona: ""`
-- [ ] `index.html` sin HTML inválido (nav anidado, tags rotos)
-- [ ] Encoding UTF-8 limpio en `data.js` e `index.html`
-
----
-
+**Stack:** HTML5 + CSS3 + JS vanilla · MapLibre GL 3.6.2 (CDN) · Google Fonts (Syne, DM Sans, Playfair Display) · Material Symbols · Vercel (auto-deploy desde GitHub).
