@@ -5,7 +5,12 @@
   ],
   "routes": [
     { "src": "/images/(.*)", "dest": "public/images/$1" },
-    { "src": "/data.js", "dest": "public/data.js" },
+    { "src": "/fonts/(.*)", "dest": "public/fonts/$1" },
+    { "src": "/videos/(.*)", "dest": "public/videos/$1" },
+    { "src": "/downloads/(.*)", "dest": "public/downloads/$1" },
+    { "src": "/mapa.html", "dest": "public/mapa.html" },
+    { "src": "/tour-redes.html", "dest": "public/tour-redes.html" },
+    { "src": "/(.*\\.(js|css|json|xml|txt|webp|png|jpg|jpeg|gif|svg|ico|woff|woff2|ttf|otf|pdf|mp4))", "dest": "public/$1" },
     { "src": "/(.*)", "dest": "public/index.html" }
   ],
   "headers": [

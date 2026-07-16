@@ -10,13 +10,13 @@ with open(path, 'r', encoding='utf-8-sig') as f:
 print('=== ESTADO ACTUAL DE data.js ===')
 print('Tamano archivo:', len(content), 'chars')
 
-desarrollos = re.findall(r'id:\s*(\d+)', content)
+desarrollos = re.findall(r'"id":\s*(\d+)', content)
 print('Total IDs encontrados:', len(desarrollos), '| IDs:', desarrollos)
 
-ciudades = re.findall(r'ciudad:\s*["\']([^"\']{2,40})["\']', content)
+ciudades = re.findall(r'"ciudad":\s*"([^"]{2,40})"', content)
 print('Ciudades:', Counter(ciudades))
 
-tipos = re.findall(r'tipo:\s*["\']([^"\']+)["\']', content)
+tipos = re.findall(r'"tipo":\s*"([^"]+)"', content)
 print('Tipos:', Counter(tipos))
 
 print('Playa del Carmen presente:', 'Playa del Carmen' in content)
