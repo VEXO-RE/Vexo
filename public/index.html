@@ -857,8 +857,9 @@
 
 <!-- ══ DATA + APP ══════════════════════════════════════════════════ -->
 <script>
-/* env — variables de entorno inyectadas inline para evitar ERR_FILE_NOT_FOUND con file:// */
-window.GEMINI_API_KEY  = "AIzaSyAKPJ5y342Y4a2Mh-6iVfQENk8TNq8UJow";
+/* env — variables públicas (NO sensibles). La GEMINI_API_KEY se eliminó de aquí:
+   ahora vive SOLO como variable de entorno del servidor en Vercel y se usa
+   desde /api/chat.js. Nunca debe volver a aparecer en este archivo. */
 window.WA_NUMBER       = "525527081749";
 window.SHEETS_ENDPOINT = "https://script.google.com/a/macros/vexorealestate.com/s/AKfycbyYM5vWAZngH4_3651Jp4jmAfnZ80LSapGgzCq4mYmpY-bOHlnrpYcgfeLgYFSxNXJYWQ/exec";
 </script>
@@ -866,6 +867,7 @@ window.SHEETS_ENDPOINT = "https://script.google.com/a/macros/vexorealestate.com/
 <script src="theme.js"></script>
 <script src="vexo-magic.js"></script>
 <script src="sanity-check.js"></script>
+<script src="chatbot.js"></script>
 <script>
 "use strict";
 
@@ -1473,8 +1475,9 @@ async function submitLead(e){
 
 // ── Chatbot ───────────────────────────────────────────────────────
 var chatOpen=false;
-// ── CHATBOT CON GEMINI ──────────────────────────────────────────
-var _GEMINI_KEY = (typeof window.GEMINI_API_KEY !== "undefined") ? window.GEMINI_API_KEY : "";
+// ── CHATBOT: la llamada real a Gemini vive en chatbot.js → /api/chat (server-side).
+// La API key YA NO vive en el navegador. _callGemini() queda inerte abajo como red de
+// seguridad por si chatbot.js no cargara; getChatReply() sigue como fallback local.
 var _chatHist = [];
 
 var _FAQ = [
@@ -1514,7 +1517,11 @@ function _getChatLocal(msg) {
 }
 
 async function _callGemini(msg) {
-  if (!_GEMINI_KEY || _GEMINI_KEY.length < 10) return null;
+  // SEGURIDAD: inerte a propósito. NO restaurar un fetch directo a
+  // generativelanguage.googleapis.com con una key en la URL — eso expone la
+  // key a cualquier visitante. El chat real usa chatbot.js → POST /api/chat.
+  return null;
+  if (typeof _GEMINI_KEY !== "undefined" && (!_GEMINI_KEY || _GEMINI_KEY.length < 10)) return null;
   var devs = (window.DESARROLLOS||[]).slice(0,10);
   var ctx = devs.map(function(d){ return d.nombre_corto + " en " + d.ciudad + (d.precio_desde > 0 ? " desde $" + Math.round(d.precio_desde/1000) + "k" : ""); }).join(", ");
   var lotes = (window.LOTES||[]).slice(0,5).map(function(l){ return l.nombre_corto + " en " + l.ciudad; }).join(", ");

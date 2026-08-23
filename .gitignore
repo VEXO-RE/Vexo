@@ -3,6 +3,7 @@
 .env.local
 .env.*.local
 *.env
+_BORRAR_env_expuesto_en_public.txt
 
 # ── Node / Build ─────────────────────────────────────────────
 node_modules/
