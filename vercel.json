@@ -1,9 +1,11 @@
 {
   "version": 2,
   "builds": [
-    { "src": "public/**", "use": "@vercel/static" }
+    { "src": "public/**", "use": "@vercel/static" },
+    { "src": "api/**/*.js", "use": "@vercel/node" }
   ],
   "routes": [
+    { "src": "/api/(.*)", "dest": "api/$1" },
     { "src": "/images/(.*)", "dest": "public/images/$1" },
     { "src": "/fonts/(.*)", "dest": "public/fonts/$1" },
     { "src": "/videos/(.*)", "dest": "public/videos/$1" },

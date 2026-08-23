@@ -98,6 +98,7 @@ $items = @(
     "cirugia_master.ps1",
     "src/",
     "public/",
+    "api/",
     "tour-redes.html"
 )
 foreach ($item in $items) {

@@ -11,13 +11,52 @@
  * Compatible con el HTML real de index.html:
  *   #chat-btn, #chat-window, #chat-msgs, #chat-inp
  * No reemplaza toggleChat() — solo sustituye el "cerebro" de sendChat()
- * por una versión con IA. Si /api/chat falla, cae de regreso a WhatsApp.
+ * por una versión con IA. Si /api/chat falla, reintenta una vez y, si
+ * sigue fallando, cae de regreso a WhatsApp.
+ *
+ * MEJORAS (Ago 2026):
+ *  - Contexto ampliado: además del catálogo de desarrollos, se envían
+ *    los artículos de blog/mercado (BLOG_POSTS) y datos de ciudades
+ *    (CIUDADES) para que el bot pueda hablar de plusvalía, zonas y
+ *    tendencias, no solo de precios de un desarrollo puntual.
+ *  - api/chat.js ahora tiene grounding con Google Search, así que el
+ *    bot puede complementar con información vigente de la web cuando
+ *    la pregunta lo amerite (tasas, noticias, etc.).
+ *  - Reintento automático (1x) ante fallas de red antes de mostrar el
+ *    fallback de WhatsApp, para conversaciones más fluidas.
+ *  - La conversación se guarda en sessionStorage para no perderse si
+ *    el visitante navega entre index.html, mapa.html o tour-redes.html.
  */
 (function () {
   "use strict";
 
-  var chatHistory = [];
-  var MAX_HISTORY = 12;
+  var STORAGE_KEY = "vexoChatHistory";
+  var MAX_HISTORY = 16;
+  var chatHistory = cargarHistorial();
+
+  function cargarHistorial() {
+    try {
+      var raw = sessionStorage.getItem(STORAGE_KEY);
+      var parsed = raw ? JSON.parse(raw) : [];
+      return Array.isArray(parsed) ? parsed : [];
+    } catch (e) {
+      return [];
+    }
+  }
+
+  function guardarHistorial() {
+    try {
+      sessionStorage.setItem(STORAGE_KEY, JSON.stringify(chatHistory));
+    } catch (e) {
+      /* si sessionStorage no está disponible, seguimos solo en memoria */
+    }
+  }
+
+  function pushHistorial(entrada) {
+    chatHistory.push(entrada);
+    if (chatHistory.length > MAX_HISTORY) chatHistory.shift();
+    guardarHistorial();
+  }
 
   function esc(s) {
     return String(s == null ? "" : s).replace(/[&<>"']/g, function (c) {
@@ -27,7 +66,7 @@
 
   /* Recorta el catálogo de desarrollos a los campos que el modelo necesita,
      para no mandar objetos gigantes (imágenes, arrays largos, etc.) */
-  function buildContext() {
+  function buildDesarrollosContext() {
     var devs = window.DESARROLLOS || [];
     return devs.map(function (d) {
       return {
@@ -46,6 +85,45 @@
         faqs: d.chatbot_preguntas_frecuentes || "Consultar especificaciones"
       };
     });
+  }
+
+  /* Artículos de mercado/blog: le dan al bot contexto de tendencias,
+     plusvalía y comparativas de zonas que no viven en la ficha de un
+     desarrollo individual. */
+  function buildBlogContext() {
+    var posts = window.BLOG_POSTS || [];
+    return posts.map(function (p) {
+      return {
+        titulo: p.titulo,
+        ciudad: p.ciudad,
+        categoria: p.categoria,
+        fecha: p.fecha,
+        resumen: p.resumen
+      };
+    });
+  }
+
+  /* Datos de ciudad: plusvalía por zona, por qué invertir, stats. */
+  function buildCiudadesContext() {
+    var ciudades = window.CIUDADES || [];
+    return ciudades.map(function (c) {
+      return {
+        nombre: c.nombre,
+        eslogan: c.eslogan,
+        por_que_invertir: c.por_que_invertir,
+        zonas: (c.zonas || []).map(function (z) {
+          return { nombre: z.nombre, plusvalia: z.plusvalia, descripcion: z.descripcion };
+        })
+      };
+    });
+  }
+
+  function buildContext() {
+    return {
+      desarrollos: buildDesarrollosContext(),
+      articulos_mercado: buildBlogContext(),
+      ciudades: buildCiudadesContext()
+    };
   }
 
   function formatBotMsg(text) {
@@ -72,6 +150,29 @@
     );
   }
 
+  function sleep(ms) {
+    return new Promise(function (resolve) { setTimeout(resolve, ms); });
+  }
+
+  /* Llama a /api/chat. reintento=true permite un segundo intento tras
+     una breve pausa antes de rendirse y mostrar el fallback. */
+  async function llamarAPI(reintento) {
+    var resp = await fetch("/api/chat", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ history: chatHistory, context: buildContext() })
+    });
+    var data = await resp.json();
+    if (!resp.ok || data.error) {
+      if (reintento) {
+        await sleep(900);
+        return llamarAPI(false);
+      }
+      throw new Error(data.error || "HTTP " + resp.status);
+    }
+    return data;
+  }
+
   async function sendChatIA() {
     var inp = document.getElementById("chat-inp");
     var msgsEl = document.getElementById("chat-msgs");
@@ -88,25 +189,16 @@
     );
     msgsEl.scrollTop = msgsEl.scrollHeight;
 
-    chatHistory.push({ role: "user", parts: [{ text: msg }] });
-    if (chatHistory.length > MAX_HISTORY) chatHistory.shift();
+    pushHistorial({ role: "user", parts: [{ text: msg }] });
 
     try {
-      var resp = await fetch("/api/chat", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ history: chatHistory, context: buildContext() })
-      });
-      var data = await resp.json();
+      var data = await llamarAPI(true);
 
       var typing = document.getElementById("typing");
       if (typing) typing.remove();
 
-      if (!resp.ok || data.error) throw new Error(data.error || "HTTP " + resp.status);
-
       var reply = data.text || "Gracias por tu mensaje. Un asesor VEXO te contactará muy pronto.";
-      chatHistory.push({ role: "model", parts: [{ text: reply }] });
-      if (chatHistory.length > MAX_HISTORY) chatHistory.shift();
+      pushHistorial({ role: "model", parts: [{ text: reply }] });
 
       msgsEl.insertAdjacentHTML("beforeend", '<div class="msg bot">' + formatBotMsg(reply) + "</div>");
     } catch (err) {
@@ -118,11 +210,28 @@
     msgsEl.scrollTop = msgsEl.scrollHeight;
   }
 
+  /* Al cargar, si ya había una conversación en esta sesión (por ejemplo
+     el visitante navegó de index.html a mapa.html), la reintegramos al
+     historial visual del chat. */
+  function repintarHistorial() {
+    var msgsEl = document.getElementById("chat-msgs");
+    if (!msgsEl || !chatHistory.length) return;
+    chatHistory.forEach(function (turno) {
+      var texto = (turno.parts && turno.parts[0] && turno.parts[0].text) || "";
+      if (!texto) return;
+      var clase = turno.role === "user" ? "user" : "bot";
+      var contenido = turno.role === "user" ? esc(texto) : formatBotMsg(texto);
+      msgsEl.insertAdjacentHTML("beforeend", '<div class="msg ' + clase + '">' + contenido + "</div>");
+    });
+    msgsEl.scrollTop = msgsEl.scrollHeight;
+  }
+
   /* Sustituye el sendChat basado en reglas (definido inline en index.html)
      por la versión con IA. Debe cargarse DESPUÉS del <script> principal
      para que esta asignación gane. */
   function activar() {
     window.sendChat = sendChatIA;
+    repintarHistorial();
   }
 
   if (document.readyState === "loading") {
