@@ -903,6 +903,14 @@ function esc(s){
   return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");
 }
 
+// ── Convierte un link de Google Drive "ver" en un link de descarga directa ──
+function driveDownload(url){
+  if(!url) return "";
+  var m = String(url).match(/\/file\/d\/([^\/]+)/);
+  if(!m) return url; // no es un link de Drive tipo /file/d/ID/view, se deja igual
+  return "https://drive.google.com/uc?export=download&id=" + m[1];
+}
+
 // ── Toast ─────────────────────────────────────────────────────────
 function toast(msg,tipo){
   tipo=tipo||"ok";
@@ -1278,7 +1286,7 @@ function verDetalle(slugOrId){
           '</div>'+
           (d.acabados&&d.acabados!=="Consultar con asesor"?'<div class="glass" style="padding:20px;border-radius:14px;margin-bottom:20px"><h4 style="font-family:\'Syne\',sans-serif;font-weight:700;font-size:14px;margin-bottom:10px">Acabados</h4><div style="display:flex;flex-wrap:wrap;gap:8px">'+d.acabados.split("|").map(function(a){return '<span style="padding:4px 12px;border-radius:999px;background:rgba(212,137,26,.08);color:var(--primary);font-size:12px">'+esc(a.trim())+'</span>'}).join("")+'</div></div>':"")+
           '<div style="display:flex;flex-wrap:wrap;gap:12px;margin-bottom:28px">'+
-            (d.brochure?'<a href="'+esc(d.brochure_url||d.brochure||'')+'" target="_blank" rel="noopener" class="btn btn-o" onclick="event.stopPropagation();registrarDescargaBrochure(\''+esc(d.nombre)+'\')"><span class="material-symbols-outlined">download</span>Descargar brochure</a>':'<button class="btn btn-o" onclick="abrirModalDescarga(\'Brochure '+esc(d.nombre)+'\',(d.brochure_url||null))"><span class="material-symbols-outlined">download</span>Solicitar brochure</button>')+
+            (d.brochure?'<a href="'+esc(driveDownload(d.brochure_url||d.brochure||''))+'" download target="_blank" rel="noopener" class="btn btn-o" onclick="event.stopPropagation();registrarDescargaBrochure(\''+esc(d.nombre)+'\')"><span class="material-symbols-outlined">download</span>Descargar brochure</a>':'<button class="btn btn-o" onclick="abrirModalDescarga(\'Brochure '+esc(d.nombre)+'\',(d.brochure_url||null))"><span class="material-symbols-outlined">download</span>Solicitar brochure</button>')+
             '<button onclick="showPage(\'contacto\')" class="btn btn-p"><span class="material-symbols-outlined">calendar_month</span>Agendar visita</button>'+
             '<a href="https://wa.me/525527081749?text='+encodeURIComponent("Hola, me interesa el desarrollo "+d.nombre)+'" target="_blank" rel="noopener" class="btn" style="background:rgba(37,211,102,.1);color:#25D366;border:1px solid rgba(37,211,102,.3)"><span class="material-symbols-outlined">chat</span>WhatsApp</a>'+
             (d.url_maps?'<a href="'+esc(d.url_maps)+'" target="_blank" rel="noopener" class="btn btn-o"><span class="material-symbols-outlined">map</span>Ver en Google Maps</a>':"")+
@@ -1809,7 +1817,7 @@ async function submitDescarga(){
 
   cerrarModalDescarga();
   toast("¡Gracias "+nombre+"! Recibirás el material en tu correo.","ok");
-  if(_descargaUrl)setTimeout(function(){window.open(_descargaUrl,"_blank")},600);
+  if(_descargaUrl)setTimeout(function(){window.open(driveDownload(_descargaUrl),"_blank")},600);
   if(btn){btn.disabled=false;btn.innerHTML='<span class="material-symbols-outlined">send</span>Solicitar material'}
 }
 
