@@ -406,7 +406,7 @@
  */
 
 // 1. CONFIGURACIÓN DE CONEXIÓN MAESTRA
-const GEMINI_API_KEY = "TU_API_KEY_AQUI";.env
+const GEMINI_API_KEY = process.env.GEMINI_API_KEY || "";
 const GEMINI_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${GEMINI_API_KEY}`;
 
 // Memoria de la conversación activa (Mantiene hasta 12 mensajes para un contexto profundo)
