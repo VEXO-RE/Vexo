@@ -1102,7 +1102,7 @@ function devCard(d,i){
   var precioStr=d.precio_desde&&parseFloat(d.precio_desde)>0?"Desde $"+Math.round(parseFloat(d.precio_desde)).toLocaleString("es-MX"):"Precio a consultar";
   var slugId=esc(d.slug||String(d.id||""));
   var esBadge=d.estatus==="Entrega Inmediata"?"✅ Inmediata":(d.badge||d.estatus||"Preventa");
-  return '<article class="dev-card reveal d'+Math.min((i%4)+1,4)+'" data-id="'+d.id+'" onclick="verDetalle(\''+slugId+'\')" tabindex="0" role="button" aria-label="Ver '+esc(d.nombre)+'" onkeydown="if(event.key===\'Enter\')verDetalle(\''+slugId+'\')">' +
+  return '<article class="dev-card reveal d'+Math.min((i%4)+1,4)+'" data-id="'+d.id+'" onclick="setTimeout(function(){verDetalle(\''+slugId+'\')},0)" tabindex="0" role="button" aria-label="Ver '+esc(d.nombre)+'" onkeydown="if(event.key===\'Enter\')verDetalle(\''+slugId+'\')">' +
     '<div class="dev-img-wrap"><img class="dev-img" src="'+esc(img)+'" alt="'+esc(d.nombre)+'" loading="lazy" onerror="this.src=\'https://images.unsplash.com/photo-1560185007-cde436f6a4d0?w=800&q=80\'"/>' +
     '<div class="dev-overlay"><button class="btn btn-p btn-sm" style="width:100%;justify-content:center" tabindex="-1">Ver desarrollo</button></div>' +
     '<span class="dev-badge">'+esc(esBadge)+'</span><span class="dev-city">'+esc(d.ciudad)+'</span></div>' +
@@ -1988,5 +1988,6 @@ document.addEventListener("DOMContentLoaded",function(){
 });
 </script>
 <!-- chatbot.js integrado en index.html -->
+<script defer src="/_vercel/speed-insights/script.js"></script>
 </body>
 </html>
