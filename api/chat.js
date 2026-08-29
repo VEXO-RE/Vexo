@@ -21,7 +21,7 @@ export default async function handler(req, res) {
       return res.status(500).json({ error: 'Falta la configuración de GEMINI_API_KEY (o API_KEY_GEMINI) en el servidor.' });
     }
 
-    const GEMINI_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`;
+    const GEMINI_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-flash-latest:generateContent?key=${apiKey}`;
 
     // Ingeniería de Prompt Avanzada Nivel Dios de VEXO
     const systemInstruction = `

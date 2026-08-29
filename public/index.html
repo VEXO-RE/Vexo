@@ -264,14 +264,14 @@
       <div class="nav-logo-text">VEXO <span>RE</span></div>
     </div>
     <div class="nav-links">
-      <a class="nav-link active" id="nl-home" onclick="showPage('home')">Inicio</a>
-      <a class="nav-link" id="nl-desarrollos" onclick="showPage('desarrollos')">Desarrollos</a>
-      <a class="nav-link" id="nl-ciudades" onclick="showPage('ciudades')">Ciudades</a>
-      <a class="nav-link" id="nl-mapa" onclick="showPage('mapa')">Mapa</a>
-      <a class="nav-link" id="nl-nosotros" onclick="showPage('nosotros')">Nosotros</a>
-      <a class="nav-link" id="nl-blog" onclick="showPage('blog')">Blog</a>
-      <a class="nav-link" id="nl-descargas" onclick="showPage('descargas')">Descargas</a>
-      <a class="nav-link" id="nl-contacto" onclick="showPage('contacto')">Contacto</a>
+      <a class="nav-link active" id="nl-home" href="/" onclick="event.preventDefault();showPage('home')">Inicio</a>
+      <a class="nav-link" id="nl-desarrollos" href="/desarrollos" onclick="event.preventDefault();showPage('desarrollos')">Desarrollos</a>
+      <a class="nav-link" id="nl-ciudades" href="/ciudades" onclick="event.preventDefault();showPage('ciudades')">Ciudades</a>
+      <a class="nav-link" id="nl-mapa" href="/mapa" onclick="event.preventDefault();showPage('mapa')">Mapa</a>
+      <a class="nav-link" id="nl-nosotros" href="/nosotros" onclick="event.preventDefault();showPage('nosotros')">Nosotros</a>
+      <a class="nav-link" id="nl-blog" href="/blog" onclick="event.preventDefault();showPage('blog')">Blog</a>
+      <a class="nav-link" id="nl-descargas" href="/descargas" onclick="event.preventDefault();showPage('descargas')">Descargas</a>
+      <a class="nav-link" id="nl-contacto" href="/contacto" onclick="event.preventDefault();showPage('contacto')">Contacto</a>
     </div>
     <div class="nav-ctas">
       <button class="btn btn-o btn-sm" onclick="showPage('contacto')">Agenda visita</button>
@@ -959,7 +959,7 @@ function toggleMenu(){
 }
 
 // ── Navigation ────────────────────────────────────────────────────
-function showPage(name){
+function showPage(name, fromPopstate){
   document.querySelectorAll(".page").forEach(function(p){p.classList.remove("active")});
   var pg=document.getElementById("page-"+name);
   if(!pg){toast("Página no encontrada","warn");return}
@@ -970,6 +970,7 @@ function showPage(name){
   window.scrollTo({top:0,behavior:"smooth"});
   document.body.style.overflow="";
   renderPage(name);
+  if(fromPopstate){ if(VX_TITLES[name]) document.title=VX_TITLES[name]; } else { vxSyncUrl(name); }
   setTimeout(initReveal,150);
   if(name==="mapa"){
     // Si estamos en file:// el iframe no puede cargar por restriccion de seguridad
@@ -992,6 +993,44 @@ function showPage(name){
 }
 
 // ── Footer HTML ───────────────────────────────────────────────────
+// ── Slugs / URLs amigables ──────────────────────────────────
+var VX_SLUGS = {
+  home: "/", desarrollos: "/desarrollos", ciudades: "/ciudades", mapa: "/mapa",
+  nosotros: "/nosotros", blog: "/blog", descargas: "/descargas", contacto: "/contacto",
+  privacidad: "/legal/politica-de-privacidad", terminos: "/legal/terminos-y-condiciones",
+  "aviso-legal": "/legal/aviso-legal"
+};
+var VX_TITLES = {
+  home: "VEXO Real Estate | Inversión inmobiliaria de lujo en Mérida, CDMX y Riviera Maya",
+  desarrollos: "Desarrollos | VEXO Real Estate",
+  ciudades: "Ciudades | VEXO Real Estate",
+  mapa: "Mapa Interactivo | VEXO Real Estate",
+  nosotros: "Nosotros | VEXO Real Estate",
+  blog: "Blog | VEXO Real Estate",
+  descargas: "Descargas y Documentos | VEXO Real Estate",
+  contacto: "Contacto | VEXO Real Estate",
+  privacidad: "Política de Privacidad | VEXO Real Estate",
+  terminos: "Términos y Condiciones | VEXO Real Estate",
+  "aviso-legal": "Aviso Legal | VEXO Real Estate"
+};
+function vxSlugToName(path){
+  path = (path || "/").replace(/\/+$/, "") || "/";
+  for (var k in VX_SLUGS){ if (VX_SLUGS[k] === path) return k; }
+  return null;
+}
+function vxSyncUrl(name){
+  var slug = VX_SLUGS[name];
+  if (!slug) return;
+  if (window.location.pathname !== slug){
+    window.history.pushState({ vxPage: name }, "", slug);
+  }
+  if (VX_TITLES[name]) document.title = VX_TITLES[name];
+}
+window.addEventListener("popstate", function(e){
+  var name = (e.state && e.state.vxPage) || vxSlugToName(window.location.pathname) || "home";
+  showPage(name, true);
+});
+
 function footerHTML(){
   var navLinks=[
     ["home","Inicio"],["desarrollos","Desarrollos"],["ciudades","Ciudades"],
@@ -1843,6 +1882,12 @@ function checkCookies(){try{if(localStorage.getItem("vexo-cookies"))document.get
 document.addEventListener("DOMContentLoaded",function(){
   checkCookies();
   renderPage("home");
+  var initialName = vxSlugToName(window.location.pathname);
+  if (initialName && initialName !== "home") {
+    showPage(initialName, true);
+  } else if (VX_TITLES.home) {
+    document.title = VX_TITLES.home;
+  }
   initReveal();
   poblarSelectDesarrollos();
 });
