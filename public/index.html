@@ -219,6 +219,12 @@
     #lightbox-nav button:hover{background:rgba(212,137,26,0.3)}
     /* ── Modal descarga lead ── */
     #modal-descarga{position:fixed;inset:0;z-index:900;background:rgba(7,18,15,0.92);backdrop-filter:blur(16px);display:none;align-items:center;justify-content:center}
+    /* ── Modal evento (video + registro) ── */
+    #modal-evento{position:fixed;inset:0;z-index:910;background:rgba(7,18,15,0.92);backdrop-filter:blur(16px);display:none;align-items:center;justify-content:center;padding:16px}
+    #evento-btn{position:fixed;bottom:156px;right:28px;z-index:400;width:52px;height:52px;border-radius:50%;background:linear-gradient(135deg,#e0245e,#8a1150);display:flex;align-items:center;justify-content:center;box-shadow:0 4px 16px rgba(224,36,94,0.45);cursor:pointer;border:none;transition:transform 0.25s,box-shadow 0.25s;animation:fadeUp 0.5s ease 2.1s both}
+    #evento-btn:hover{transform:scale(1.1);box-shadow:0 6px 24px rgba(224,36,94,0.6)}
+    #evento-btn .evento-dot{position:absolute;top:-2px;right:-2px;width:14px;height:14px;border-radius:50%;background:#ff3860;border:2px solid var(--bg,#0a1512);animation:pulseDot 1.6s infinite}
+    @keyframes pulseDot{0%,100%{transform:scale(1)}50%{transform:scale(1.25)}}
     /* ── Hero visual right col ── */
     @media(max-width:900px){.hero-visual-col{display:none!important}}
     /* ── Responsive ── */
@@ -851,6 +857,31 @@
       <input id="md-tel" type="tel" placeholder="WhatsApp / Teléfono" style="padding:11px 14px;border-radius:10px;background:rgba(245,248,255,.8);border:1px solid rgba(19,236,218,.2);color:var(--text);font-size:13px;width:100%"/>
       <label style="display:flex;align-items:flex-start;gap:8px;cursor:pointer;font-size:11px;color:var(--text-s)"><input type="checkbox" id="md-privacy" style="margin-top:3px;accent-color:var(--primary)"/> Acepto la <a onclick="showPage('privacidad');cerrarModalDescarga()" style="color:var(--primary);cursor:pointer;text-decoration:underline">Política de Privacidad</a></label>
       <button id="md-submit" onclick="submitDescarga()" class="btn btn-p btn-full"><span class="material-symbols-outlined">send</span>Solicitar material</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══ MODAL EVENTO (VIDEO + REGISTRO) ══ -->
+<button id="evento-btn" onclick="abrirModalEvento()" aria-label="Evento de preventa VEXO">
+  <span class="material-symbols-outlined" style="color:#fff;font-size:24px">celebration</span>
+  <span class="evento-dot"></span>
+</button>
+<div id="modal-evento">
+  <div class="glass" style="border-radius:20px;padding:0;max-width:480px;width:100%;border:1px solid rgba(224,36,94,.3);position:relative;overflow:hidden;max-height:92vh;overflow-y:auto">
+    <button onclick="cerrarModalEvento()" style="position:absolute;top:12px;right:14px;background:rgba(7,18,15,.6);border:none;color:#fff;font-size:20px;width:32px;height:32px;border-radius:50%;cursor:pointer;z-index:2">✕</button>
+    <video id="evento-video" src="/videos/Preventa-Reforma-Colon.mp4" controls playsinline style="width:100%;max-height:280px;background:#000;display:block"></video>
+    <div style="padding:28px">
+      <div class="section-eyebrow" style="margin-bottom:8px">Evento de preventa</div>
+      <h3 style="font-family:'Syne',sans-serif;font-weight:800;font-size:20px;margin-bottom:6px">Preventa Reforma Colón</h3>
+      <p style="color:var(--text-m);font-size:13px;margin-bottom:18px">Confirma tu asistencia y sé de los primeros en conocer este desarrollo antes de su lanzamiento oficial.</p>
+      <div style="display:flex;flex-direction:column;gap:12px">
+        <input id="ev-nombre" type="text" placeholder="Nombre completo" style="padding:11px 14px;border-radius:10px;background:rgba(245,248,255,.8);border:1px solid rgba(19,236,218,.2);color:var(--text);font-size:13px;width:100%"/>
+        <input id="ev-email" type="email" placeholder="Correo electrónico" style="padding:11px 14px;border-radius:10px;background:rgba(245,248,255,.8);border:1px solid rgba(19,236,218,.2);color:var(--text);font-size:13px;width:100%"/>
+        <input id="ev-tel" type="tel" placeholder="WhatsApp / Teléfono" style="padding:11px 14px;border-radius:10px;background:rgba(245,248,255,.8);border:1px solid rgba(19,236,218,.2);color:var(--text);font-size:13px;width:100%"/>
+        <input id="ev-invitados" type="number" min="1" max="10" placeholder="Número de invitados" style="padding:11px 14px;border-radius:10px;background:rgba(245,248,255,.8);border:1px solid rgba(19,236,218,.2);color:var(--text);font-size:13px;width:100%"/>
+        <label style="display:flex;align-items:flex-start;gap:8px;cursor:pointer;font-size:11px;color:var(--text-s)"><input type="checkbox" id="ev-privacy" style="margin-top:3px;accent-color:var(--primary)"/> Acepto la <a onclick="showPage('privacidad');cerrarModalEvento()" style="color:var(--primary);cursor:pointer;text-decoration:underline">Política de Privacidad</a></label>
+        <button id="ev-submit" onclick="submitEvento()" class="btn btn-p btn-full"><span class="material-symbols-outlined">event_available</span>Confirmar asistencia</button>
+      </div>
     </div>
   </div>
 </div>
@@ -1873,6 +1904,57 @@ function registrarDescargaBrochure(nombre,url){
   abrirModalDescarga("Brochure: "+nombre, brochureUrl);
 }
 
+// ── Evento (video + registro) ──────────────────────────
+function abrirModalEvento(){
+  var m=document.getElementById("modal-evento");
+  if(m)m.style.display="flex";
+  var v=document.getElementById("evento-video");
+  if(v){v.currentTime=0;v.play().catch(function(){});}
+  try{localStorage.setItem("vexo-evento-visto","1")}catch(e){}
+  var dot=document.querySelector("#evento-btn .evento-dot");
+  if(dot)dot.style.display="none";
+}
+function cerrarModalEvento(){
+  var m=document.getElementById("modal-evento");
+  if(m)m.style.display="none";
+  var v=document.getElementById("evento-video");
+  if(v)v.pause();
+}
+document.getElementById("modal-evento").addEventListener("click",function(e){
+  if(e.target===this)cerrarModalEvento();
+});
+
+async function submitEvento(){
+  var nombre=(document.getElementById("ev-nombre")?.value||"").trim();
+  var email=(document.getElementById("ev-email")?.value||"").trim();
+  var tel=(document.getElementById("ev-tel")?.value||"").trim();
+  var invitados=(document.getElementById("ev-invitados")?.value||"1").trim();
+  var priv=document.getElementById("ev-privacy")?.checked;
+  if(!nombre){toast("Ingresa tu nombre","warn");return}
+  if(!email||!email.includes("@")){toast("Ingresa un correo válido","warn");return}
+  if(!priv){toast("Acepta la política de privacidad","warn");return}
+  var btn=document.getElementById("ev-submit");
+  if(btn){btn.disabled=true;btn.innerHTML='<span class="material-symbols-outlined">hourglass_empty</span>Enviando…'}
+
+  var titulo="Evento: Preventa Reforma Colón";
+  var payload={nombre,email,telefono:tel,interes:titulo,invitados,origen:"vexorealestate.com/evento-preventa",fecha:new Date().toISOString()};
+
+  if(EMAILJS_READY){
+    try{
+      await emailjs.send(EMAILJS_SERVICE,EMAILJS_TEMPLATE,{from_name:nombre,from_email:email,telefono:tel,interes:titulo,desarrollo:"Reforma Colón",mensaje:"Confirma asistencia al evento. Invitados: "+invitados,fecha:payload.fecha,to_email:"ventas@vexorealestate.com"});
+    }catch(e){console.warn("EmailJS evento error:",e)}
+  }
+  var ep=window.CONFIG?.google?.sheets_endpoint||"";
+  if(ep){try{await fetch(ep,{method:"POST",mode:"no-cors",headers:{"Content-Type":"application/json"},body:JSON.stringify(payload)})}catch(e){}}
+  if(!EMAILJS_READY&&!ep){
+    window.open("mailto:ventas@vexorealestate.com?subject="+encodeURIComponent(titulo)+"&body="+encodeURIComponent("Nombre: "+nombre+"\nEmail: "+email+"\nTel: "+tel+"\nInvitados: "+invitados),"_blank");
+  }
+
+  cerrarModalEvento();
+  toast("¡Gracias "+nombre+"! Tu asistencia quedó confirmada.","ok");
+  if(btn){btn.disabled=false;btn.innerHTML='<span class="material-symbols-outlined">event_available</span>Confirmar asistencia'}
+}
+
 // ── Cookies ───────────────────────────────────────────────────────
 function acceptCookies(){document.getElementById("cookie-banner").classList.add("hidden");try{localStorage.setItem("vexo-cookies","all")}catch(e){}}
 function rejectCookies(){document.getElementById("cookie-banner").classList.add("hidden");try{localStorage.setItem("vexo-cookies","essential")}catch(e){}}
@@ -1890,6 +1972,14 @@ document.addEventListener("DOMContentLoaded",function(){
   }
   initReveal();
   poblarSelectDesarrollos();
+  try{
+    if(!localStorage.getItem("vexo-evento-visto")){
+      setTimeout(function(){ abrirModalEvento(); }, 8000);
+    } else {
+      var dot=document.querySelector("#evento-btn .evento-dot");
+      if(dot)dot.style.display="none";
+    }
+  }catch(e){}
 });
 </script>
 <!-- chatbot.js integrado en index.html -->
