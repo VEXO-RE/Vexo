@@ -30,7 +30,7 @@ const CONFIG = {
     whatsapp: "https://wa.me/525527081749",
   },
   google: {
-    sheets_endpoint: "https://script.google.com/macros/s/AKfycbyjv6sKXUMjDy7I04yQXk5qjbUbVegPHFaARYeLypjo8baqB06nX303RVgRCa0cmhHAEQ/exec",
+    sheets_endpoint: "https://script.google.com/macros/s/AKfycbz6qlaVWWBQYozAeWFoD30rQ8DT8e7is46R2Z8T5sXqAK5zTM6dr95ri7Cq5xUZF9oF/exec",
     calendar_url: "https://calendar.google.com/calendar/appointments/schedules/AcZssZ2fclSuUQz_Zg7Kb6y9uRBlrkEyzf6Eu6Fm1sgzxjqEU2QOn1WlLkSDJqmsdKYeR-v2zvsZ57Sh?gv=true",
   },
   stats: [
