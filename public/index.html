@@ -240,8 +240,20 @@
     /* ── MOBILE FIX ──────────────────────────────────── */
     @media(max-width:768px){
       .hero-h{font-size:clamp(32px,8vw,52px)!important}
-      .search-box select,.search-box input{min-width:0;width:100%!important}
+      /* Buscador del head: antes quedaba a mitad de ancho (columna vacía del hero-visual oculto) y el select se veía en blanco */
+      .hero-inner-grid{grid-template-columns:1fr!important;gap:28px!important}
+      .search-box{max-width:100%!important;width:100%!important;padding:14px!important}
+      .search-box select,.search-box input{min-width:0;width:100%!important;-webkit-appearance:none!important;appearance:none!important;background-color:rgba(7,18,15,0.95)!important;color:var(--text)!important;border:1px solid rgba(19,236,218,0.25)!important;font-size:15px!important;padding:12px 14px!important}
+      .search-box .btn{width:100%;justify-content:center}
       .vx-trust-bar{flex-direction:column;gap:12px;padding:16px}
+      /* Evita la cifra duplicada justo debajo del hero (ya se muestra arriba en la barra de confianza) */
+      #home-stats{display:none!important}
+      /* "Experiencia sin igual": apilar en 1 columna para que la imagen no se comprima ni se corte la insignia */
+      .why-us-grid{grid-template-columns:1fr!important;gap:28px!important}
+      .why-us-img{height:240px!important}
+      .why-us-badge{margin-left:0!important;margin-top:-32px!important;max-width:calc(100% - 32px)}
+      /* Tarjetas de "contactar con un asesor" / valores: de 5 columnas fijas a 2, para que se lea el texto completo */
+      #home-valores{grid-template-columns:repeat(2,1fr)!important;gap:12px!important}
       .dev-card-grid,.grid-3,.grid-2{grid-template-columns:1fr!important}
       .grid-4{grid-template-columns:repeat(2,1fr)!important}
       .pills-bar{flex-wrap:wrap;gap:6px!important;padding:0 12px!important}
@@ -260,6 +272,8 @@
       .grid-4{grid-template-columns:1fr!important}
       .vx-map-stats{display:none}
       .section-eyebrow{font-size:10px!important}
+      #home-valores{grid-template-columns:1fr!important}
+      .why-us-img{height:200px!important}
     }
   </style>
 </head>
@@ -334,7 +348,7 @@
     <div class="hero-glow" style="top:-200px;left:-200px"></div>
     <div class="hero-glow" style="bottom:-200px;right:-200px;opacity:0.5"></div>
     <div class="container hero-content">
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:center;width:100%;">
+      <div class="hero-inner-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:center;width:100%;">
         <div style="max-width:600px">
           <div class="hero-badge" style="animation:fadeUp 0.6s ease both">Desarrollos Premium · Mérida &amp; CDMX</div>
           <h1 class="hero-title" style="animation:fadeUp 0.6s ease 0.1s both">Invierte en<br/><span class="shimmer-t">desarrollos</span><br/><span style="color:var(--primary)">de élite</span></h1>
@@ -371,8 +385,8 @@
           <div class="glass anim-glow" style="position:absolute;top:-12px;right:-12px;border-radius:14px;padding:12px 16px;display:flex;align-items:center;gap:10px;z-index:2;background:rgba(7,18,15,0.92)">
             <span class="material-symbols-outlined icon-fill" style="font-size:26px;color:var(--primary)">trending_up</span>
             <div>
-              <div style="font-family:'Syne',sans-serif;font-weight:800;font-size:20px;color:var(--primary)">+22%</div>
-              <div style="color:var(--text-s);font-size:11px;margin-top:1px">Plusvalía anual</div>
+              <div style="font-family:'Syne',sans-serif;font-weight:800;font-size:20px;color:var(--primary)">Hasta 16%</div>
+              <div style="color:var(--text-s);font-size:11px;margin-top:1px">Rendimiento promedio</div>
             </div>
           </div>
           <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
@@ -391,7 +405,7 @@
     <div class="vx-trust-bar">
       <div class="vx-trust-item"><div class="vx-trust-icon"><span class="material-symbols-outlined icon-fill" style="font-size:16px">verified</span></div><div><div class="vx-trust-num">26+</div><div style="font-size:12px;color:var(--text-s)">Desarrollos</div></div></div>
       <div class="vx-trust-item"><div class="vx-trust-icon"><span class="material-symbols-outlined icon-fill" style="font-size:16px">location_city</span></div><div><div class="vx-trust-num">3</div><div style="font-size:12px;color:var(--text-s)">Ciudades</div></div></div>
-      <div class="vx-trust-item"><div class="vx-trust-icon"><span class="material-symbols-outlined icon-fill" style="font-size:16px">trending_up</span></div><div><div class="vx-trust-num">+22%</div><div style="font-size:12px;color:var(--text-s)">Plusvalía anual</div></div></div>
+      <div class="vx-trust-item"><div class="vx-trust-icon"><span class="material-symbols-outlined icon-fill" style="font-size:16px">trending_up</span></div><div><div class="vx-trust-num">Hasta 16%</div><div style="font-size:12px;color:var(--text-s)">Rendimiento promedio</div></div></div>
       <div class="vx-trust-item"><div class="vx-trust-icon"><span class="material-symbols-outlined icon-fill" style="font-size:16px">shield</span></div><div><div class="vx-trust-num">100%</div><div style="font-size:12px;color:var(--text-s)">Transparencia</div></div></div>
     </div>
   </section>
@@ -404,7 +418,7 @@
     <div id="home-devs" class="grid-3"></div>
   </div></section>
   <section class="section" style="background:var(--bg2)"><div class="container">
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center">
+    <div class="why-us-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center">
       <div class="reveal-l">
         <div class="section-eyebrow">Por qué elegirnos</div>
         <h2 class="section-title" style="margin-bottom:16px">Una experiencia de inversión <span style="color:var(--primary)">sin igual</span></h2>
@@ -413,8 +427,8 @@
         <button class="btn btn-p" onclick="showPage('contacto')">Hablar con un asesor</button>
       </div>
       <div class="reveal-r">
-        <img src="https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=700&q=80" alt="Desarrollo premium VEXO" style="width:100%;height:420px;object-fit:cover;border-radius:var(--r2);border:1px solid rgba(212,137,26,0.15)" loading="lazy"/>
-        <div class="glass anim-glow" style="margin-top:-50px;margin-left:40px;position:relative;z-index:1;border-radius:16px;padding:18px 24px;display:flex;align-items:center;gap:12px;background:rgba(7,18,15,0.92)">
+        <img class="why-us-img" src="https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=700&q=80" alt="Desarrollo premium VEXO" style="width:100%;height:420px;object-fit:cover;border-radius:var(--r2);border:1px solid rgba(212,137,26,0.15)" loading="lazy"/>
+        <div class="glass anim-glow why-us-badge" style="margin-top:-50px;margin-left:40px;position:relative;z-index:1;border-radius:16px;padding:18px 24px;display:flex;align-items:center;gap:12px;background:rgba(7,18,15,0.92)">
           <span class="material-symbols-outlined icon-fill" style="font-size:32px;color:var(--primary)">emoji_events</span>
           <div><div style="font-family:'Syne',sans-serif;font-weight:800;font-size:17px">#1 en Inversión</div><div style="color:var(--text-s);font-size:12px">Mérida y CDMX · 2025</div></div>
         </div>
@@ -1176,7 +1190,7 @@ function renderPage(name){
   if(name==="home"){
     var statsEl=document.getElementById("home-stats");
     if(statsEl){
-      var stats=cfg.stats||emp.stats||[{valor:"26+",label:"Desarrollos activos"},{valor:"11+",label:"Lotes"},{valor:"500+",label:"Unidades"},{valor:"+17%",label:"Plusvalía anual"}];
+      var stats=cfg.stats||emp.stats||[{valor:"26+",label:"Desarrollos activos"},{valor:"11+",label:"Lotes"},{valor:"500+",label:"Unidades"},{valor:"Hasta 16%",label:"Rendimiento promedio"}];
       statsEl.innerHTML=stats.map(function(s,i){
         return '<div class="reveal d'+(i+1)+'" style="text-align:center"><div style="font-family:\'Syne\',sans-serif;font-weight:800;font-size:clamp(28px,4vw,44px);color:var(--primary)">'+esc(s.valor)+'</div><div style="color:var(--text-s);font-size:12px;text-transform:uppercase;letter-spacing:.08em;margin-top:4px">'+esc(s.label)+'</div></div>';
       }).join("");
