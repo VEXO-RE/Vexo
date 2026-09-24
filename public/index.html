@@ -1888,6 +1888,9 @@ async function submitDescarga(){
   var btn=document.getElementById("md-submit");
   if(btn){btn.disabled=true;btn.innerHTML='<span class="material-symbols-outlined">hourglass_empty</span>Enviando…'}
 
+  // Abrir la descarga de inmediato, dentro del mismo clic, para que el navegador no la bloquee como pop-up
+  if(_descargaUrl){window.open(driveDownload(_descargaUrl),"_blank")}
+
   var payload={nombre,email,telefono:tel,interes:"Descarga: "+titulo,origen:"vexorealestate.com/descargas",fecha:new Date().toISOString()};
 
   // EmailJS
@@ -1906,7 +1909,6 @@ async function submitDescarga(){
 
   cerrarModalDescarga();
   toast("¡Gracias "+nombre+"! Recibirás el material en tu correo.","ok");
-  if(_descargaUrl)setTimeout(function(){window.open(driveDownload(_descargaUrl),"_blank")},600);
   if(btn){btn.disabled=false;btn.innerHTML='<span class="material-symbols-outlined">send</span>Solicitar material'}
 }
 
