@@ -1025,12 +1025,10 @@ var VX_BROCHURES_LOCALES = [
   ["livia","Lista de precios Livia.pdf"],
   ["maktub","DISPONIBILIDAD 20 FEB maktub.pdf"],
   ["nuan","Lista de precios Nuan act .pdf"],
-  ["covalia","PRESENTACIÓN - COVALIA.pdf"],
   ["basalto","Brochure - Basalto Narvarte.pdf"],
   ["chapultepec 430","Brochure - Chapultepec 430.pdf"],
   ["marsala","Brochure MARSALA NSA-.pdf"],
   ["monumento 31","Brochure MONUMENTO 31 TIPOLOGÍAS.pdf"],
-  ["merida 94","Brochure Merida 94  Tipologías.pdf"],
   ["vertice","Brochure Vertice Narvarte Tipología Torre Xola.pdf"],
   ["orquidea","Brochure Orquídea Coyoacán.pdf"],
   ["girasol","Brochure Girasol Condesa - Brochure-.pdf"],
@@ -1047,6 +1045,19 @@ function vxBrochureLocal(nombre){
   var base=(window.location.protocol==="file:")?"downloads/brochures/":"/downloads/brochures/";
   for(var i=0;i<VX_BROCHURES_LOCALES.length;i++){
     if(n.indexOf(VX_BROCHURES_LOCALES[i][0])>-1)return base+encodeURIComponent(VX_BROCHURES_LOCALES[i][1]);
+  }
+  return "";
+}
+// Brochures muy pesados: viven en Google Drive (no en git). [fragmento del nombre, ID del archivo en Drive]
+var VX_BROCHURES_DRIVE = [
+  ["merida 94","17jjWj3Tg-YNJ7Jz3kSZ2iuzcT37Lz9Sh"],
+  ["covalia","1jW1Yd9TvrA_o_bmic3IDxhVtakLsAC5W"]
+];
+function vxBrochureDrive(nombre){
+  var n=vxNorm(nombre);
+  if(!n)return "";
+  for(var i=0;i<VX_BROCHURES_DRIVE.length;i++){
+    if(n.indexOf(VX_BROCHURES_DRIVE[i][0])>-1)return "https://drive.google.com/file/d/"+VX_BROCHURES_DRIVE[i][1]+"/view";
   }
   return "";
 }
@@ -1992,7 +2003,7 @@ function abrirModalDescarga(titulo,url){
   // Se prefiere el brochure local (public/downloads/brochures); si no hay, el enlace de data.js
   var nombreDev=String(titulo||"").replace(/^Brochure:?\s*/i,"");
   var local=/^Brochure/i.test(String(titulo||""))?vxBrochureLocal(nombreDev):"";
-  url=local||vxUrlValida(url);
+  url=local||vxBrochureDrive(nombreDev)||vxUrlValida(url);
   window._pendingDownloadUrl = url || "";
   _descargaUrl=url;
   var m=document.getElementById("modal-descarga");

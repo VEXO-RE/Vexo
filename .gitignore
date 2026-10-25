@@ -72,5 +72,10 @@ ehthumbs.db
 # .claude/SESSION.json
 
 # ── Archivos grandes (van en Drive) ──────────────────────────
-public/downloads/
+# Se ignora public/downloads/ EXCEPTO la carpeta de brochures, que el sitio descarga directo
+public/downloads/*
+!public/downloads/brochures/
+# Brochures muy pesados: se quedan en Drive, no en git
+public/downloads/brochures/Brochure Merida 94*.pdf
+public/downloads/brochures/PRESENTACI*N - COVALIA.pdf
 file.txt
