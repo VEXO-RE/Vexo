@@ -3,6 +3,9 @@
 <head>
   <meta charset="utf-8"/>
   <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <link rel="icon" type="image/jpeg" href="images/Favicon-Vexo.jfif"/>
+  <link rel="shortcut icon" type="image/jpeg" href="images/Favicon-Vexo.jfif"/>
+  <link rel="apple-touch-icon" href="images/Favicon-Vexo.jfif"/>
   <title>VEXO Real Estate | Desarrollos Premium en Mérida y CDMX</title>
   <meta name="description" content="Desarrollos residenciales de lujo en Mérida y Ciudad de México. Departamentos en preventa con plusvalía garantizada. Invierte con VEXO Real Estate."/>
   <meta name="keywords" content="desarrollos residenciales,departamentos mérida,departamentos cdmx,preventa 2026,inversión inmobiliaria,vexo real estate"/>
@@ -275,6 +278,58 @@
       #home-valores{grid-template-columns:1fr!important}
       .why-us-img{height:200px!important}
     }
+
+    /* ── MOBILE: páginas internas (Mapa, Nosotros, Contacto, Ciudades, Detalle, Descargas) ──
+       Solo celular. Cada regla va limitada a su página: el Inicio y la vista de escritorio no se tocan. */
+    @media(max-width:768px){
+      #page-mapa,#page-nosotros,#page-contacto,#page-ciudades,#page-detalle,#page-descargas{overflow-x:clip}
+      /* Rejillas de 2 columnas fijas -> 1 columna */
+      #page-mapa [style*="grid-template-columns:1fr 1fr;gap:32px"],
+      #page-nosotros [style*="grid-template-columns:1fr 1fr;gap:80px"],
+      #page-contacto [style*="grid-template-columns:1fr 1fr;gap:48px"],
+      #page-ciudades [style*="grid-template-columns:1fr 1fr;gap:56px"],
+      #page-detalle [style*="grid-template-columns:2fr 1fr"],
+      #descargas-content [style*="grid-template-columns:1fr 1fr;gap:48px"]{grid-template-columns:1fr!important;gap:28px!important}
+      /* Nosotros: misión/visión/valores y correos en 1 columna; equipo en 2 */
+      #page-nosotros [style*="grid-template-columns:repeat(3,1fr)"]{grid-template-columns:1fr!important;gap:16px!important}
+      #nos-equipo{grid-template-columns:repeat(2,1fr)!important}
+      /* Detalle: galería de fotos en 2 columnas */
+      #page-detalle [style*="grid-template-columns:repeat(3,1fr)"],
+      #page-detalle [style*="grid-template-columns:repeat(4,1fr)"]{grid-template-columns:repeat(2,1fr)!important}
+      /* Descargas: banner "¿Necesitas material específico?" apilado */
+      #descargas-content .glass[style*="display:flex"]{flex-direction:column;text-align:center}
+      #descargas-content .glass[style*="display:flex"] .btn{width:100%;justify-content:center}
+    }
+    @media(max-width:480px){
+      /* Calculadora hipotecaria, formulario de contacto y ciudades: pares y ternas de campos apilados */
+      #page-mapa [style*="grid-template-columns:1fr 1fr;gap:14px"],
+      #page-mapa [style*="grid-template-columns:1fr 1fr 1fr;gap:8px"],
+      #contact-form [style*="grid-template-columns:1fr 1fr"],
+      #page-ciudades [style*="grid-template-columns:1fr 1fr;gap:14px"],
+      #page-ciudades [style*="grid-template-columns:repeat(3,1fr)"],
+      #page-ciudades [style*="grid-template-columns:repeat(2,1fr)"]{grid-template-columns:1fr!important}
+    }
+
+    /* ── Calendario de citas (Contacto): fondo claro para que se lea el texto del calendario de Google ── */
+    .vx-cal-frame{background:#ffffff;border-radius:12px;overflow:hidden;border:1px solid rgba(212,137,26,.25)}
+    .vx-cal-iframe{display:block;width:100%;height:640px;border:0;background:#ffffff;color-scheme:light}
+    @media(max-width:480px){.vx-cal-iframe{height:700px}}
+
+    /* ── MOBILE: página de desarrollo individual (solo celular; escritorio no se toca) ── */
+    @media(max-width:768px){
+      #detalle-wrap section [style*="padding:40px 32px"]{padding:24px 16px!important}
+      #detalle-wrap section h1{font-size:clamp(26px,8vw,34px)!important;line-height:1.15!important}
+      #detalle-wrap section p[style*="font-size:18px"]{font-size:15px!important}
+      #detalle-wrap .container[style*="padding-top:48px"]{padding-top:28px!important;padding-bottom:56px!important}
+      #detalle-wrap h2[style*="font-size:22px"]{font-size:20px!important}
+      #detalle-wrap [style*="position:sticky"]{position:static!important}
+      /* Botones de acción (brochure, agendar, WhatsApp, mapa) a ancho completo */
+      #detalle-wrap [style*="flex-wrap:wrap;gap:12px;margin-bottom:28px"]{flex-direction:column;align-items:stretch}
+      #detalle-wrap [style*="flex-wrap:wrap;gap:12px;margin-bottom:28px"] .btn{width:100%;justify-content:center}
+      /* Ficha "Información del desarrollo": valores largos no se encimen con la etiqueta */
+      #detalle-wrap [style*="justify-content:space-between;border-bottom"]{gap:12px}
+      #detalle-wrap [style*="justify-content:space-between;border-bottom"] span:last-child{text-align:right;max-width:60%}
+    }
   </style>
 </head>
 <body>
@@ -385,8 +440,8 @@
           <div class="glass anim-glow" style="position:absolute;top:-12px;right:-12px;border-radius:14px;padding:12px 16px;display:flex;align-items:center;gap:10px;z-index:2;background:rgba(7,18,15,0.92)">
             <span class="material-symbols-outlined icon-fill" style="font-size:26px;color:var(--primary)">trending_up</span>
             <div>
-              <div style="font-family:'Syne',sans-serif;font-weight:800;font-size:20px;color:var(--primary)">Hasta 16%</div>
-              <div style="color:var(--text-s);font-size:11px;margin-top:1px">Rendimiento promedio</div>
+              <div style="font-family:'Syne',sans-serif;font-weight:800;font-size:20px;color:var(--primary)">Hasta 70%</div>
+              <div style="color:var(--text-s);font-size:11px;margin-top:1px">Servicios Avanzados</div>
             </div>
           </div>
           <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
@@ -403,9 +458,9 @@
       </div>
     </div>
     <div class="vx-trust-bar">
-      <div class="vx-trust-item"><div class="vx-trust-icon"><span class="material-symbols-outlined icon-fill" style="font-size:16px">verified</span></div><div><div class="vx-trust-num">26+</div><div style="font-size:12px;color:var(--text-s)">Desarrollos</div></div></div>
-      <div class="vx-trust-item"><div class="vx-trust-icon"><span class="material-symbols-outlined icon-fill" style="font-size:16px">location_city</span></div><div><div class="vx-trust-num">3</div><div style="font-size:12px;color:var(--text-s)">Ciudades</div></div></div>
-      <div class="vx-trust-item"><div class="vx-trust-icon"><span class="material-symbols-outlined icon-fill" style="font-size:16px">trending_up</span></div><div><div class="vx-trust-num">Hasta 16%</div><div style="font-size:12px;color:var(--text-s)">Rendimiento promedio</div></div></div>
+      <div class="vx-trust-item"><div class="vx-trust-icon"><span class="material-symbols-outlined icon-fill" style="font-size:16px">verified</span></div><div><div class="vx-trust-num">10+</div><div style="font-size:12px;color:var(--text-s)">Lotes</div></div></div>
+      <div class="vx-trust-item"><div class="vx-trust-icon"><span class="material-symbols-outlined icon-fill" style="font-size:16px">location_city</span></div><div><div class="vx-trust-num">10%</div><div style="font-size:12px;color:var(--text-s)">Apartados</div></div></div>
+      <div class="vx-trust-item"><div class="vx-trust-icon"><span class="material-symbols-outlined icon-fill" style="font-size:16px">trending_up</span></div><div><div class="vx-trust-num">Hasta 80%</div><div style="font-size:12px;color:var(--text-s)">Avance de Obra</div></div>
       <div class="vx-trust-item"><div class="vx-trust-icon"><span class="material-symbols-outlined icon-fill" style="font-size:16px">shield</span></div><div><div class="vx-trust-num">100%</div><div style="font-size:12px;color:var(--text-s)">Transparencia</div></div></div>
     </div>
   </section>
@@ -777,8 +832,12 @@
           <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3762.518114983828!2d-99.15151372573874!3d19.433216040663105!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x85d1f92d7c208269%3A0xcd2ecf69a8a8b26e!2sVexo%20Real%20Estate!5e0!3m2!1ses-419!2smx!4v1774767225685!5m2!1ses-419!2smx" width="100%" height="220" style="border:0;display:block" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade" title="Mapa VEXO Real Estate CDMX"></iframe>
         </div>
         <div class="glass" style="padding:20px;border-radius:var(--r2)">
-          <div style="font-family:'Syne',sans-serif;font-weight:700;margin-bottom:14px;font-size:15px">Agenda una cita</div>
-          <iframe src="https://calendar.google.com/calendar/appointments/schedules/AcZssZ2fclSuUQz_Zg7Kb6y9uRBlrkEyzf6Eu6Fm1sgzxjqEU2QOn1WlLkSDJqmsdKYeR-v2zvsZ57Sh?gv=true" style="border:0;border-radius:8px;width:100%" height="350" frameborder="0" title="Calendario VEXO Real Estate"></iframe>
+          <div style="font-family:'Syne',sans-serif;font-weight:700;margin-bottom:6px;font-size:15px;display:flex;align-items:center;gap:8px"><span class="material-symbols-outlined" style="color:var(--primary);font-size:20px">event_available</span>Agenda una cita</div>
+          <p style="color:var(--text-m);font-size:12px;line-height:1.6;margin-bottom:14px">Elige el día y el horario que prefieras. Las citas se pueden reservar con hasta 7 días de anticipación.</p>
+          <div class="vx-cal-frame">
+            <iframe class="vx-cal-iframe" src="https://calendar.google.com/calendar/appointments/schedules/AcZssZ2fclSuUQz_Zg7Kb6y9uRBlrkEyzf6Eu6Fm1sgzxjqEU2QOn1WlLkSDJqmsdKYeR-v2zvsZ57Sh?gv=true" frameborder="0" loading="lazy" title="Calendario VEXO Real Estate"></iframe>
+          </div>
+          <a href="https://calendar.google.com/calendar/appointments/schedules/AcZssZ2fclSuUQz_Zg7Kb6y9uRBlrkEyzf6Eu6Fm1sgzxjqEU2QOn1WlLkSDJqmsdKYeR-v2zvsZ57Sh?gv=true" target="_blank" rel="noopener noreferrer" class="btn btn-o btn-sm" style="margin-top:12px;width:100%;justify-content:center"><span class="material-symbols-outlined" style="font-size:16px">open_in_new</span>Abrir calendario en una pestaña nueva</a>
         </div>
         <a href="https://wa.me/525527081749?text=Hola%2C+me+interesa+información+sobre+los+desarrollos+de+VEXO+Real+Estate." target="_blank" rel="noopener noreferrer" style="display:flex;align-items:center;gap:14px;padding:18px 20px;background:rgba(37,211,102,0.08);border:1px solid rgba(37,211,102,0.2);border-radius:var(--r2);text-decoration:none">
           <div style="width:40px;height:40px;background:#25d366;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0">
@@ -888,18 +947,18 @@
 <div id="modal-evento">
   <div class="glass" style="border-radius:20px;padding:0;max-width:480px;width:100%;border:1px solid rgba(224,36,94,.3);position:relative;overflow:hidden;max-height:92vh;overflow-y:auto">
     <button onclick="cerrarModalEvento()" style="position:absolute;top:12px;right:14px;background:rgba(7,18,15,.6);border:none;color:#fff;font-size:20px;width:32px;height:32px;border-radius:50%;cursor:pointer;z-index:2">✕</button>
-    <video id="evento-video" src="/videos/Preventa-Reforma-Colon.mp4" controls playsinline style="width:100%;max-height:280px;background:#000;display:block"></video>
+    <video id="evento-video" src="/videos\vexo-inicio.mp4" controls playsinline style="width:100%;max-height:280px;background:#000;display:block"></video>
     <div style="padding:28px">
       <div class="section-eyebrow" style="margin-bottom:8px">Evento de preventa</div>
-      <h3 style="font-family:'Syne',sans-serif;font-weight:800;font-size:20px;margin-bottom:6px">Preventa Reforma Colón</h3>
-      <p style="color:var(--text-m);font-size:13px;margin-bottom:18px">Confirma tu asistencia y sé de los primeros en conocer este desarrollo antes de su lanzamiento oficial.</p>
+      <h3 style="font-family:'Syne',sans-serif;font-weight:800;font-size:20px;margin-bottom:6px">Preventas e Información</h3>
+      <p style="color:var(--text-m);font-size:13px;margin-bottom:18px">Regístrate y sé de los primeros en conocer nuevos desarrollos antes de su lanzamiento oficial.</p>
       <div style="display:flex;flex-direction:column;gap:12px">
         <input id="ev-nombre" type="text" placeholder="Nombre completo" style="padding:11px 14px;border-radius:10px;background:rgba(245,248,255,.8);border:1px solid rgba(19,236,218,.2);color:var(--text);font-size:13px;width:100%"/>
         <input id="ev-email" type="email" placeholder="Correo electrónico" style="padding:11px 14px;border-radius:10px;background:rgba(245,248,255,.8);border:1px solid rgba(19,236,218,.2);color:var(--text);font-size:13px;width:100%"/>
         <input id="ev-tel" type="tel" placeholder="WhatsApp / Teléfono" style="padding:11px 14px;border-radius:10px;background:rgba(245,248,255,.8);border:1px solid rgba(19,236,218,.2);color:var(--text);font-size:13px;width:100%"/>
-        <input id="ev-invitados" type="number" min="1" max="10" placeholder="Número de invitados" style="padding:11px 14px;border-radius:10px;background:rgba(245,248,255,.8);border:1px solid rgba(19,236,218,.2);color:var(--text);font-size:13px;width:100%"/>
+        <input id="ev-invitados" type="number" min="1" max="10" placeholder="Ciudad" style="padding:11px 14px;border-radius:10px;background:rgba(245,248,255,.8);border:1px solid rgba(19,236,218,.2);color:var(--text);font-size:13px;width:100%"/>
         <label style="display:flex;align-items:flex-start;gap:8px;cursor:pointer;font-size:11px;color:var(--text-s)"><input type="checkbox" id="ev-privacy" style="margin-top:3px;accent-color:var(--primary)"/> Acepto la <a onclick="showPage('privacidad');cerrarModalEvento()" style="color:var(--primary);cursor:pointer;text-decoration:underline">Política de Privacidad</a></label>
-        <button id="ev-submit" onclick="submitEvento()" class="btn btn-p btn-full"><span class="material-symbols-outlined">event_available</span>Confirmar asistencia</button>
+        <button id="ev-submit" onclick="submitEvento()" class="btn btn-p btn-full"><span class="material-symbols-outlined">event_available</span>Confirmar registró</button>
       </div>
     </div>
   </div>
@@ -911,7 +970,7 @@
    ahora vive SOLO como variable de entorno del servidor en Vercel y se usa
    desde /api/chat.js. Nunca debe volver a aparecer en este archivo. */
 window.WA_NUMBER       = "525527081749";
-window.SHEETS_ENDPOINT = "https://script.google.com/macros/s/AKfycbyjv6sKXUMjDy7I04yQXk5qjbUbVegPHFaARYeLypjo8baqB06nX303RVgRCa0cmhHAEQ/exec";
+window.SHEETS_ENDPOINT = "https://script.google.com/macros/s/AKfycbz6qlaVWWBQYozAeWFoD30rQ8DT8e7is46R2Z8T5sXqAK5zTM6dr95ri7Cq5xUZF9oF/exec";
 </script>
 <script src="data.js"></script>
 <script src="theme.js"></script>
@@ -954,8 +1013,67 @@ function esc(s){
 }
 
 // ── Convierte un link de Google Drive "ver" en un link de descarga directa ──
+// ── Brochures locales (carpeta public/downloads/brochures) ───────────
+// [fragmento del nombre del desarrollo en minúsculas y sin acentos, archivo PDF]
+var VX_BROCHURES_LOCALES = [
+  ["alma condos","PRECIOS Y DISPONIBILIDAD alma condos.pdf"],
+  ["almaera","Lista de Precios Almaera inmobiliarias.pdf"],
+  ["amalia","DISPONIBILIDAD Y PRECIOS AMALIA.pdf"],
+  ["canea","CANEA Precios Febrero 2026.pdf"],
+  ["galatha","Lista de precios Galatha.pdf"],
+  ["huna","Lista de precios Huna 03.02.26.pdf"],
+  ["livia","Lista de precios Livia.pdf"],
+  ["maktub","DISPONIBILIDAD 20 FEB maktub.pdf"],
+  ["nuan","Lista de precios Nuan act .pdf"],
+  ["covalia","PRESENTACIÓN - COVALIA.pdf"],
+  ["basalto","Brochure - Basalto Narvarte.pdf"],
+  ["chapultepec 430","Brochure - Chapultepec 430.pdf"],
+  ["marsala","Brochure MARSALA NSA-.pdf"],
+  ["monumento 31","Brochure MONUMENTO 31 TIPOLOGÍAS.pdf"],
+  ["merida 94","Brochure Merida 94  Tipologías.pdf"],
+  ["vertice","Brochure Vertice Narvarte Tipología Torre Xola.pdf"],
+  ["orquidea","Brochure Orquídea Coyoacán.pdf"],
+  ["girasol","Brochure Girasol Condesa - Brochure-.pdf"],
+  ["xaviera","Brochure XAVIERA Tipologias -.pdf"],
+  ["cedro","Brochure Raph Cedro 2026..pdf"],
+  ["lirio","Brochure - Lirio Reforma.pdf"],
+  ["salamanca","Brochure Salamanca 11.pdf"],
+  ["mayakoba","Brochure Dowtownn Mayakoba 2026.pdf"]
+];
+function vxNorm(s){return String(s||"").toLowerCase().normalize("NFD").replace(/[^\x00-\x7f]/g,"").replace(/\s+/g," ").trim()}
+function vxBrochureLocal(nombre){
+  var n=vxNorm(nombre);
+  if(!n)return "";
+  var base=(window.location.protocol==="file:")?"downloads/brochures/":"/downloads/brochures/";
+  for(var i=0;i<VX_BROCHURES_LOCALES.length;i++){
+    if(n.indexOf(VX_BROCHURES_LOCALES[i][0])>-1)return base+encodeURIComponent(VX_BROCHURES_LOCALES[i][1]);
+  }
+  return "";
+}
+// Ignora enlaces vacíos o el marcador "Consultar" de data.js (no son archivos reales)
+function vxUrlValida(u){
+  u=String(u||"").trim();
+  if(!u||/\/file\/d\/Consultar\b/i.test(u)||/^consultar$/i.test(u))return "";
+  return u;
+}
+// Inicia la descarga: archivo local (se guarda directo) o enlace de Drive (pestaña nueva)
+function vxIniciarDescarga(url){
+  if(!url)return;
+  if(/^\/?downloads\//.test(url)){
+    var a=document.createElement("a");
+    a.href=url;
+    a.download=decodeURIComponent(url.split("/").pop());
+    document.body.appendChild(a);a.click();document.body.removeChild(a);
+  }else{
+    var h=driveDownload(url);
+    if(h)window.open(h,"_blank");
+  }
+}
+
 function driveDownload(url){
   if(!url) return "";
+  if(/^\/?downloads\//.test(String(url))) return url; // archivo local del sitio
+  if(/\/file\/d\/Consultar\b/i.test(String(url))) return ""; // marcador "Consultar": no es un archivo real
   var m = String(url).match(/\/file\/d\/([^\/]+)/);
   if(!m) return url; // no es un link de Drive tipo /file/d/ID/view, se deja igual
   return "https://drive.google.com/uc?export=download&id=" + m[1];
@@ -1071,9 +1189,11 @@ function vxSlugToName(path){
 function vxSyncUrl(name){
   var slug = VX_SLUGS[name];
   if (!slug) return;
-  if (window.location.pathname !== slug){
-    window.history.pushState({ vxPage: name }, "", slug);
-  }
+  try{
+    if (window.location.pathname !== slug){
+      window.history.pushState({ vxPage: name }, "", slug);
+    }
+  }catch(err){ /* file:// u otros entornos donde pushState está bloqueado: la página sigue funcionando, solo no cambia la URL */ }
   if (VX_TITLES[name]) document.title = VX_TITLES[name];
 }
 window.addEventListener("popstate", function(e){
@@ -1104,7 +1224,7 @@ function footerHTML(){
     // Col 4 contacto
     '<div><h4 style="font-family:\'Syne\',sans-serif;font-size:11px;text-transform:uppercase;letter-spacing:.12em;color:var(--primary);margin-bottom:16px">Contacto</h4><div style="display:flex;flex-direction:column;gap:10px;font-size:13px;color:var(--text-s)"><a href="mailto:ventas@vexorealestate.com" style="color:var(--primary);font-size:13px">ventas@vexorealestate.com</a><span>+52 55 2708 1749</span><span>Iturbide 32, Centro, CDMX</span><span>Lun–Vie 9:00–18:00 · Sáb 9:00–14:00</span></div></div>' +
     '</div><div style="height:1px;background:linear-gradient(to right,transparent,rgba(212,137,26,.3),rgba(19,236,218,.2),rgba(212,137,26,.3),transparent);margin-bottom:20px"></div>' +
-    '<div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;font-size:12px;color:var(--text-s)"><span>WEB Creada por Marco Flores © 2025 VEXO Real Estate. Todos los derechos reservados.</span><span>vexorealestate.com · Mérida · CDMX · Riviera Maya</span></div>' +
+    '<div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;font-size:12px;color:var(--text-s)"><span>WEB Creada por MAFF © 2026 VEXO Real Estate. Todos los derechos reservados.</span><span>vexorealestate.com · Mérida · CDMX · Riviera Maya</span></div>' +
     '</div></footer>';
 }
 
@@ -1253,7 +1373,7 @@ function renderPage(name){
     if(nst)nst.innerHTML=(cfg.stats||emp.stats||[]).map(function(s){return '<div class="glass" style="padding:18px;border-radius:14px;text-align:center"><div style="font-family:\'Syne\',sans-serif;font-weight:800;font-size:28px;color:var(--primary)">'+esc(s.valor)+'</div><div style="color:var(--text-s);font-size:12px;text-transform:uppercase;letter-spacing:.06em;margin-top:4px">'+esc(s.label)+'</div></div>'}).join("");
     var eq=document.getElementById("nos-equipo");
     if(eq){
-      var team=emp.equipo&&emp.equipo.length>=2?emp.equipo:[{nombre:"Rosalía Robles",cargo:"Directora General",email:"rosalia.robles@vexorealestate.com"},{nombre:"Marco Flores",cargo:"Director Comercial",email:"marco.flores@vexorealestate.com"},{nombre:"Equipo Mérida",cargo:"Asesores Mérida",email:"ventas@vexorealestate.com"},{nombre:"Equipo CDMX",cargo:"Asesores CDMX",email:"ventas@vexorealestate.com"}];
+      var team=emp.equipo&&emp.equipo.length>=2?emp.equipo:[{nombre:"Rosalía Robles",cargo:"Directora General",email:"rosalia.robles@vexorealestate.com"},{nombre:"Dirección",cargo:"Director Comercial",email:"marco.flores@vexorealestate.com"},{nombre:"Patricio Romo",cargo:"Asesor Mérida",email:"ventas@vexorealestate.com"},{nombre:"Equipo CDMX",cargo:"Asesores CDMX",email:"ventas@vexorealestate.com"}];
       eq.innerHTML=team.map(function(m,i){return '<div class="glass reveal d'+(i+1)+'" style="padding:24px;border-radius:var(--r2);text-align:center"><div style="width:60px;height:60px;border-radius:16px;background:linear-gradient(135deg,rgba(212,137,26,.25),rgba(232,169,42,.1));margin:0 auto 14px;display:flex;align-items:center;justify-content:center"><span class="material-symbols-outlined" style="color:var(--primary);font-size:28px">person</span></div><div style="font-family:\'Syne\',sans-serif;font-weight:700;margin-bottom:4px">'+esc(m.nombre)+'</div><div style="font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:var(--primary);margin-bottom:8px">'+esc(m.cargo)+'</div><a href="mailto:'+esc(m.email)+'" style="color:var(--text-s);font-size:12px;text-decoration:none" onmouseover="this.style.color=\'var(--primary)\'" onmouseout="this.style.color=\'var(--text-s)\'">'+esc(m.email)+'</a></div>'}).join("");
     }
     var co=document.getElementById("nos-correos");
@@ -1327,7 +1447,7 @@ function verDetalle(slugOrId){
   }
 
   document.getElementById("detalle-wrap").innerHTML=
-    '<section style="position:relative;height:60vh;min-height:400px;overflow:hidden;cursor:pointer" onclick="openLightbox([\''+imgs.join("','")+'.\'],0,\''+esc(d.nombre)+'\')">' +
+    '<section style="position:relative;height:60vh;min-height:400px;overflow:hidden;cursor:pointer" onclick="openLightbox([\''+imgs.join("','")+'\'],0,\''+esc(d.nombre)+'\')">' +
       '<img src="'+esc(img1)+'" alt="'+esc(d.nombre)+'" style="width:100%;height:100%;object-fit:cover" onerror="this.src=\'https://images.unsplash.com/photo-1560185007-cde436f6a4d0?w=800&q=80\'"/>' +
       '<div style="position:absolute;inset:0;background:linear-gradient(to bottom,rgba(7,18,15,.3) 0%,rgba(7,18,15,.75) 60%,var(--bg) 100%)"></div>' +
       '<div style="position:absolute;top:16px;right:16px;background:rgba(7,18,15,.7);border:1px solid rgba(255,255,255,.2);border-radius:8px;padding:6px 12px;font-size:12px;color:var(--text-m);display:flex;align-items:center;gap:4px"><span class="material-symbols-outlined" style="font-size:14px">zoom_in</span>Ver galería ('+imgs.length+')</div>' +
@@ -1375,7 +1495,7 @@ function verDetalle(slugOrId){
           '</div>'+
           (d.acabados&&d.acabados!=="Consultar con asesor"?'<div class="glass" style="padding:20px;border-radius:14px;margin-bottom:20px"><h4 style="font-family:\'Syne\',sans-serif;font-weight:700;font-size:14px;margin-bottom:10px">Acabados</h4><div style="display:flex;flex-wrap:wrap;gap:8px">'+d.acabados.split("|").map(function(a){return '<span style="padding:4px 12px;border-radius:999px;background:rgba(212,137,26,.08);color:var(--primary);font-size:12px">'+esc(a.trim())+'</span>'}).join("")+'</div></div>':"")+
           '<div style="display:flex;flex-wrap:wrap;gap:12px;margin-bottom:28px">'+
-            (d.brochure?'<a href="'+esc(driveDownload(d.brochure_url||d.brochure||''))+'" download target="_blank" rel="noopener" class="btn btn-o" onclick="event.stopPropagation();registrarDescargaBrochure(\''+esc(d.nombre)+'\')"><span class="material-symbols-outlined">download</span>Descargar brochure</a>':'<button class="btn btn-o" onclick="abrirModalDescarga(\'Brochure '+esc(d.nombre)+'\',(d.brochure_url||null))"><span class="material-symbols-outlined">download</span>Solicitar brochure</button>')+
+            (d.brochure?'<a href="'+esc(driveDownload(d.brochure_url||d.brochure||''))+'" download target="_blank" rel="noopener" class="btn btn-o" onclick="event.preventDefault();event.stopPropagation();registrarDescargaBrochure(\''+esc(d.nombre)+'\')"><span class="material-symbols-outlined">download</span>Descargar brochure</a>':'<button class="btn btn-o" onclick="abrirModalDescarga(\'Brochure: '+esc(d.nombre)+'\',null)"><span class="material-symbols-outlined">download</span>Solicitar brochure</button>')+
             '<button onclick="showPage(\'contacto\')" class="btn btn-p"><span class="material-symbols-outlined">calendar_month</span>Agendar visita</button>'+
             '<a href="https://wa.me/525527081749?text='+encodeURIComponent("Hola, me interesa el desarrollo "+d.nombre)+'" target="_blank" rel="noopener" class="btn" style="background:rgba(37,211,102,.1);color:#25D366;border:1px solid rgba(37,211,102,.3)"><span class="material-symbols-outlined">chat</span>WhatsApp</a>'+
             (d.url_maps?'<a href="'+esc(d.url_maps)+'" target="_blank" rel="noopener" class="btn btn-o"><span class="material-symbols-outlined">map</span>Ver en Google Maps</a>':"")+
@@ -1497,6 +1617,15 @@ function poblarSelectDesarrollos(){
 }
 
 // ── Submit lead ───────────────────────────────────────────────────
+// Devuelve la ciudad de un desarrollo/lote por su nombre (para la columna "Ciudad" del Sheet)
+function vxCiudadDe(nombre){
+  if(!nombre)return "";
+  var todos=(window.DESARROLLOS||[]).concat(window.LOTES||[]);
+  var n=String(nombre).toLowerCase();
+  var d=todos.find(function(x){return x.nombre&&(x.nombre.toLowerCase()===n||n.indexOf(x.nombre.toLowerCase())>-1)});
+  return d?(d.ciudad||""):"";
+}
+
 async function submitLead(e){
   e.preventDefault();
   var btn=document.getElementById("c-submit");
@@ -1519,6 +1648,7 @@ async function submitLead(e){
     telefono:document.getElementById("c-tel")?document.getElementById("c-tel").value:"",
     interes:interes,
     desarrollo:document.getElementById("c-desarrollo")?document.getElementById("c-desarrollo").value:"",
+    ciudad:vxCiudadDe(document.getElementById("c-desarrollo")?document.getElementById("c-desarrollo").value:""),
     mensaje:document.getElementById("c-msg")?document.getElementById("c-msg").value:"",
     fecha:new Date().toISOString(),
     origen:"vexorealestate.com"
@@ -1543,8 +1673,8 @@ async function submitLead(e){
     }catch(err){console.warn("EmailJS error:",err)}
   }
 
-  // 2. Fallback Google Sheets endpoint
-  if(!enviado){
+  // 2. Google Sheets (siempre, para que ningún lead se pierda aunque EmailJS funcione)
+  {
     var ep=window.CONFIG&&window.CONFIG.google?window.CONFIG.google.sheets_endpoint:"";
     if(ep){
       try{
@@ -1859,6 +1989,10 @@ function renderDescargas(){
 // ── Modal descarga + lead ─────────────────────────────────────────
 var _descargaUrl=null;
 function abrirModalDescarga(titulo,url){
+  // Se prefiere el brochure local (public/downloads/brochures); si no hay, el enlace de data.js
+  var nombreDev=String(titulo||"").replace(/^Brochure:?\s*/i,"");
+  var local=/^Brochure/i.test(String(titulo||""))?vxBrochureLocal(nombreDev):"";
+  url=local||vxUrlValida(url);
   window._pendingDownloadUrl = url || "";
   _descargaUrl=url;
   var m=document.getElementById("modal-descarga");
@@ -1889,9 +2023,12 @@ async function submitDescarga(){
   if(btn){btn.disabled=true;btn.innerHTML='<span class="material-symbols-outlined">hourglass_empty</span>Enviando…'}
 
   // Abrir la descarga de inmediato, dentro del mismo clic, para que el navegador no la bloquee como pop-up
-  if(_descargaUrl){window.open(driveDownload(_descargaUrl),"_blank")}
+  vxIniciarDescarga(_descargaUrl);
 
-  var payload={nombre,email,telefono:tel,interes:"Descarga: "+titulo,origen:"vexorealestate.com/descargas",fecha:new Date().toISOString()};
+  var esBrochure=/^Brochure/i.test(titulo);
+  var devDescarga=esBrochure?titulo.replace(/^Brochure:?\s*/i,""):"";
+  var entrega=_descargaUrl?"Descarga directa (se abrió el archivo)":"Por correo (pendiente de envío por un asesor)";
+  var payload={nombre,email,telefono:tel,interes:"Descarga: "+titulo,desarrollo:devDescarga,ciudad:vxCiudadDe(devDescarga),entrega:entrega,origen:"vexorealestate.com/descargas",fecha:new Date().toISOString()};
 
   // EmailJS
   if(EMAILJS_READY){
@@ -1920,7 +2057,7 @@ function registrarDescargaBrochure(nombre,url){
   if(!brochureUrl){
     var todos=(window.DESARROLLOS||[]).concat(window.LOTES||[]);
     var dev=todos.find(function(d){return d.nombre===nombre||(d.nombre&&nombre&&nombre.indexOf(d.nombre)>-1);});
-    if(dev) brochureUrl=dev.brochure_url||"";
+    if(dev) brochureUrl=dev.brochure_url||dev.brochure||"";
   }
   abrirModalDescarga("Brochure: "+nombre, brochureUrl);
 }
@@ -1958,11 +2095,11 @@ async function submitEvento(){
   if(btn){btn.disabled=true;btn.innerHTML='<span class="material-symbols-outlined">hourglass_empty</span>Enviando…'}
 
   var titulo="Evento: Preventa Reforma Colón";
-  var payload={nombre,email,telefono:tel,interes:titulo,invitados,origen:"vexorealestate.com/evento-preventa",fecha:new Date().toISOString()};
+  var payload={nombre,email,telefono:tel,interes:titulo,desarrollo:"Reforma Colón",ciudad:vxCiudadDe("Reforma Colón"),invitados,origen:"vexorealestate.com/evento-preventa",fecha:new Date().toISOString()};
 
   if(EMAILJS_READY){
     try{
-      await emailjs.send(EMAILJS_SERVICE,EMAILJS_TEMPLATE,{from_name:nombre,from_email:email,telefono:tel,interes:titulo,desarrollo:"Reforma Colón",mensaje:"Confirma asistencia al evento. Invitados: "+invitados,fecha:payload.fecha,to_email:"ventas@vexorealestate.com"});
+      await emailjs.send(EMAILJS_SERVICE,EMAILJS_TEMPLATE,{from_name:nombre,from_email:email,telefono:tel,interes:titulo,desarrollo:"Registro",mensaje:"Confirma registro evento. Invitados: "+invitados,fecha:payload.fecha,to_email:"ventas@vexorealestate.com"});
     }catch(e){console.warn("EmailJS evento error:",e)}
   }
   var ep=window.CONFIG?.google?.sheets_endpoint||"";
