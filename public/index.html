@@ -72,6 +72,7 @@
     .nav-logo-icon{width:34px;height:34px;background:linear-gradient(135deg,var(--primary),var(--primary-d));border-radius:9px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
     .nav-logo-text{font-family:"Syne",sans-serif;font-weight:800;font-size:18px;letter-spacing:0.5px}
     .nav-logo-text span{color:var(--primary)}
+    .vx-ico{width:18px;height:18px;display:inline-block;vertical-align:middle;flex-shrink:0;object-fit:contain}
     .vx-logo-img{height:44px;width:auto;max-width:180px;object-fit:contain;display:block}
     #navbar.scrolled .vx-logo-img{height:38px}
     @media(max-width:768px){.vx-logo-img{height:38px}}
@@ -1228,7 +1229,7 @@ function footerHTML(){
     // Col 1
     '<div><div style="display:flex;align-items:center;gap:10px;margin-bottom:14px;cursor:pointer" onclick="showPage(\'home\')"><img class="vx-logo-img" src="images/blog/Logo-vexo.cdmx.webp" alt="VEXO Real Estate" width="140" height="44" onerror="this.style.display=\'none\';this.nextElementSibling.style.display=\'flex\';this.nextElementSibling.nextElementSibling.style.display=\'inline\'"/><div style="display:none;width:30px;height:30px;background:linear-gradient(135deg,var(--primary),var(--primary-d));border-radius:8px;align-items:center;justify-content:center"><svg width="16" height="16" viewBox="0 0 24 24" fill="#07120f"><polygon points="12,2 2,10 5,10 5,20 10,20 10,14 14,14 14,20 19,20 19,10 22,10"/></svg></div><span style="display:none;font-family:\'Syne\',sans-serif;font-weight:800;font-size:16px">VEXO <span style="color:var(--primary)">REAL ESTATE</span></span></div>' +
     '<p style="color:var(--text-s);font-size:13px;line-height:1.7;max-width:280px;margin-bottom:16px">Especialistas en desarrollos residenciales premium en Mérida, Ciudad de México y Riviera Maya.</p>' +
-    '<div style="display:flex;gap:8px"><a href="https://www.instagram.com/vexo_bienesraices" target="_blank" rel="noopener" style="width:34px;height:34px;background:rgba(212,137,26,.08);border:1px solid rgba(212,137,26,.15);border-radius:8px;display:flex;align-items:center;justify-content:center;color:var(--text-s);transition:all .2s" onmouseover="this.style.borderColor=\'var(--primary)\';this.style.color=\'var(--primary)\'" onmouseout="this.style.borderColor=\'rgba(212,137,26,.15)\';this.style.color=\'var(--text-s)\'"><span class="material-symbols-outlined" style="font-size:16px">photo_camera</span></a>' +
+    '<div style="display:flex;gap:8px"><a href="https://www.instagram.com/vexo_bienesraices" target="_blank" rel="noopener" style="width:34px;height:34px;background:rgba(212,137,26,.08);border:1px solid rgba(212,137,26,.15);border-radius:8px;display:flex;align-items:center;justify-content:center;color:var(--text-s);transition:all .2s" onmouseover="this.style.borderColor=\'var(--primary)\';this.style.color=\'var(--primary)\'" onmouseout="this.style.borderColor=\'rgba(212,137,26,.15)\';this.style.color=\'var(--text-s)\'"><img class="vx-ico" src="images/Iconos-svg/instagram-icon.svg" alt="Instagram" width="18" height="18"></a>' +
     '<a href="https://www.facebook.com/profile.php?id=61577530904134" target="_blank" rel="noopener" style="width:34px;height:34px;background:rgba(212,137,26,.08);border:1px solid rgba(212,137,26,.15);border-radius:8px;display:flex;align-items:center;justify-content:center;color:var(--text-s);transition:all .2s" onmouseover="this.style.borderColor=\'var(--primary)\';this.style.color=\'var(--primary)\'" onmouseout="this.style.borderColor=\'rgba(212,137,26,.15)\';this.style.color=\'var(--text-s)\'"><span class="material-symbols-outlined" style="font-size:16px">thumb_up</span></a>' +
     '<a href="https://wa.me/525527081749" target="_blank" rel="noopener" style="width:34px;height:34px;background:rgba(37,211,102,.08);border:1px solid rgba(37,211,102,.15);border-radius:8px;display:flex;align-items:center;justify-content:center;color:var(--text-s);transition:all .2s" onmouseover="this.style.borderColor=\'#25D366\';this.style.color=\'#25D366\'" onmouseout="this.style.borderColor=\'rgba(37,211,102,.15)\';this.style.color=\'var(--text-s)\'"><span class="material-symbols-outlined" style="font-size:16px">chat</span></a></div></div>' +
     // Col 2 nav
@@ -1272,7 +1273,7 @@ function blogCard(p,i){
     '<div style="font-size:11px;color:var(--text-s);margin-bottom:8px">'+esc(p.ciudad)+" · "+esc(p.tiempo_lectura||"5 min")+'</div>' +
     '<h3 style="font-family:\'Syne\',sans-serif;font-weight:700;font-size:17px;line-height:1.35;margin-bottom:8px">'+esc(p.titulo)+'</h3>' +
     '<p style="font-size:13px;color:var(--text-m);line-height:1.6">'+esc((p.resumen||"").substring(0,110))+'…</p>' +
-    '<div style="margin-top:12px;display:flex;align-items:center;gap:4px;font-size:12px;font-family:\'Syne\',sans-serif;font-weight:700;color:var(--primary)">Leer artículo<span class="material-symbols-outlined" style="font-size:14px">arrow_forward</span></div>' +
+    '<a href="/blog/'+esc(p.slug||'')+'" onclick="event.preventDefault();event.stopPropagation();verPost('+p.id+')" style="margin-top:12px;display:flex;align-items:center;gap:4px;font-size:12px;font-family:\'Syne\',sans-serif;font-weight:700;color:var(--primary)">Leer artículo<span class="material-symbols-outlined" style="font-size:14px">arrow_forward</span></a>' +
     '</div></article>';
 }
 
@@ -1511,10 +1512,10 @@ function verDetalle(slugOrId){
           '</div>'+
           (d.acabados&&d.acabados!=="Consultar con asesor"?'<div class="glass" style="padding:20px;border-radius:14px;margin-bottom:20px"><h4 style="font-family:\'Syne\',sans-serif;font-weight:700;font-size:14px;margin-bottom:10px">Acabados</h4><div style="display:flex;flex-wrap:wrap;gap:8px">'+d.acabados.split("|").map(function(a){return '<span style="padding:4px 12px;border-radius:999px;background:rgba(212,137,26,.08);color:var(--primary);font-size:12px">'+esc(a.trim())+'</span>'}).join("")+'</div></div>':"")+
           '<div style="display:flex;flex-wrap:wrap;gap:12px;margin-bottom:28px">'+
-            (d.brochure?'<a href="'+esc(driveDownload(d.brochure_url||d.brochure||''))+'" download target="_blank" rel="noopener" class="btn btn-o" onclick="event.preventDefault();event.stopPropagation();registrarDescargaBrochure(\''+esc(d.nombre)+'\')"><span class="material-symbols-outlined">download</span>Descargar brochure</a>':'<button class="btn btn-o" onclick="abrirModalDescarga(\'Brochure: '+esc(d.nombre)+'\',null)"><span class="material-symbols-outlined">download</span>Solicitar brochure</button>')+
-            '<button onclick="showPage(\'contacto\')" class="btn btn-p"><span class="material-symbols-outlined">calendar_month</span>Agendar visita</button>'+
+            (d.brochure?'<a href="'+esc(driveDownload(d.brochure_url||d.brochure||''))+'" download target="_blank" rel="noopener" class="btn btn-o" onclick="event.preventDefault();event.stopPropagation();registrarDescargaBrochure(\''+esc(d.nombre)+'\')"><img class="vx-ico" src="images/Iconos-svg/acrobat-reader.svg" alt="" width="18" height="18">Descargar brochure</a>':'<button class="btn btn-o" onclick="abrirModalDescarga(\'Brochure: '+esc(d.nombre)+'\',null)"><img class="vx-ico" src="images/Iconos-svg/acrobat-reader.svg" alt="" width="18" height="18">Solicitar brochure</button>')+
+            '<button onclick="showPage(\'contacto\')" class="btn btn-p"><img class="vx-ico" src="images/Iconos-svg/google-calendar.svg" alt="" width="18" height="18">Agendar visita</button>'+
             '<a href="https://wa.me/525527081749?text='+encodeURIComponent("Hola, me interesa el desarrollo "+d.nombre)+'" target="_blank" rel="noopener" class="btn" style="background:rgba(37,211,102,.1);color:#25D366;border:1px solid rgba(37,211,102,.3)"><span class="material-symbols-outlined">chat</span>WhatsApp</a>'+
-            (d.url_maps?'<a href="'+esc(d.url_maps)+'" target="_blank" rel="noopener" class="btn btn-o"><span class="material-symbols-outlined">map</span>Ver en Google Maps</a>':"")+
+            (d.url_maps?'<a href="'+esc(d.url_maps)+'" target="_blank" rel="noopener" class="btn btn-o"><img class="vx-ico" src="images/Iconos-svg/googleMaps.svg" alt="" width="18" height="18">Ver en Google Maps</a>':"")+
           '</div>'+
           (d.lat&&d.lng&&parseFloat(d.lat)!==0&&parseFloat(d.lng)!==0?'<div style="border-radius:14px;overflow:hidden;border:1px solid rgba(212,137,26,.15)"><iframe src="https://maps.google.com/maps?q='+parseFloat(d.lat)+','+parseFloat(d.lng)+'&z=15&output=embed" width="100%" height="260" style="border:0" loading="lazy" title="Ubicación '+esc(d.nombre)+'"></iframe></div>':"") +
         '</div>' +
@@ -1570,8 +1571,8 @@ function verPost(id){
     '<button onclick="showPage(\'blog\')" class="btn btn-o btn-sm" style="margin-bottom:24px"><span class="material-symbols-outlined" style="font-size:14px">arrow_back</span>Volver al blog</button>'+
     '<span class="blog-cat">'+esc(p.categoria)+'</span>'+
     '<h1 style="font-family:\'Syne\',sans-serif;font-weight:800;font-size:clamp(24px,4vw,40px);line-height:1.2;margin:12px 0 16px">'+esc(p.titulo)+'</h1>'+
-    '<div style="color:var(--text-s);font-size:13px;margin-bottom:28px">'+esc(p.ciudad)+" · "+esc(p.tiempo_lectura||"5 min")+" · Por "+esc(p.autor)+'</div>'+
-    '<img src="'+esc(p.imagen)+'" alt="'+esc(p.titulo)+'" style="width:100%;height:350px;object-fit:cover;border-radius:var(--r2);margin-bottom:32px" loading="lazy"/>'+
+    '<div style="color:var(--text-s);font-size:13px;margin-bottom:28px">'+esc(p.ciudad)+" · "+esc(p.tiempo_lectura||"5 min")+" · Por "+esc(p.autor)+(p.modificado?" · Actualizado "+esc(p.modificado):"")+'</div>'+
+    '<img src="'+esc(p.imagen)+'" alt="'+esc(p.imagen_alt||p.titulo)+'" style="width:100%;height:350px;object-fit:cover;border-radius:var(--r2);margin-bottom:32px" loading="lazy"/>'+
     '<div class="blog-body">'+p.contenido+'</div>'+
     '<div style="margin-top:48px;padding:28px;border-radius:var(--r2);background:rgba(212,137,26,.05);border:1px solid rgba(212,137,26,.12);text-align:center"><h3 style="font-family:\'Syne\',sans-serif;font-weight:700;font-size:20px;margin-bottom:8px">¿Interesado en invertir?</h3><p style="color:var(--text-m);font-size:14px;margin-bottom:20px">Agenda una consulta gratuita sin compromiso.</p><button class="btn btn-p" onclick="showPage(\'contacto\')"><span class="material-symbols-outlined">calendar_month</span>Agendar consulta</button></div>';
   showPage("blog-post");
@@ -1979,12 +1980,12 @@ function renderDescargas(){
   el.innerHTML=
     '<div style="display:grid;grid-template-columns:1fr 1fr;gap:48px">' +
     // Brochures
-    '<div><h2 style="font-family:\'Syne\',sans-serif;font-weight:700;font-size:20px;margin-bottom:20px;display:flex;align-items:center;gap:10px"><span class="material-symbols-outlined" style="color:var(--primary)">picture_as_pdf</span>Brochures de Desarrollos</h2>'+
+    '<div><h2 style="font-family:\'Syne\',sans-serif;font-weight:700;font-size:20px;margin-bottom:20px;display:flex;align-items:center;gap:10px"><img class="vx-ico" src="images/Iconos-svg/acrobat-reader.svg" alt="" width="22" height="22" style="width:22px;height:22px">Brochures de Desarrollos</h2>'+
     '<div style="display:flex;flex-direction:column;gap:10px">'+
     (conBrochure.length?conBrochure.map(function(d){
       return '<div style="display:flex;align-items:center;justify-content:space-between;padding:16px;border-radius:14px;background:var(--bg2);border:1px solid rgba(212,137,26,.1);cursor:pointer;transition:all .25s" onclick="registrarDescargaBrochure(\''+esc(d.nombre)+'\',\''+esc(d.brochure_url||d.brochure||'')+'\')" onmouseover="this.style.borderColor=\'rgba(212,137,26,.4)\';this.style.transform=\'translateX(6px)\'" onmouseout="this.style.borderColor=\'rgba(212,137,26,.1)\';this.style.transform=\'\'">'+
       '<div style="display:flex;align-items:center;gap:12px">'+
-      '<div style="width:38px;height:38px;border-radius:10px;background:rgba(212,137,26,.08);display:flex;align-items:center;justify-content:center;flex-shrink:0"><span class="material-symbols-outlined" style="color:var(--primary);font-size:18px">picture_as_pdf</span></div>'+
+      '<div style="width:38px;height:38px;border-radius:10px;background:rgba(212,137,26,.08);display:flex;align-items:center;justify-content:center;flex-shrink:0"><img class="vx-ico" src="images/Iconos-svg/acrobat-reader.svg" alt="" width="20" height="20" style="width:20px;height:20px"></div>'+
       '<div><div style="font-family:\'Syne\',sans-serif;font-weight:600;font-size:13px">'+esc(d.nombre)+'</div><div style="color:var(--text-s);font-size:11px">'+esc(d.zona)+', '+esc(d.ciudad)+'</div></div></div>'+
       '<span class="material-symbols-outlined" style="color:var(--primary);font-size:18px">download</span></div>';
     }).join(""):
