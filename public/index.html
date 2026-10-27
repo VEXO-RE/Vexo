@@ -72,6 +72,9 @@
     .nav-logo-icon{width:34px;height:34px;background:linear-gradient(135deg,var(--primary),var(--primary-d));border-radius:9px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
     .nav-logo-text{font-family:"Syne",sans-serif;font-weight:800;font-size:18px;letter-spacing:0.5px}
     .nav-logo-text span{color:var(--primary)}
+    .vx-logo-img{height:44px;width:auto;max-width:180px;object-fit:contain;display:block}
+    #navbar.scrolled .vx-logo-img{height:38px}
+    @media(max-width:768px){.vx-logo-img{height:38px}}
     .nav-links{display:flex;align-items:center;gap:6px}
     .nav-link{font-size:13px;font-weight:500;color:var(--text-m);padding:8px 12px;border-radius:8px;cursor:pointer;transition:all 0.2s;border:1px solid transparent;position:relative}
     .nav-link:hover,.nav-link.active{color:var(--text);background:rgba(212,137,26,0.08);border-color:rgba(212,137,26,0.15)}
@@ -338,10 +341,11 @@
 <nav id="navbar" role="navigation" aria-label="Navegación principal">
   <div class="nav-w">
     <div class="nav-logo" onclick="showPage('home')" aria-label="VEXO Real Estate — Inicio">
-      <div class="nav-logo-icon">
+      <img class="vx-logo-img" src="images/blog/Logo-vexo.cdmx.webp" alt="VEXO Real Estate" width="140" height="44" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';this.nextElementSibling.nextElementSibling.style.display='block'"/>
+      <div class="nav-logo-icon" style="display:none">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="#07120f" aria-hidden="true"><polygon points="12,2 2,10 5,10 5,20 10,20 10,14 14,14 14,20 19,20 19,10 22,10"/></svg>
       </div>
-      <div class="nav-logo-text">VEXO <span>RE</span></div>
+      <div class="nav-logo-text" style="display:none">VEXO <span>RE</span></div>
     </div>
     <div class="nav-links">
       <a class="nav-link active" id="nl-home" href="/" onclick="event.preventDefault();showPage('home')">Inicio</a>
@@ -366,7 +370,8 @@
 <!-- ══ MOBILE MENU ════════════════════════════════════════════════ -->
 <div id="mob-menu" role="dialog" aria-modal="true" aria-label="Menú de navegación">
   <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:32px;">
-    <div class="nav-logo-text" style="font-size:20px">VEXO <span style="color:var(--primary)">REAL ESTATE</span></div>
+    <img class="vx-logo-img" src="images/blog/Logo-vexo.cdmx.webp" alt="VEXO Real Estate" width="140" height="44" onerror="this.style.display='none';this.nextElementSibling.style.display='block'"/>
+    <div class="nav-logo-text" style="font-size:20px;display:none">VEXO <span style="color:var(--primary)">REAL ESTATE</span></div>
     <button onclick="toggleMenu()" style="background:none;border:none;color:var(--text-m)" aria-label="Cerrar menú"><span class="material-symbols-outlined">close</span></button>
   </div>
   <a class="mob-nav-link" onclick="showPage('home');toggleMenu()">Inicio<span class="material-symbols-outlined" style="font-size:18px">arrow_forward_ios</span></a>
@@ -1221,7 +1226,7 @@ function footerHTML(){
   return '<footer id="site-footer"><div class="container" style="padding-top:56px;padding-bottom:40px;">' +
     '<div style="display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:40px;margin-bottom:40px;">' +
     // Col 1
-    '<div><div style="display:flex;align-items:center;gap:10px;margin-bottom:14px;cursor:pointer" onclick="showPage(\'home\')"><div style="width:30px;height:30px;background:linear-gradient(135deg,var(--primary),var(--primary-d));border-radius:8px;display:flex;align-items:center;justify-content:center"><svg width="16" height="16" viewBox="0 0 24 24" fill="#07120f"><polygon points="12,2 2,10 5,10 5,20 10,20 10,14 14,14 14,20 19,20 19,10 22,10"/></svg></div><span style="font-family:\'Syne\',sans-serif;font-weight:800;font-size:16px">VEXO <span style="color:var(--primary)">REAL ESTATE</span></span></div>' +
+    '<div><div style="display:flex;align-items:center;gap:10px;margin-bottom:14px;cursor:pointer" onclick="showPage(\'home\')"><img class="vx-logo-img" src="images/blog/Logo-vexo.cdmx.webp" alt="VEXO Real Estate" width="140" height="44" onerror="this.style.display=\'none\';this.nextElementSibling.style.display=\'flex\';this.nextElementSibling.nextElementSibling.style.display=\'inline\'"/><div style="display:none;width:30px;height:30px;background:linear-gradient(135deg,var(--primary),var(--primary-d));border-radius:8px;align-items:center;justify-content:center"><svg width="16" height="16" viewBox="0 0 24 24" fill="#07120f"><polygon points="12,2 2,10 5,10 5,20 10,20 10,14 14,14 14,20 19,20 19,10 22,10"/></svg></div><span style="display:none;font-family:\'Syne\',sans-serif;font-weight:800;font-size:16px">VEXO <span style="color:var(--primary)">REAL ESTATE</span></span></div>' +
     '<p style="color:var(--text-s);font-size:13px;line-height:1.7;max-width:280px;margin-bottom:16px">Especialistas en desarrollos residenciales premium en Mérida, Ciudad de México y Riviera Maya.</p>' +
     '<div style="display:flex;gap:8px"><a href="https://www.instagram.com/vexo_bienesraices" target="_blank" rel="noopener" style="width:34px;height:34px;background:rgba(212,137,26,.08);border:1px solid rgba(212,137,26,.15);border-radius:8px;display:flex;align-items:center;justify-content:center;color:var(--text-s);transition:all .2s" onmouseover="this.style.borderColor=\'var(--primary)\';this.style.color=\'var(--primary)\'" onmouseout="this.style.borderColor=\'rgba(212,137,26,.15)\';this.style.color=\'var(--text-s)\'"><span class="material-symbols-outlined" style="font-size:16px">photo_camera</span></a>' +
     '<a href="https://www.facebook.com/profile.php?id=61577530904134" target="_blank" rel="noopener" style="width:34px;height:34px;background:rgba(212,137,26,.08);border:1px solid rgba(212,137,26,.15);border-radius:8px;display:flex;align-items:center;justify-content:center;color:var(--text-s);transition:all .2s" onmouseover="this.style.borderColor=\'var(--primary)\';this.style.color=\'var(--primary)\'" onmouseout="this.style.borderColor=\'rgba(212,137,26,.15)\';this.style.color=\'var(--text-s)\'"><span class="material-symbols-outlined" style="font-size:16px">thumb_up</span></a>' +
@@ -1385,7 +1390,7 @@ function renderPage(name){
     var eq=document.getElementById("nos-equipo");
     if(eq){
       var team=emp.equipo&&emp.equipo.length>=2?emp.equipo:[{nombre:"Rosalía Robles",cargo:"Directora General",email:"rosalia.robles@vexorealestate.com"},{nombre:"Dirección",cargo:"Director Comercial",email:"marco.flores@vexorealestate.com"},{nombre:"Patricio Romo",cargo:"Asesor Mérida",email:"ventas@vexorealestate.com"},{nombre:"Equipo CDMX",cargo:"Asesores CDMX",email:"ventas@vexorealestate.com"}];
-      eq.innerHTML=team.map(function(m,i){return '<div class="glass reveal d'+(i+1)+'" style="padding:24px;border-radius:var(--r2);text-align:center"><div style="width:60px;height:60px;border-radius:16px;background:linear-gradient(135deg,rgba(212,137,26,.25),rgba(232,169,42,.1));margin:0 auto 14px;display:flex;align-items:center;justify-content:center"><span class="material-symbols-outlined" style="color:var(--primary);font-size:28px">person</span></div><div style="font-family:\'Syne\',sans-serif;font-weight:700;margin-bottom:4px">'+esc(m.nombre)+'</div><div style="font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:var(--primary);margin-bottom:8px">'+esc(m.cargo)+'</div><a href="mailto:'+esc(m.email)+'" style="color:var(--text-s);font-size:12px;text-decoration:none" onmouseover="this.style.color=\'var(--primary)\'" onmouseout="this.style.color=\'var(--text-s)\'">'+esc(m.email)+'</a></div>'}).join("");
+      eq.innerHTML=team.map(function(m,i){return '<div class="glass reveal d'+(i+1)+'" style="padding:24px;border-radius:var(--r2);text-align:center"><div style="width:'+(/^Rosal/.test(m.nombre)?'96':'60')+'px;height:'+(/^Rosal/.test(m.nombre)?'96':'60')+'px;border-radius:16px;overflow:hidden;background:linear-gradient(135deg,rgba(212,137,26,.25),rgba(232,169,42,.1));margin:0 auto 14px;display:flex;align-items:center;justify-content:center">'+(/^Rosal/.test(m.nombre)?'<img src="images/Rose-Robles-Vexo-CEO.webp" alt="Rosalía Robles, Directora General de VEXO Real Estate" loading="lazy" style="width:100%;height:100%;object-fit:cover" onerror="this.outerHTML=\'<span class=&quot;material-symbols-outlined&quot; style=&quot;color:var(--primary);font-size:28px&quot;>person</span>\'"/>':'<span class="material-symbols-outlined" style="color:var(--primary);font-size:28px">person</span>')+'</div><div style="font-family:\'Syne\',sans-serif;font-weight:700;margin-bottom:4px">'+esc(m.nombre)+'</div><div style="font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:var(--primary);margin-bottom:8px">'+esc(m.cargo)+'</div><a href="mailto:'+esc(m.email)+'" style="color:var(--text-s);font-size:12px;text-decoration:none" onmouseover="this.style.color=\'var(--primary)\'" onmouseout="this.style.color=\'var(--text-s)\'">'+esc(m.email)+'</a></div>'}).join("");
     }
     var co=document.getElementById("nos-correos");
     if(co){
